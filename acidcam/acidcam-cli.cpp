@@ -46,10 +46,10 @@
 /* required to be declared in source file */
 
 /*
- 
  Command Line Arguments
- -l List Filters
-
+ -l List filters
+ -i input video
+ -o output video
 */
 
 cv::Mat blend_image;
@@ -92,17 +92,25 @@ int main(int argc, char **argv) {
     }
     
     if(input.length()==0 || output.length()==0) {
-        std::cerr << "Invalid input/output use video file.\n";
+        std::cerr << "acidcam: Invalid input/output use video file.\n";
         exit(EXIT_FAILURE);
     }
     
-    cmd::AC_Program program;
-    if(program.startProgram(input, output)) {
+    try {
+    	cmd::AC_Program program;
+    	if(program.startProgram(input, output)) {
         
-    } else {
-        std::cerr << "Start of program failed..\n";
+    	} else {
+            std::cerr << "acidcam: Start of program failed..\n";
+        	exit(EXIT_FAILURE);
+    	}
+    } catch(cmd::AC_Exception &e) {
+        std::cerr << "acidcam: Error " << e.getError() << "\n";
+    } catch(std::exception &e) {
+        std::cerr << "acidcam: Exception: " << e.what() << "\n";
+    } catch(...) {
+        std::cerr << "acidcam: Exception thrown...\n";
         exit(EXIT_FAILURE);
     }
-    
 	return 0;
 }
