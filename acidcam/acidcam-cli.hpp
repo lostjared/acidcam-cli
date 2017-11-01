@@ -120,7 +120,7 @@ namespace cmd {
                     if(key == 27) break;
                 }
             }
-            std::cout << "acidcam: 100% Done wrote to file [ " << output_file << "]\n";
+            std::cout << "acidcam: 100% Done wrote to file [" << output_file << "]\n";
         }
         
         std::string getInput() const { return input_file; }

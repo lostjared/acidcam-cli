@@ -120,6 +120,32 @@ int main(int argc, char **argv) {
 
                     } else {
                         // list of filters
+                        std::string number;
+                        unsigned int pos = 0;
+                        while(pos < args.length()) {
+                            if(args[pos] != ',')
+                                number += args[pos];
+                            if(args[pos] == ',') {
+                                unsigned int value = atoi(number.c_str());
+                                if(value >= 0 && value < ac::draw_max-4) {
+                                    filter_list.push_back(value);
+                                } else {
+                                    std::cerr << "acidcam: Error invalid filter: " << value << "\n";
+                                    exit(EXIT_FAILURE);
+                                }
+                                number = "";
+                            }
+                            ++pos;
+                        }
+                        if(number.length() > 0) {
+                            unsigned int value = atoi(number.c_str());
+                            if(value >= 0 && value < ac::draw_max-4) {
+                                filter_list.push_back(value);
+                            } else {
+                                std::cerr << "acidcam: Error invalid filter; " << value << "\n";
+                                exit(EXIT_FAILURE);
+                            }
+                        }
                     }
                 }
                     break;
