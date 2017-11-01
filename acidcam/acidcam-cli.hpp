@@ -78,7 +78,11 @@ namespace cmd {
                 return false;
             }
             std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "]\n";
-
+            std::cout << "\nFilters to Apply: \n";
+            for(unsigned int q = 0; q < filter_list.size(); ++q) {
+                std::cout << ac::draw_strings[q] << "\n";
+            }
+            std::cout << "\n";
             return true;
         }
         
