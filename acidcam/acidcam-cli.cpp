@@ -92,8 +92,16 @@ int main(int argc, char **argv) {
                 case 'i':
                     input = optarg;
                     break;
-                case 'o':
+                case 'o': {
+                    std::string output_l = optarg;
                     output = optarg;
+                    toLower(output_l);
+                    auto pos = output_l.find(".mov");
+                    if(pos == std::string::npos) {
+                        output += ".mov";
+                        std::cerr << "acidcam: Filename changed to: " << output << "\n";
+                    }
+                }
                     break;
                 case 'f': {
                     std::string args = optarg;

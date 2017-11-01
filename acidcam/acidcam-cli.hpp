@@ -70,7 +70,21 @@ namespace cmd {
         bool initProgram(const std::string &input, const std::string &output, std::vector<int> &filter_list) {
             input_file = input;
             output_file = output;
-            std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "]\n";
+            capture.open(input_file);
+            if(!capture.isOpened()) {
+                std::cerr << "acidcam: Error could not open file: " << input_file << "\n";
+                return false;
+            }
+            int aw = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));
+            int ah = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
+            double fps = capture.get(CV_CAP_PROP_FPS);
+            writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
+            if(!writer.isOpened()) {
+                std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
+                return false;
+            }
+            std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "]\n";
+
             return true;
         }
         
@@ -82,6 +96,8 @@ namespace cmd {
         std::string getOutput() const { return output_file; }
     private:
         std::string input_file, output_file;
+        cv::VideoCapture capture;
+        cv::VideoWriter writer;
     };
 }
 
