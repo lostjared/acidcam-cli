@@ -4,28 +4,28 @@ Command Line Version of Acid Cam for Linux with OpenCV:
 
  Command Line Arguments
 
- -l List filters
+	-l List filters
 
- -i input video
+	-i input video
 
- -o output video
+	-o output video
 
- -f filter list
+	-f filter list
 
- -v image visible
+	-v image visible
 
 
 Example:
 
-$ acidcam -i input.mov -o output.mov -f 1,2,3
+	$ acidcam -i input.mov -o output.mov -f 1,2,3
 
-or
+Or to view progress:
 
-$ acidcam -i input.mov -o output.mov -f 0 -v
+	$ acidcam -i input.mov -o output.mov -f 0 -v
 
 To List filters:
 
-$ acidcam -l
+	$ acidcam -l
 
 
 
