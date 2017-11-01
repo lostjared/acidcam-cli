@@ -43,6 +43,10 @@
  */
 #include"acidcam-cli.hpp"
 #include<unistd.h>
+#include<cstdlib>
+#include<cstring>
+#include<cctype>
+
 /* required to be declared in source file */
 
 /*
@@ -50,6 +54,7 @@
  -l List filters
  -i input video
  -o output video
+ -f filter list
  */
 
 cv::Mat blend_image;
@@ -66,14 +71,20 @@ void listFilters() {
     }
 }
 
+void toLower(std::string &text) {
+    for(unsigned int i = 0; i < text.length(); ++i) {
+        text[i] = tolower(text[i]);
+    }
+}
 
 /* main function */
 int main(int argc, char **argv) {
     ac::fill_filter_map();
     std::string input,output;
+    std::vector<int> filter_list;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:")) != -1) {
             switch(opt) {
                 case 'l':
                     listFilters();
@@ -83,6 +94,20 @@ int main(int argc, char **argv) {
                     break;
                 case 'o':
                     output = optarg;
+                    break;
+                case 'f': {
+                    std::string args = optarg;
+                    auto pos = args.find(",");
+                    if(pos == std::string::npos && args.length() > 0) {
+                        filter_list.push_back(atoi(optarg));
+                    } else if(args.length() == 0) {
+                        std::cerr << "acidcam: Error requires at least one filter.\n";
+                        exit(EXIT_FAILURE);
+
+                    } else {
+                        // list of filters
+                    }
+                }
                     break;
             }
         }
@@ -98,8 +123,8 @@ int main(int argc, char **argv) {
     
     try {
         cmd::AC_Program program;
-        if(program.startProgram(input, output)) {
-            
+        if(program.initProgram(input, output,filter_list)) {
+            program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";
             exit(EXIT_FAILURE);

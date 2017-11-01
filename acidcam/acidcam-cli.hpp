@@ -47,6 +47,7 @@
 #include"ac.h"
 #include<iostream>
 #include<iomanip>
+#include<vector>
 
 namespace cmd {
     
@@ -66,12 +67,17 @@ namespace cmd {
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
         
-        bool startProgram(const std::string &input, const std::string &output) {
+        bool initProgram(const std::string &input, const std::string &output, std::vector<int> &filter_list) {
             input_file = input;
             output_file = output;
             std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "]\n";
             return true;
         }
+        
+        void run() {
+            
+        }
+        
         std::string getInput() const { return input_file; }
         std::string getOutput() const { return output_file; }
     private:
