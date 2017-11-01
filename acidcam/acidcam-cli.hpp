@@ -41,25 +41,12 @@
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
-#include"acidcam-cli.hpp"
 
-/* required to be declared in source file */
-
-cv::Mat blend_image;
-bool blend_set = false;
-
-void custom_filter(cv::Mat &frame) {
-
-}
-
-void ac::plugin(cv::Mat &frame) {
-
-}
-
-/* main function */
-
-int main(int argc, char **argv) {
+#ifndef __ACIDCAM__H__
+#define __ACIDCAM__H__
+#include"ac.h"
+#include<iostream>
 
 
-	return 0;
-}
+#endif
+
