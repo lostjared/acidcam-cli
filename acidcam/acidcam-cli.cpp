@@ -46,15 +46,14 @@
 #include<cstdlib>
 #include<cstring>
 #include<cctype>
-
 /* required to be declared in source file */
-
 /*
  Command Line Arguments
  -l List filters
  -i input video
  -o output video
  -f filter list
+ -v image visible
  */
 
 cv::Mat blend_image;
@@ -82,9 +81,11 @@ int main(int argc, char **argv) {
     ac::fill_filter_map();
     std::string input,output;
     std::vector<int> filter_list;
+    bool visible = false;
+    
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:v")) != -1) {
             switch(opt) {
                 case 'l':
                     listFilters();
@@ -122,6 +123,9 @@ int main(int argc, char **argv) {
                     }
                 }
                     break;
+                case 'v':
+                    visible = true;
+                    break;
                 default:
                     std::cerr << "acidcam: Error incorrect input..\n";
                     exit(EXIT_FAILURE);
@@ -140,7 +144,7 @@ int main(int argc, char **argv) {
     
     try {
         cmd::AC_Program program;
-        if(program.initProgram(input, output,filter_list)) {
+        if(program.initProgram(visible, input, output,filter_list)) {
             program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";

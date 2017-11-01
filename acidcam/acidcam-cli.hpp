@@ -67,7 +67,8 @@ namespace cmd {
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
         
-        bool initProgram(const std::string &input, const std::string &output, std::vector<int> &filter_list) {
+        bool initProgram(bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list) {
+            is_visible = visible;
             input_file = input;
             output_file = output;
             filters = filter_list;
@@ -90,11 +91,13 @@ namespace cmd {
         }
         
         void run() {
-            
             unsigned long frame_count_len = 0, frame_index = 0;
             frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
             bool active = true;
             unsigned int percent_now = 0;
+            
+            if(is_visible)
+                cv::namedWindow("acidcam_cli");
             
             while(active == true) {
                 cv::Mat frame;
@@ -118,7 +121,12 @@ namespace cmd {
                         percent_now = percent_trunc;
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "%\n";
                     }
-                    
+                }
+                
+                if(is_visible) {
+                    cv::imshow("acidcam_cli", frame);
+                    int key = cv::waitKey(25);
+                    if(key == 27) break;
                 }
                 
             }
@@ -132,6 +140,7 @@ namespace cmd {
         cv::VideoCapture capture;
         cv::VideoWriter writer;
         std::vector<int> filters;
+        bool is_visible;
     };
 }
 
