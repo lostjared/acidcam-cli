@@ -89,6 +89,7 @@ int main(int argc, char **argv) {
             switch(opt) {
                 case 'l':
                     listFilters();
+                    exit(EXIT_SUCCESS);
                     break;
                 case 'i':
                     input = optarg;
