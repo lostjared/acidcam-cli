@@ -107,7 +107,12 @@ int main(int argc, char **argv) {
                     std::string args = optarg;
                     auto pos = args.find(",");
                     if(pos == std::string::npos && args.length() > 0) {
-                        filter_list.push_back(atoi(optarg));
+                        unsigned int value = atoi(optarg);
+                        if(value >= 0 && value <= ac::draw_max-4) {
+                        	filter_list.push_back(value);
+                        } else {
+                            std::cerr << "acidcam: Error filter out of bounds..\n";
+                        }
                     } else if(args.length() == 0) {
                         std::cerr << "acidcam: Error requires at least one filter.\n";
                         exit(EXIT_FAILURE);
@@ -129,7 +134,7 @@ int main(int argc, char **argv) {
     }
     
     if(input.length()==0 || output.length()==0) {
-        std::cerr << "acidcam: Invalid input/output use video file.\n";
+        std::cerr << "acidcam: Invalid input/output use video files.\n";
         exit(EXIT_FAILURE);
     }
     
