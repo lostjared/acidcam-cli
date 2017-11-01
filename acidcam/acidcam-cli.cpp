@@ -117,6 +117,10 @@ int main(int argc, char **argv) {
                     }
                 }
                     break;
+                default:
+                    std::cerr << "acidcam: Error incorrect input..\n";
+                    exit(EXIT_FAILURE);
+                    break;
             }
         }
     } else {
