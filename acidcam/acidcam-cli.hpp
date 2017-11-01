@@ -46,7 +46,7 @@
 #define __ACIDCAM__H__
 #include"ac.h"
 #include<iostream>
-
+#include<iomanip>
 
 #endif
 

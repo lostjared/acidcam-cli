@@ -42,24 +42,44 @@
  
  */
 #include"acidcam-cli.hpp"
-
+#include<unistd.h>
 /* required to be declared in source file */
+
+/*
+ 
+ Command Line Arguments
+ -l List Filters
+
+*/
 
 cv::Mat blend_image;
 bool blend_set = false;
 
-void custom_filter(cv::Mat &frame) {
+void custom_filter(cv::Mat &frame) {}
+void ac::plugin(cv::Mat &frame) {}
 
+
+
+void listFilters() {
+    std::cout << "List of Filters by Index\n";
+    for(unsigned int i = 0; i < ac::draw_max-3; ++i) {
+        std::cout << std::setw(4) << std::left << i << std::setw(50) << std::left << ac::draw_strings[i] << "\n";
+    }
 }
 
-void ac::plugin(cv::Mat &frame) {
-
-}
 
 /* main function */
-
 int main(int argc, char **argv) {
-
-
+    ac::fill_filter_map();
+    if(argc > 1) {
+        int opt = 0;
+        while((opt = getopt(argc, argv, "l")) != -1) {
+            switch(opt) {
+                case 'l':
+                    listFilters();
+                    break;
+            }
+        }
+    }
 	return 0;
 }
