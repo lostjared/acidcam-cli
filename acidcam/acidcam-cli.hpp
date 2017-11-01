@@ -48,5 +48,36 @@
 #include<iostream>
 #include<iomanip>
 
+namespace cmd {
+    
+    class AC_Exception {
+    public:
+        AC_Exception(const std::string &text) : err(text) {}
+        std::string getError() const { return err; }
+    private:
+        std::string err;
+    };
+    
+    class AC_Program {
+    public:
+        AC_Program() = default;
+        AC_Program(const AC_Program &) = delete;
+        AC_Program(AC_Program &&) = delete;
+        AC_Program &operator=(const AC_Program &) = delete;
+        AC_Program &operator=(AC_Program &&) = delete;
+        
+        bool startProgram(const std::string &input, const std::string &output) {
+            input_file = input;
+            output_file = output;
+            std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "]\n";
+            return true;
+        }
+        std::string getInput() const { return input_file; }
+        std::string getOutput() const { return output_file; }
+    private:
+        std::string input_file, output_file;
+    };
+}
+
 #endif
 

@@ -59,7 +59,6 @@ void custom_filter(cv::Mat &frame) {}
 void ac::plugin(cv::Mat &frame) {}
 
 
-
 void listFilters() {
     std::cout << "List of Filters by Index\n";
     for(unsigned int i = 0; i < ac::draw_max-3; ++i) {
@@ -71,15 +70,39 @@ void listFilters() {
 /* main function */
 int main(int argc, char **argv) {
     ac::fill_filter_map();
+    std::string input,output;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "l")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:")) != -1) {
             switch(opt) {
                 case 'l':
                     listFilters();
                     break;
+                case 'i':
+                    input = optarg;
+                    break;
+                case 'o':
+                    output = optarg;
+                    break;
             }
         }
+    } else {
+        std::cout << "acidcam [ -l list -i input -o output ]\n";
+        exit(EXIT_FAILURE);
     }
+    
+    if(input.length()==0 || output.length()==0) {
+        std::cerr << "Invalid input/output use video file.\n";
+        exit(EXIT_FAILURE);
+    }
+    
+    cmd::AC_Program program;
+    if(program.startProgram(input, output)) {
+        
+    } else {
+        std::cerr << "Start of program failed..\n";
+        exit(EXIT_FAILURE);
+    }
+    
 	return 0;
 }
