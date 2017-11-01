@@ -50,7 +50,7 @@
  -l List filters
  -i input video
  -o output video
-*/
+ */
 
 cv::Mat blend_image;
 bool blend_set = false;
@@ -97,13 +97,13 @@ int main(int argc, char **argv) {
     }
     
     try {
-    	cmd::AC_Program program;
-    	if(program.startProgram(input, output)) {
-        
-    	} else {
+        cmd::AC_Program program;
+        if(program.startProgram(input, output)) {
+            
+        } else {
             std::cerr << "acidcam: Start of program failed..\n";
-        	exit(EXIT_FAILURE);
-    	}
+            exit(EXIT_FAILURE);
+        }
     } catch(cmd::AC_Exception &e) {
         std::cerr << "acidcam: Error " << e.getError() << "\n";
     } catch(std::exception &e) {
@@ -112,5 +112,5 @@ int main(int argc, char **argv) {
         std::cerr << "acidcam: Exception thrown...\n";
         exit(EXIT_FAILURE);
     }
-	return 0;
+    return 0;
 }
