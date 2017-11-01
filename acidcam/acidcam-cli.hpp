@@ -94,6 +94,8 @@ namespace cmd {
             unsigned long frame_count_len = 0, frame_index = 0;
             frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
             bool active = true;
+            unsigned int percent_now = 0;
+            
             while(active == true) {
                 cv::Mat frame;
                 if(capture.read(frame) == false) {
@@ -107,8 +109,20 @@ namespace cmd {
                     ac::draw_func[filters[i]](frame);
                 }
                 writer.write(frame);
+                double val = frame_index;
+                double size = frame_count_len;
+                if(size != 0) {
+                    double percent = (val/size)*100;
+                    unsigned int percent_trunc = static_cast<unsigned int>(percent);
+                    if(percent_trunc > percent_now) {
+                        percent_now = percent_trunc;
+                        std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "%\n";
+                    }
+                    
+                }
+                
             }
-            std::cout << "acidcam: Done wrote to file [ " << output_file << "]\n";
+            std::cout << "acidcam: 100% Done wrote to file [ " << output_file << "]\n";
         }
         
         std::string getInput() const { return input_file; }
