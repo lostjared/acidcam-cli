@@ -12,5 +12,13 @@ AC_PROG_MAKE_SET
 # Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
 
+CV_INCLUDES=`pkg-config opencv --cflags`
+CV_LIBS=`pkg-config opencv --libs`
 
-AC_OUTPUT(Makefile uxload/Makefile)
+echo $CV_INCLUDES
+echo $CV_LIBS
+
+AC_SUBST(CV_INCLUDES)
+AC_SUBST(CV_LIBS)
+
+AC_OUTPUT(Makefile acidcam/Makefile)
