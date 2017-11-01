@@ -51,14 +51,6 @@
 
 namespace cmd {
     
-    class AC_Exception {
-    public:
-        AC_Exception(const std::string &text) : err(text) {}
-        std::string getError() const { return err; }
-    private:
-        std::string err;
-    };
-    
     class AC_Program {
     public:
         AC_Program() = default;
@@ -122,13 +114,11 @@ namespace cmd {
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "%\n";
                     }
                 }
-                
                 if(is_visible) {
                     cv::imshow("acidcam_cli", frame);
                     int key = cv::waitKey(25);
                     if(key == 27) break;
                 }
-                
             }
             std::cout << "acidcam: 100% Done wrote to file [ " << output_file << "]\n";
         }

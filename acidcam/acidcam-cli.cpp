@@ -136,7 +136,6 @@ int main(int argc, char **argv) {
         std::cout << "acidcam [ -l list -i input -o output ]\n";
         exit(EXIT_FAILURE);
     }
-    
     if(input.length()==0 || output.length()==0) {
         std::cerr << "acidcam: Invalid input/output use video files.\n";
         exit(EXIT_FAILURE);
@@ -150,9 +149,8 @@ int main(int argc, char **argv) {
             std::cerr << "acidcam: Start of program failed..\n";
             exit(EXIT_FAILURE);
         }
-    } catch(cmd::AC_Exception &e) {
-        std::cerr << "acidcam: Error " << e.getError() << "\n";
-    } catch(std::exception &e) {
+    }
+ 	catch(std::exception &e) {
         std::cerr << "acidcam: Exception: " << e.what() << "\n";
     } catch(...) {
         std::cerr << "acidcam: Exception thrown...\n";
