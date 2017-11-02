@@ -2,6 +2,8 @@
 
 Command Line Version of Acid Cam for Linux with OpenCV:
 
+Use Ctrl+C to break processing and still be able to use what has already been filtered.
+
  Command Line Arguments
 
 	-l List filters
