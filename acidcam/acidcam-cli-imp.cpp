@@ -41,6 +41,9 @@
  
  */
 #include"acidcam-cli.hpp"
+#include<sys/stat.h>
+#include<sys/types.h>
+
 
 namespace cmd {
     
@@ -100,7 +103,9 @@ namespace cmd {
                 unsigned int percent_trunc = static_cast<unsigned int>(percent);
                 if(percent_trunc > percent_now) {
                     percent_now = percent_trunc;
-                    std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "%\n";
+                    struct stat buf;
+                    lstat(output_file.c_str(), &buf);
+                    std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
                 }
             }
             if(is_visible) {

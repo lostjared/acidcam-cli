@@ -111,14 +111,14 @@ int main(int argc, char **argv) {
                     if(pos == std::string::npos && args.length() > 0) {
                         unsigned int value = atoi(optarg);
                         if(value >= 0 && value <= ac::draw_max-4) {
-                        	filter_list.push_back(value);
+                            filter_list.push_back(value);
                         } else {
                             std::cerr << "acidcam: Error filter out of bounds..\n";
                         }
                     } else if(args.length() == 0) {
                         std::cerr << "acidcam: Error requires at least one filter.\n";
                         exit(EXIT_FAILURE);
-
+                        
                     } else {
                         // list of filters
                         std::string number;
@@ -177,7 +177,7 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
         }
     }
- 	catch(std::exception &e) {
+    catch(std::exception &e) {
         std::cerr << "acidcam: Exception: " << e.what() << "\n";
     } catch(...) {
         std::cerr << "acidcam: Exception thrown...\n";
