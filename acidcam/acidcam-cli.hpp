@@ -61,6 +61,7 @@ namespace cmd {
         
         bool initProgram(bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list);
         void run();
+        void stop();
         
         std::string getInput() const { return input_file; }
         std::string getOutput() const { return output_file; }
@@ -70,6 +71,7 @@ namespace cmd {
         cv::VideoWriter writer;
         std::vector<int> filters;
         bool is_visible;
+        bool active;
     };
 }
 

@@ -55,7 +55,7 @@
  -f filter list
  -v image visible
  */
-
+cmd::AC_Program program;
 cv::Mat blend_image;
 bool blend_set = false;
 
@@ -74,6 +74,11 @@ void toLower(std::string &text) {
     for(unsigned int i = 0; i < text.length(); ++i) {
         text[i] = tolower(text[i]);
     }
+}
+
+void control_Handler(int sig) {
+    std::cout << "\nacidcam: Signal caught stopping...\n";
+    program.stop();
 }
 
 /* main function */
@@ -169,7 +174,6 @@ int main(int argc, char **argv) {
     }
     
     try {
-        cmd::AC_Program program;
         if(program.initProgram(visible, input, output,filter_list)) {
             program.run();
         } else {

@@ -43,7 +43,10 @@
 #include"acidcam-cli.hpp"
 #include<sys/stat.h>
 #include<sys/types.h>
+#include<unistd.h>
+#include<signal.h>
 
+extern void control_Handler(int sig);
 
 namespace cmd {
     
@@ -74,14 +77,29 @@ namespace cmd {
         return true;
     }
     
+    void AC_Program::stop() {
+        active = false;
+    }
+    
     void AC_Program::run() {
         unsigned long frame_count_len = 0, frame_index = 0;
         frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
-        bool active = true;
         unsigned int percent_now = 0;
+    
+        struct sigaction sa;
+        sigemptyset(&sa.sa_mask);
+        sa.sa_flags = 0;
+        sa.sa_handler = control_Handler;
+        if(sigaction(SIGINT, &sa, 0) == -1) {
+            std::cerr << "Error on sigaction:\n";
+            exit(EXIT_FAILURE);
+        }
+        
         
         if(is_visible)
             cv::namedWindow("acidcam_cli");
+        
+        active = true;
         
         while(active == true) {
             cv::Mat frame;
