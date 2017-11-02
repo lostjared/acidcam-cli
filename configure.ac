@@ -15,8 +15,8 @@ AC_CHECK_HEADER_STDBOOL
 CV_INCLUDES=`pkg-config opencv --cflags`
 CV_LIBS=`pkg-config opencv --libs`
 
-echo $CV_INCLUDES
-echo $CV_LIBS
+#echo "includes: $CV_INCLUDES"
+#echo "libraries:  $CV_LIBS"
 
 AC_SUBST(CV_INCLUDES)
 AC_SUBST(CV_LIBS)

@@ -59,73 +59,8 @@ namespace cmd {
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
         
-        bool initProgram(bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list) {
-            is_visible = visible;
-            input_file = input;
-            output_file = output;
-            filters = filter_list;
-            capture.open(input_file);
-            if(!capture.isOpened()) {
-                std::cerr << "acidcam: Error could not open file: " << input_file << "\n";
-                return false;
-            }
-            int aw = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));
-            int ah = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
-            double fps = capture.get(CV_CAP_PROP_FPS);
-            writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
-            if(!writer.isOpened()) {
-                std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
-                return false;
-            }
-            std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "]\n";
-            std::cout << "\nFilters to Apply: \n";
-            for(unsigned int q = 0; q < filter_list.size(); ++q) {
-                std::cout << ac::draw_strings[q] << "\n";
-            }
-            std::cout << "\n";
-            return true;
-        }
-        
-        void run() {
-            unsigned long frame_count_len = 0, frame_index = 0;
-            frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
-            bool active = true;
-            unsigned int percent_now = 0;
-            
-            if(is_visible)
-                cv::namedWindow("acidcam_cli");
-            
-            while(active == true) {
-                cv::Mat frame;
-                if(capture.read(frame) == false) {
-                    break;
-                }
-                frame_index ++;
-                if(frame_index >= frame_count_len) {
-                    break;
-                }
-                for(unsigned int i = 0; i < filters.size(); ++i) {
-                    ac::draw_func[filters[i]](frame);
-                }
-                writer.write(frame);
-                double val = frame_index;
-                double size = frame_count_len;
-                if(size != 0) {
-                    double percent = (val/size)*100;
-                    unsigned int percent_trunc = static_cast<unsigned int>(percent);
-                    if(percent_trunc > percent_now) {
-                        percent_now = percent_trunc;
-                        std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "%\n";
-                    }
-                }
-                if(is_visible) {
-                    cv::imshow("acidcam_cli", frame);
-                    int key = cv::waitKey(25);
-                    if(key == 27) break;
-                }
-            }
-            std::cout << "acidcam: 100% Done wrote to file [" << output_file << "]\n";
-        }
+        bool initProgram(bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list);
+        void run();
         
         std::string getInput() const { return input_file; }
         std::string getOutput() const { return output_file; }
