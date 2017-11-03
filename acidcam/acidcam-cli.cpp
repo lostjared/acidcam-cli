@@ -171,12 +171,12 @@ int main(int argc, char **argv) {
                         std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
                         exit(EXIT_FAILURE);
                     }
-                    
                     getList(colors, col);
                     if(col.size() != 3) {
                         std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
                         exit(EXIT_FAILURE);
                     }
+                    break;
                 }
                 case 'v':
                     visible = true;
