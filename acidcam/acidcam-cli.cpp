@@ -61,7 +61,7 @@ bool blend_set = false;
 
 void custom_filter(cv::Mat &frame) {}
 void ac::plugin(cv::Mat &frame) {}
-void getFilter(std::string args, std::vector<int> &v);
+void getList(std::string args, std::vector<int> &v);
 
 void listFilters() {
     std::cout << "List of Filters by Index\n";
@@ -76,7 +76,7 @@ void toLower(std::string &text) {
     }
 }
 
-void getFilter(std::string args, std::vector<int> &v) {
+void getList(std::string args, std::vector<int> &v) {
     std::string number;
     unsigned int pos = 0;
     while(pos < args.length()) {
