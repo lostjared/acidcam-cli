@@ -5,16 +5,37 @@ AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE
 AM_PROG_AS
 AC_LANG_CPLUSPLUS
+AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
 # Checks for typedefs, structures, and compiler characteristics.
+
+# Checks for libraries.
+
+# Checks for header files.
+AC_CHECK_HEADERS([unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
 AC_CHECK_HEADER_STDBOOL
+AC_C_INLINE
 
-CV_INCLUDES=`pkg-config opencv --cflags`
-CV_LIBS=`pkg-config opencv --libs`
+# Checks for library functions.
+AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 
+PKG_CHECK_MODULES(OPENCV, opencv, found=1, found=0)
+
+CV_INCLUDES=$OPENCV_CFLAGS
+CV_LIBS=$OPENCV_LIBS
+
+
+if test $found = 0; then
+AC_MSG_ERROR(Error could not find OpenCV pkg-config file is it installed?)
+fi
+
+#CV_INCLUDES=`pkg-config opencv --cflags`
+#CV_LIBS=`pkg-config opencv --libs`
 #echo "includes: $CV_INCLUDES"
 #echo "libraries:  $CV_LIBS"
 
