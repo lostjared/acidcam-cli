@@ -85,7 +85,6 @@ namespace cmd {
         unsigned long frame_count_len = 0, frame_index = 0;
         frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
         unsigned int percent_now = 0;
-    
         struct sigaction sa;
         sigemptyset(&sa.sa_mask);
         sa.sa_flags = 0;
@@ -94,13 +93,9 @@ namespace cmd {
             std::cerr << "Error on sigaction:\n";
             exit(EXIT_FAILURE);
         }
-        
-        
         if(is_visible)
             cv::namedWindow("acidcam_cli");
-        
         active = true;
-        
         while(active == true) {
             cv::Mat frame;
             if(capture.read(frame) == false) {
@@ -132,6 +127,6 @@ namespace cmd {
                 if(key == 27) break;
             }
         }
-        std::cout << "acidcam: 100% Done wrote to file [" << output_file << "]\n";
+        std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "]\n";
     }
 }
