@@ -105,12 +105,13 @@ int main(int argc, char **argv) {
     ac::fill_filter_map();
     std::string input,output;
     std::vector<int> filter_list;
+    std::vector<int> col;
     bool visible = false;
     cmd::File_Type ftype;
     
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:v")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:")) != -1) {
             switch(opt) {
                 case 'l':
                     listFilters();
@@ -153,7 +154,7 @@ int main(int argc, char **argv) {
                         
                     } else {
                         // list of filters
-                        getFilter(args, filter_list);
+                        getList(args, filter_list);
                         for(auto &i : filter_list) {
                             if(!(i >= 0 && i < ac::draw_max-4)) {
                                 std::cerr << "acidcam: Error invalid filter: " << i << "\n";
@@ -163,6 +164,20 @@ int main(int argc, char **argv) {
                     }
                 }
                     break;
+                case 'c': {
+                    std::string colors = optarg;
+                    auto pos = colors.find(",");
+                    if(pos == std::string::npos) {
+                        std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
+                        exit(EXIT_FAILURE);
+                    }
+                    
+                    getList(colors, col);
+                    if(col.size() != 3) {
+                        std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
+                        exit(EXIT_FAILURE);
+                    }
+                }
                 case 'v':
                     visible = true;
                     break;
