@@ -63,7 +63,7 @@ namespace cmd {
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
         
-        bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list);
+        bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list, std::vector<int> &col);
         void run();
         void stop();
         

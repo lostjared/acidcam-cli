@@ -58,7 +58,7 @@ namespace cmd {
             out << "XviD";
     }
     
-    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list) {
+    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list,std::vector<int> &col) {
         file_type = ftype;
         is_visible = visible;
         input_file = input;
@@ -86,7 +86,12 @@ namespace cmd {
             std::cout << ac::draw_strings[filter_list[q]] << "\n";
         }
         std::cout << "\n";
-        
+        if(col.size()==3) {
+            ac::swapColor_b = static_cast<unsigned char>(col[0]);
+            ac::swapColor_g = static_cast<unsigned char>(col[1]);
+            ac::swapColor_r = static_cast<unsigned char>(col[2]);
+            std::cout << "Add RGB {" << col[0] << ", " << col[1] << ", " << col[2] << "}\n";
+        }
         return true;
     }
     

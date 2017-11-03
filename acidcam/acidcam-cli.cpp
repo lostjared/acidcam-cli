@@ -176,6 +176,12 @@ int main(int argc, char **argv) {
                         std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
                         exit(EXIT_FAILURE);
                     }
+                    for(auto &i : col) {
+                        if(!(i >= 0 && i <= 255)) {
+                            std::cerr << "Error colors must be between 0-255\n";
+                            exit(EXIT_FAILURE);
+                        }
+                    }
                     break;
                 }
                 case 'v':
@@ -197,7 +203,7 @@ int main(int argc, char **argv) {
     }
     
     try {
-        if(program.initProgram(ftype, visible, input, output,filter_list)) {
+        if(program.initProgram(ftype, visible, input, output,filter_list, col)) {
             program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";
