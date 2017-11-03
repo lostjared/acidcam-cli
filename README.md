@@ -17,6 +17,8 @@ Use Ctrl+C to break processing and still be able to use what has already been fi
 	-v image visible
 
 
+You can use either .mov (quicktime) or .avi (xvid) for the filename extension.
+
 Example:
 
 	$ acidcam -i input.mov -o output.mov -f 1,2,3
