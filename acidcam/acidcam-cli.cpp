@@ -87,6 +87,7 @@ int main(int argc, char **argv) {
     std::string input,output;
     std::vector<int> filter_list;
     bool visible = false;
+    cmd::File_Type ftype;
     
     if(argc > 1) {
         int opt = 0;
@@ -105,8 +106,15 @@ int main(int argc, char **argv) {
                     toLower(output_l);
                     auto pos = output_l.find(".mov");
                     if(pos == std::string::npos) {
-                        output += ".mov";
-                        std::cerr << "acidcam: Filename changed to: " << output << "\n";
+                        auto pos2 = output_l.find(".avi");
+                        if(pos2 == std::string::npos) {
+                        	output += ".mov";
+                        	std::cerr << "acidcam: File type not specified using default: " << output << "\n";
+                        } else {
+                            ftype = cmd::File_Type::AVI;
+                        }
+                    } else {
+                        ftype = cmd::File_Type::MOV;
                     }
                 }
                     break;
@@ -174,7 +182,7 @@ int main(int argc, char **argv) {
     }
     
     try {
-        if(program.initProgram(visible, input, output,filter_list)) {
+        if(program.initProgram(ftype, visible, input, output,filter_list)) {
             program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";

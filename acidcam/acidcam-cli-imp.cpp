@@ -50,7 +50,16 @@ extern void control_Handler(int sig);
 
 namespace cmd {
     
-    bool AC_Program::initProgram(bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list) {
+    
+    std::ostream &operator<<(std::ostream &out, const File_Type &type) {
+        if(type == File_Type::MOV)
+            out << "MPEG-4 (Quicktime)";
+        else
+            out << "XviD";
+    }
+    
+    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list) {
+        file_type = ftype;
         is_visible = visible;
         input_file = input;
         output_file = output;
@@ -63,17 +72,22 @@ namespace cmd {
         int aw = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));
         int ah = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
         double fps = capture.get(CV_CAP_PROP_FPS);
-        writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
+        if(file_type == File_Type::MOV)
+        	writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
+        else
+            writer.open(output_file, CV_FOURCC('X', 'V', 'I', 'D'), fps, cv::Size(aw, ah), true);
+
         if(!writer.isOpened()) {
             std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
             return false;
         }
-        std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "]\n";
+        std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] format[" << file_type << "]\n";
         std::cout << "\nFilters to Apply: \n";
         for(unsigned int q = 0; q < filter_list.size(); ++q) {
             std::cout << ac::draw_strings[q] << "\n";
         }
         std::cout << "\n";
+        
         return true;
     }
     
@@ -128,6 +142,6 @@ namespace cmd {
             }
         }
         if(percent_now == 99) percent_now = 100;
-        std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "]\n";
+        std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "]\n";
     }
 }

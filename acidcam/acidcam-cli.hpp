@@ -51,6 +51,10 @@
 
 namespace cmd {
     
+    enum class File_Type { MOV, AVI };
+    
+    std::ostream &operator<<(std::ostream &out, const File_Type &type);
+    
     class AC_Program {
     public:
         AC_Program() = default;
@@ -59,7 +63,7 @@ namespace cmd {
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
         
-        bool initProgram(bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list);
+        bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list);
         void run();
         void stop();
         
@@ -72,6 +76,7 @@ namespace cmd {
         std::vector<int> filters;
         bool is_visible;
         bool active;
+        File_Type file_type;
     };
 }
 
