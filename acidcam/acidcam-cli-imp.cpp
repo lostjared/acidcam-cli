@@ -122,6 +122,7 @@ namespace cmd {
                 if(capture.read(frame) == false) {
                     break;
                 }
+                ac::orig_frame = frame.clone();
                 frame_index ++;
                 if(frame_index >= frame_count_len) {
                     break;

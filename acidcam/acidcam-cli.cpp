@@ -58,7 +58,6 @@
 cmd::AC_Program program;
 cv::Mat blend_image;
 bool blend_set = false;
-
 void custom_filter(cv::Mat &frame) {}
 void ac::plugin(cv::Mat &frame) {}
 
@@ -160,7 +159,7 @@ int main(int argc, char **argv) {
                     } else {
                         // list of filters
                         getList(args, filter_list, [](int value) {
-                            if(value >= 0 && value < ac::draw_max-6)
+                            if(value >= 0 && value < ac::draw_max-5)
                             	return true;
                             std::cerr << "acidcam: Error value must be one of the listed integer filter indexes.\n";
                             exit(EXIT_FAILURE);
