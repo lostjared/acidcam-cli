@@ -73,7 +73,7 @@ namespace cmd {
         int ah = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
         double fps = capture.get(CV_CAP_PROP_FPS);
         if(file_type == File_Type::MOV)
-        	writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
+            writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
         else
             writer.open(output_file, CV_FOURCC('X', 'V', 'I', 'D'), fps, cv::Size(aw, ah), true);
         if(!writer.isOpened()) {
@@ -101,50 +101,56 @@ namespace cmd {
     
     void AC_Program::run() {
         unsigned long frame_count_len = 0, frame_index = 0;
-        frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
         unsigned int percent_now = 0;
-        struct sigaction sa;
-        sigemptyset(&sa.sa_mask);
-        sa.sa_flags = 0;
-        sa.sa_handler = control_Handler;
-        if(sigaction(SIGINT, &sa, 0) == -1) {
-            std::cerr << "Error on sigaction:\n";
-            exit(EXIT_FAILURE);
-        }
-        if(is_visible)
-            cv::namedWindow("acidcam_cli");
-        active = true;
-        std::cout << "acidcam: Working frame: [0/" << frame_count_len << "] - 0% Size: 0 MB \n";
-        while(active == true) {
-            cv::Mat frame;
-            if(capture.read(frame) == false) {
-                break;
+        
+        try {
+            frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
+            struct sigaction sa;
+            sigemptyset(&sa.sa_mask);
+            sa.sa_flags = 0;
+            sa.sa_handler = control_Handler;
+            if(sigaction(SIGINT, &sa, 0) == -1) {
+                std::cerr << "Error on sigaction:\n";
+                exit(EXIT_FAILURE);
             }
-            frame_index ++;
-            if(frame_index >= frame_count_len) {
-                break;
-            }
-            for(unsigned int i = 0; i < filters.size(); ++i) {
-                ac::draw_func[filters[i]](frame);
-            }
-            writer.write(frame);
-            double val = frame_index;
-            double size = frame_count_len;
-            if(size != 0) {
-                double percent = (val/size)*100;
-                unsigned int percent_trunc = static_cast<unsigned int>(percent);
-                if(percent_trunc > percent_now) {
-                    percent_now = percent_trunc;
-                    struct stat buf;
-                    lstat(output_file.c_str(), &buf);
-                    std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
+            if(is_visible)
+                cv::namedWindow("acidcam_cli");
+            active = true;
+            std::cout << "acidcam: Working frame: [0/" << frame_count_len << "] - 0% Size: 0 MB \n";
+            while(active == true) {
+                cv::Mat frame;
+                if(capture.read(frame) == false) {
+                    break;
+                }
+                frame_index ++;
+                if(frame_index >= frame_count_len) {
+                    break;
+                }
+                for(unsigned int i = 0; i < filters.size(); ++i) {
+                    ac::draw_func[filters[i]](frame);
+                }
+                writer.write(frame);
+                double val = frame_index;
+                double size = frame_count_len;
+                if(size != 0) {
+                    double percent = (val/size)*100;
+                    unsigned int percent_trunc = static_cast<unsigned int>(percent);
+                    if(percent_trunc > percent_now) {
+                        percent_now = percent_trunc;
+                        struct stat buf;
+                        lstat(output_file.c_str(), &buf);
+                        std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
+                    }
+                }
+                if(is_visible) {
+                    cv::imshow("acidcam_cli", frame);
+                    int key = cv::waitKey(25);
+                    if(key == 27) break;
                 }
             }
-            if(is_visible) {
-                cv::imshow("acidcam_cli", frame);
-                int key = cv::waitKey(25);
-                if(key == 27) break;
-            }
+        } catch(...) {
+            writer.release();
+            std::cerr << "acidcam: Error exception occoured..\n";
         }
         if(percent_now == 99) percent_now = 100;
         std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "]\n";
