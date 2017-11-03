@@ -52,7 +52,6 @@
 namespace cmd {
     
     enum class File_Type { MOV, AVI };
-    
     std::ostream &operator<<(std::ostream &out, const File_Type &type);
     
     class AC_Program {

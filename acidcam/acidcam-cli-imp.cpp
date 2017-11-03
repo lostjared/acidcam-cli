@@ -137,12 +137,12 @@ namespace cmd {
                     struct stat buf;
                     lstat(output_file.c_str(), &buf);
                     std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
+                    if(is_visible) {
+                        cv::imshow("acidcam_cli", frame);
+                        int key = cv::waitKey(25);
+                        if(key == 27) break;
+                    }
                 }
-            }
-            if(is_visible) {
-                cv::imshow("acidcam_cli", frame);
-                int key = cv::waitKey(25);
-                if(key == 27) break;
             }
         }
         if(percent_now == 99) percent_now = 100;

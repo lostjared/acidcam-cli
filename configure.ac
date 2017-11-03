@@ -32,6 +32,8 @@ CV_LIBS=$OPENCV_LIBS
 
 if test $found = 0; then
 AC_MSG_ERROR(Error could not find OpenCV pkg-config file is it installed?)
+else
+echo "OpenCV Found!"
 fi
 
 #CV_INCLUDES=`pkg-config opencv --cflags`
