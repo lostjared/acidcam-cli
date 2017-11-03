@@ -61,7 +61,9 @@ bool blend_set = false;
 
 void custom_filter(cv::Mat &frame) {}
 void ac::plugin(cv::Mat &frame) {}
-void getList(std::string args, std::vector<int> &v);
+
+template<typename F>
+void getList(std::string args, std::vector<int> &v, F func);
 
 void listFilters() {
     std::cout << "List of Filters by Index\n";
@@ -76,7 +78,8 @@ void toLower(std::string &text) {
     }
 }
 
-void getList(std::string args, std::vector<int> &v) {
+template<typename F>
+void getList(std::string args, std::vector<int> &v, F func) {
     std::string number;
     unsigned int pos = 0;
     while(pos < args.length()) {
@@ -85,13 +88,15 @@ void getList(std::string args, std::vector<int> &v) {
         if(args[pos] == ',') {
             unsigned int value = atoi(number.c_str());
             number = "";
-            v.push_back(value);
+            if(func(value))
+            	v.push_back(value);
         }
         ++pos;
     }
     if(number.length() > 0) {
         unsigned int value = atoi(number.c_str());
-        v.push_back(value);
+        if(func(value))
+        	v.push_back(value);
     }
 }
 
@@ -143,7 +148,7 @@ int main(int argc, char **argv) {
                     auto pos = args.find(",");
                     if(pos == std::string::npos && args.length() > 0) {
                         unsigned int value = atoi(optarg);
-                        if(value >= 0 && value <= ac::draw_max-4) {
+                        if(value >= 0 && value <= ac::draw_max-5) {
                             filter_list.push_back(value);
                         } else {
                             std::cerr << "acidcam: Error filter out of bounds..\n";
@@ -154,13 +159,12 @@ int main(int argc, char **argv) {
                         
                     } else {
                         // list of filters
-                        getList(args, filter_list);
-                        for(auto &i : filter_list) {
-                            if(!(i >= 0 && i < ac::draw_max-4)) {
-                                std::cerr << "acidcam: Error invalid filter: " << i << "\n";
-                                exit(EXIT_FAILURE);
-                            }
-                        }
+                        getList(args, filter_list, [](int value) {
+                            if(value >= 0 && value < ac::draw_max-6)
+                            	return true;
+                            std::cerr << "acidcam: Error value must be one of the listed integer filter indexes.\n";
+                            exit(EXIT_FAILURE);
+                        });
                     }
                 }
                     break;
@@ -171,16 +175,15 @@ int main(int argc, char **argv) {
                         std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
                         exit(EXIT_FAILURE);
                     }
-                    getList(colors, col);
+                    getList(colors, col, [](int value) {
+                        if(value >= 0 && value <= 255)
+                            return true;
+                        std::cerr << "acidcam: Error color value: " << value << " should be between 0-255\n";
+                        exit(EXIT_FAILURE);
+                    });
                     if(col.size() != 3) {
                         std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
                         exit(EXIT_FAILURE);
-                    }
-                    for(auto &i : col) {
-                        if(!(i >= 0 && i <= 255)) {
-                            std::cerr << "Error colors must be between 0-255\n";
-                            exit(EXIT_FAILURE);
-                        }
                     }
                     break;
                 }
