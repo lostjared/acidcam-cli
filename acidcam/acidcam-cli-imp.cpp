@@ -127,6 +127,7 @@ namespace cmd {
                 if(key == 27) break;
             }
         }
+        if(percent_now == 99) percent_now = 100;
         std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "]\n";
     }
 }
