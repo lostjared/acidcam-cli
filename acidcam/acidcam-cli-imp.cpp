@@ -103,6 +103,11 @@ namespace cmd {
         unsigned long frame_count_len = 0, frame_index = 0;
         unsigned int percent_now = 0;
         
+        bool copy_orig = false;
+        if(std::find(filters.begin(), filters.end(), ac::filter_map["Blend with Source"]) != filters.end()) {
+            copy_orig = true;
+        }
+        
         try {
             frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
             struct sigaction sa;
@@ -122,7 +127,7 @@ namespace cmd {
                 if(capture.read(frame) == false) {
                     break;
                 }
-                ac::orig_frame = frame.clone();
+                if(copy_orig == true) ac::orig_frame = frame.clone();
                 frame_index ++;
                 if(frame_index >= frame_count_len) {
                     break;
