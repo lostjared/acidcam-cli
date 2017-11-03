@@ -76,7 +76,6 @@ namespace cmd {
         	writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
         else
             writer.open(output_file, CV_FOURCC('X', 'V', 'I', 'D'), fps, cv::Size(aw, ah), true);
-
         if(!writer.isOpened()) {
             std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
             return false;

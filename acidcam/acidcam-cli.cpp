@@ -61,7 +61,7 @@ bool blend_set = false;
 
 void custom_filter(cv::Mat &frame) {}
 void ac::plugin(cv::Mat &frame) {}
-
+void getFilter(std::string args, std::vector<int> &v);
 
 void listFilters() {
     std::cout << "List of Filters by Index\n";
@@ -73,6 +73,25 @@ void listFilters() {
 void toLower(std::string &text) {
     for(unsigned int i = 0; i < text.length(); ++i) {
         text[i] = tolower(text[i]);
+    }
+}
+
+void getFilter(std::string args, std::vector<int> &v) {
+    std::string number;
+    unsigned int pos = 0;
+    while(pos < args.length()) {
+        if(args[pos] != ',')
+            number += args[pos];
+        if(args[pos] == ',') {
+            unsigned int value = atoi(number.c_str());
+            number = "";
+            v.push_back(value);
+        }
+        ++pos;
+    }
+    if(number.length() > 0) {
+        unsigned int value = atoi(number.c_str());
+        v.push_back(value);
     }
 }
 
@@ -134,29 +153,10 @@ int main(int argc, char **argv) {
                         
                     } else {
                         // list of filters
-                        std::string number;
-                        unsigned int pos = 0;
-                        while(pos < args.length()) {
-                            if(args[pos] != ',')
-                                number += args[pos];
-                            if(args[pos] == ',') {
-                                unsigned int value = atoi(number.c_str());
-                                if(value >= 0 && value < ac::draw_max-4) {
-                                    filter_list.push_back(value);
-                                } else {
-                                    std::cerr << "acidcam: Error invalid filter: " << value << "\n";
-                                    exit(EXIT_FAILURE);
-                                }
-                                number = "";
-                            }
-                            ++pos;
-                        }
-                        if(number.length() > 0) {
-                            unsigned int value = atoi(number.c_str());
-                            if(value >= 0 && value < ac::draw_max-4) {
-                                filter_list.push_back(value);
-                            } else {
-                                std::cerr << "acidcam: Error invalid filter; " << value << "\n";
+                        getFilter(args, filter_list);
+                        for(auto &i : filter_list) {
+                            if(!(i >= 0 && i < ac::draw_max-4)) {
+                                std::cerr << "acidcam: Error invalid filter: " << i << "\n";
                                 exit(EXIT_FAILURE);
                             }
                         }
