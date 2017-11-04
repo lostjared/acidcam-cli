@@ -57,7 +57,7 @@ namespace cmd {
             out << "XviD";
     }
     
-    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list,std::vector<int> &col) {
+    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col) {
         file_type = ftype;
         is_visible = visible;
         input_file = input;

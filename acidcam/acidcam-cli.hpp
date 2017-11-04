@@ -63,7 +63,7 @@ namespace cmd {
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
         
-        bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list, std::vector<int> &col);
+        bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col);
         void run();
         void stop();
         
@@ -73,7 +73,7 @@ namespace cmd {
         std::string input_file, output_file;
         cv::VideoCapture capture;
         cv::VideoWriter writer;
-        std::vector<int> filters;
+        std::vector<unsigned int> filters;
         bool is_visible;
         bool active;
         File_Type file_type;
