@@ -43,7 +43,6 @@
 #include"acidcam-cli.hpp"
 #include<sys/stat.h>
 #include<sys/types.h>
-#include<unistd.h>
 #include<signal.h>
 
 extern void control_Handler(int sig);

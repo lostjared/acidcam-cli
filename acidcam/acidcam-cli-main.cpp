@@ -42,7 +42,6 @@
  
  */
 #include"acidcam-cli.hpp"
-#include<unistd.h>
 #include<cstdlib>
 #include<cstring>
 #include<cctype>
