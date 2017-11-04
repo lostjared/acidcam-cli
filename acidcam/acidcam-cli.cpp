@@ -2,7 +2,6 @@
  * Acid Cam v2 - OpenCV Edition
  * written by Jared Bruni ( http://lostsidedead.com / https://github.com/lostjared )
  
- 
  GitHub: http://github.com/lostjared
  Website: http://lostsidedead.com
  YouTube: http://youtube.com/LostSideDead
@@ -42,181 +41,122 @@
  
  */
 #include"acidcam-cli.hpp"
+#include<sys/stat.h>
+#include<sys/types.h>
 #include<unistd.h>
-#include<cstdlib>
-#include<cstring>
-#include<cctype>
-/* required to be declared in source file */
-/*
- Command Line Arguments
- -l List filters
- -i input video
- -o output video
- -f filter list
- -v image visible
- */
-cmd::AC_Program program;
-cv::Mat blend_image;
-bool blend_set = false;
-void custom_filter(cv::Mat &frame) {}
-void ac::plugin(cv::Mat &frame) {}
+#include<signal.h>
 
-template<typename F>
-void getList(std::string args, std::vector<int> &v, F func);
+extern void control_Handler(int sig);
 
-void listFilters() {
-    std::cout << "List of Filters by Index\n";
-    for(unsigned int i = 0; i < ac::draw_max-3; ++i) {
-        std::cout << std::setw(4) << std::left << i << std::setw(50) << std::left << ac::draw_strings[i] << "\n";
-    }
-}
-
-void toLower(std::string &text) {
-    for(unsigned int i = 0; i < text.length(); ++i) {
-        text[i] = tolower(text[i]);
-    }
-}
-
-template<typename F>
-void getList(std::string args, std::vector<int> &v, F func) {
-    std::string number;
-    unsigned int pos = 0;
-    while(pos < args.length()) {
-        if(args[pos] != ',')
-            number += args[pos];
-        if(args[pos] == ',') {
-            unsigned int value = atoi(number.c_str());
-            number = "";
-            if(func(value))
-            	v.push_back(value);
-        }
-        ++pos;
-    }
-    if(number.length() > 0) {
-        unsigned int value = atoi(number.c_str());
-        if(func(value))
-        	v.push_back(value);
-    }
-}
-
-void control_Handler(int sig) {
-    std::cout << "\nacidcam: Signal caught stopping...\n";
-    program.stop();
-}
-
-/* main function */
-int main(int argc, char **argv) {
-    ac::fill_filter_map();
-    std::string input,output;
-    std::vector<int> filter_list;
-    std::vector<int> col;
-    bool visible = false;
-    cmd::File_Type ftype;
+namespace cmd {
     
-    if(argc > 1) {
-        int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:")) != -1) {
-            switch(opt) {
-                case 'l':
-                    listFilters();
-                    exit(EXIT_SUCCESS);
-                    break;
-                case 'i':
-                    input = optarg;
-                    break;
-                case 'o': {
-                    std::string output_l = optarg;
-                    output = optarg;
-                    toLower(output_l);
-                    auto pos = output_l.find(".mov");
-                    if(pos == std::string::npos) {
-                        auto pos2 = output_l.find(".avi");
-                        if(pos2 == std::string::npos) {
-                        	output += ".mov";
-                        	std::cerr << "acidcam: File type not specified using default: " << output << "\n";
-                        } else {
-                            ftype = cmd::File_Type::AVI;
-                        }
-                    } else {
-                        ftype = cmd::File_Type::MOV;
-                    }
-                }
-                    break;
-                case 'f': {
-                    std::string args = optarg;
-                    auto pos = args.find(",");
-                    if(pos == std::string::npos && args.length() > 0) {
-                        unsigned int value = atoi(optarg);
-                        if(value >= 0 && value <= ac::draw_max-5) {
-                            filter_list.push_back(value);
-                        } else {
-                            std::cerr << "acidcam: Error filter out of bounds..\n";
-                        }
-                    } else if(args.length() == 0) {
-                        std::cerr << "acidcam: Error requires at least one filter.\n";
-                        exit(EXIT_FAILURE);
-                        
-                    } else {
-                        // list of filters
-                        getList(args, filter_list, [](int value) {
-                            if(value >= 0 && value < ac::draw_max-5)
-                            	return true;
-                            std::cerr << "acidcam: Error value must be one of the listed integer filter indexes.\n";
-                            exit(EXIT_FAILURE);
-                        });
-                    }
-                }
-                    break;
-                case 'c': {
-                    std::string colors = optarg;
-                    auto pos = colors.find(",");
-                    if(pos == std::string::npos) {
-                        std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
-                        exit(EXIT_FAILURE);
-                    }
-                    getList(colors, col, [](int value) {
-                        if(value >= 0 && value <= 255)
-                            return true;
-                        std::cerr << "acidcam: Error color value: " << value << " should be between 0-255\n";
-                        exit(EXIT_FAILURE);
-                    });
-                    if(col.size() != 3) {
-                        std::cerr << "acidcam: Requires three RGB values separeted by commas.\n";
-                        exit(EXIT_FAILURE);
-                    }
-                    break;
-                }
-                case 'v':
-                    visible = true;
-                    break;
-                default:
-                    std::cerr << "acidcam: Error incorrect input..\n";
-                    exit(EXIT_FAILURE);
-                    break;
+    
+    std::ostream &operator<<(std::ostream &out, const File_Type &type) {
+        if(type == File_Type::MOV)
+            out << "MPEG-4 (Quicktime)";
+        else
+            out << "XviD";
+    }
+    
+    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<int> &filter_list,std::vector<int> &col) {
+        file_type = ftype;
+        is_visible = visible;
+        input_file = input;
+        output_file = output;
+        filters = filter_list;
+        capture.open(input_file);
+        if(!capture.isOpened()) {
+            std::cerr << "acidcam: Error could not open file: " << input_file << "\n";
+            return false;
+        }
+        int aw = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));
+        int ah = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
+        double fps = capture.get(CV_CAP_PROP_FPS);
+        if(file_type == File_Type::MOV)
+            writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
+        else
+            writer.open(output_file, CV_FOURCC('X', 'V', 'I', 'D'), fps, cv::Size(aw, ah), true);
+        if(!writer.isOpened()) {
+            std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
+            return false;
+        }
+        std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] format[" << file_type << "]\n";
+        std::cout << "\nFilters to Apply: \n";
+        for(unsigned int q = 0; q < filter_list.size(); ++q) {
+            std::cout << ac::draw_strings[filter_list[q]] << "\n";
+        }
+        std::cout << "\n";
+        if(col.size()==3) {
+            ac::swapColor_b = static_cast<unsigned char>(col[0]);
+            ac::swapColor_g = static_cast<unsigned char>(col[1]);
+            ac::swapColor_r = static_cast<unsigned char>(col[2]);
+            std::cout << "Add RGB {" << col[0] << ", " << col[1] << ", " << col[2] << "}\n";
+        }
+        return true;
+    }
+    
+    void AC_Program::stop() {
+        active = false;
+    }
+    
+    void AC_Program::run() {
+        unsigned long frame_count_len = 0, frame_index = 0;
+        unsigned int percent_now = 0;
+        try {
+            bool copy_orig = false;
+            if(std::find(filters.begin(), filters.end(), ac::filter_map["Blend with Source"]) != filters.end()) {
+                copy_orig = true;
             }
+            frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
+            struct sigaction sa;
+            sigemptyset(&sa.sa_mask);
+            sa.sa_flags = 0;
+            sa.sa_handler = control_Handler;
+            if(sigaction(SIGINT, &sa, 0) == -1) {
+                std::cerr << "Error on sigaction:\n";
+                exit(EXIT_FAILURE);
+            }
+            if(is_visible)
+                cv::namedWindow("acidcam_cli");
+            active = true;
+            std::cout << "acidcam: Working frame: [0/" << frame_count_len << "] - 0% Size: 0 MB \n";
+            while(active == true) {
+                cv::Mat frame;
+                if(capture.read(frame) == false) {
+                    break;
+                }
+                if(copy_orig == true) ac::orig_frame = frame.clone();
+                frame_index ++;
+                if(frame_index >= frame_count_len) {
+                    break;
+                }
+                for(unsigned int i = 0; i < filters.size(); ++i) {
+                    ac::draw_func[filters[i]](frame);
+                }
+                writer.write(frame);
+                double val = frame_index;
+                double size = frame_count_len;
+                if(size != 0) {
+                    double percent = (val/size)*100;
+                    unsigned int percent_trunc = static_cast<unsigned int>(percent);
+                    if(percent_trunc > percent_now) {
+                        percent_now = percent_trunc;
+                        struct stat buf;
+                        lstat(output_file.c_str(), &buf);
+                        std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
+                    }
+                }
+                if(is_visible) {
+                    cv::imshow("acidcam_cli", frame);
+                    int key = cv::waitKey(25);
+                    if(key == 27) break;
+                }
+            }
+        } catch(...) {
+            writer.release();
+            std::cerr << "acidcam: Error exception occoured..\n";
         }
-    } else {
-        std::cout << "acidcam [ -l list -i input -o output ]\n";
-        exit(EXIT_FAILURE);
+        if(percent_now == 99) percent_now = 100;
+        std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "]\n";
     }
-    if(input.length()==0 || output.length()==0) {
-        std::cerr << "acidcam: Invalid input/output use video files.\n";
-        exit(EXIT_FAILURE);
-    }
-    
-    try {
-        if(program.initProgram(ftype, visible, input, output,filter_list, col)) {
-            program.run();
-        } else {
-            std::cerr << "acidcam: Start of program failed..\n";
-            exit(EXIT_FAILURE);
-        }
-    }
-    catch(std::exception &e) {
-        std::cerr << "acidcam: Exception: " << e.what() << "\n";
-    } catch(...) {
-        std::cerr << "acidcam: Exception thrown...\n";
-        exit(EXIT_FAILURE);
-    }
-    return 0;
 }
