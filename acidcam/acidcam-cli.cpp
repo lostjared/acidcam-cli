@@ -126,6 +126,7 @@ namespace cmd {
                 cv::namedWindow("acidcam_cli");
             active = true;
             
+            setCursorPos(5+filters.size(), 0);
             std::cout << "acidcam: Working frame: [0/" << frame_count_len << "] - 0% Size: 0 MB \n";
             while(active == true) {
                 cv::Mat frame;
@@ -150,7 +151,7 @@ namespace cmd {
                         percent_now = percent_trunc;
                         struct stat buf;
                         lstat(output_file.c_str(), &buf);
-                        setCursorPos(7, 0);
+                        setCursorPos(5+filters.size(), 0);
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
                     }
                 }

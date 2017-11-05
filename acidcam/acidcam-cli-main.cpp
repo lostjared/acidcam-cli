@@ -113,6 +113,7 @@ int main(int argc, char **argv) {
     cmd::File_Type ftype;
     
     cmd::clearCursor();
+    std::cout << "\n";
     
     if(argc > 1) {
         int opt = 0;
