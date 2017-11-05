@@ -99,8 +99,8 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
 }
 
 void control_Handler(int sig) {
+	program.stop();
     std::cout << "\nacidcam: Signal caught stopping...\n";
-    program.stop();
 }
 
 /* main function */

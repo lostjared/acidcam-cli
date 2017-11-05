@@ -103,6 +103,7 @@ namespace cmd {
     
     void AC_Program::stop() {
         active = false;
+        setCursorPos(filters.size()+3, 0);
     }
     
     void AC_Program::run() {
@@ -166,6 +167,7 @@ namespace cmd {
             std::cerr << "acidcam: Error exception occoured..\n";
         }
         if(percent_now == 99) percent_now = 100;
+        setCursorPos(5+filters.size(), 0);
         std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "]\n";
     }
 }
