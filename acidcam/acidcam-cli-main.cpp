@@ -112,6 +112,8 @@ int main(int argc, char **argv) {
     bool visible = false;
     cmd::File_Type ftype;
     
+    cmd::clearCursor();
+    
     if(argc > 1) {
         int opt = 0;
         while((opt = getopt(argc, argv, "li:o:f:vc:")) != -1) {

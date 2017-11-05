@@ -54,6 +54,8 @@ namespace cmd {
     
     enum class File_Type { MOV, AVI };
     std::ostream &operator<<(std::ostream &out, const File_Type &type);
+    void setCursorPos(int y, int x);
+    void clearCursor();
     
     class AC_Program {
     public:
