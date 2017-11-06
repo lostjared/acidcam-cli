@@ -6,15 +6,17 @@ Use Ctrl+C to break processing and still be able to use what has already been fi
 
  Command Line Arguments
 
-	-l List filters
+	-l [List filters]
 
-	-i input video
+	-i filename [input video]
 
-	-o output video
+	-o filename [output video]
 
-	-f filter list
+	-f 0,1,2 [filter list]
 
-	-v image visible
+	-v [image visible]
+
+	-c R,G,B [value RGB offsets]
 
 
 You can use either .mov (quicktime) or .avi (xvid) for the filename extension.
