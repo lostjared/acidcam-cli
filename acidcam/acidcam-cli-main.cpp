@@ -206,6 +206,11 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     
+    if(filter_list.size()==0) {
+        std::cout << "acidcam: You must select at least one filter with -f\n";
+        exit(EXIT_FAILURE);
+    }
+    
     try {
         if(program.initProgram(ftype, visible, input, output,filter_list, col)) {
             program.run();

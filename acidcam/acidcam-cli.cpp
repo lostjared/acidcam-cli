@@ -62,6 +62,7 @@ namespace cmd {
             out << "MPEG-4 (Quicktime)";
         else
             out << "XviD";
+        return out;
     }
     
     bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col) {
