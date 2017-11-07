@@ -112,9 +112,6 @@ int main(int argc, char **argv) {
     bool visible = false;
     cmd::File_Type ftype;
     
-    cmd::clearCursor();
-    std::cout << "\n";
-    
     if(argc > 1) {
         int opt = 0;
         while((opt = getopt(argc, argv, "li:o:f:vc:")) != -1) {
@@ -211,6 +208,9 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
     
+    cmd::clearCursor();
+    std::cout << "\n";
+
     try {
         if(program.initProgram(ftype, visible, input, output,filter_list, col)) {
             program.run();
