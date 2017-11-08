@@ -79,6 +79,12 @@ namespace cmd {
         int aw = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));
         int ah = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
         double fps = capture.get(CV_CAP_PROP_FPS);
+        
+        if(fps < 1) {
+            std::cerr << "acidcam: Invalid frame rate...\n";
+            exit(EXIT_FAILURE);
+        }
+        
         if(file_type == File_Type::MOV)
             writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
         else
@@ -87,7 +93,8 @@ namespace cmd {
             std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
             return false;
         }
-        std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] format[" << file_type << "]\n";
+        unsigned int num_frames = capture.get(CV_CAP_PROP_FRAME_COUNT);
+        std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] "<< "format[" << file_type << "]\n";
         std::cout << "\nFilters to Apply: \n";
         for(unsigned int q = 0; q < filter_list.size(); ++q) {
             std::cout << ac::draw_strings[filter_list[q]] << "\n";
