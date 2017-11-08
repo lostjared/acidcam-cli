@@ -4,7 +4,7 @@ Command Line Version of Acid Cam for Linux with OpenCV:
 
 Use Ctrl+C to break processing and still be able to use what has already been filtered.
 
-To compile, first Install OpenCV on debian to do this with:
+To compile, first Install OpenCV on debian you can do this with:
 
 	$ sudo apt-get install libopencv-dev
 
