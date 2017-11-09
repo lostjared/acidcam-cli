@@ -61,7 +61,8 @@ namespace cmd {
     
     class AC_Program {
     public:
-        AC_Program() = default;
+        AC_Program();
+        ~AC_Program();
         AC_Program(const AC_Program &) = delete;
         AC_Program(AC_Program &&) = delete;
         AC_Program &operator=(const AC_Program &) = delete;

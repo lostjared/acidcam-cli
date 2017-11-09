@@ -64,6 +64,15 @@ namespace cmd {
             out << "XviD";
         return out;
     }
+
+    AC_Program::AC_Program() {
+        library = nullptr;
+    }
+    
+    AC_Program::~AC_Program() {
+        if(library != nullptr)
+            dlclose(library);
+    }
     
     bool AC_Program::loadPlugin(const std::string &s) {
         library = dlopen(s.c_str(), RTLD_LAZY);
@@ -81,7 +90,8 @@ namespace cmd {
     }
     
     void AC_Program::callPlugin(cv::Mat &frame) {
-        plugin(frame);
+        if(library != nullptr)
+        	plugin(frame);
     }
     
     bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col) {
