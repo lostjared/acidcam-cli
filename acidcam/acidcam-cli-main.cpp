@@ -53,12 +53,17 @@
  -o output video
  -f filter list
  -v image visible
+ -c r,g,b set colors
+ -p plugin
  */
 cmd::AC_Program program;
 cv::Mat blend_image;
 bool blend_set = false;
 void custom_filter(cv::Mat &frame) {}
-void ac::plugin(cv::Mat &frame) {}
+
+void ac::plugin(cv::Mat &frame) {
+    program.callPlugin(frame);
+}
 
 template<typename F>
 void getList(std::string args, std::vector<int> &v, F func);
@@ -114,7 +119,7 @@ int main(int argc, char **argv) {
     
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:")) != -1) {
             switch(opt) {
                 case 'l':
                     listFilters();
@@ -146,7 +151,7 @@ int main(int argc, char **argv) {
                     auto pos = args.find(",");
                     if(pos == std::string::npos && args.length() > 0) {
                         unsigned int value = atoi(optarg);
-                        if(value < ac::draw_max-5) {
+                        if(value < ac::draw_max-4) {
                             filter_list.push_back(value);
                         } else {
                             std::cerr << "acidcam: Error filter out of bounds..\n";
@@ -158,7 +163,7 @@ int main(int argc, char **argv) {
                     } else {
                         // list of filters
                         getList(args, filter_list, [](unsigned int value) {
-                            if(value < ac::draw_max-5)
+                            if(value < ac::draw_max-4)
                             	return true;
                             std::cerr << "acidcam: Error value must be one of the listed integer filter indexes.\n";
                             exit(EXIT_FAILURE);
@@ -187,6 +192,15 @@ int main(int argc, char **argv) {
                 }
                 case 'v':
                     visible = true;
+                    break;
+                case 'p': {
+                    if(program.loadPlugin(optarg)) {
+                        std::cout << "acidcam: Loaded plugin: " << optarg << "\n";
+                    } else {
+                        std::cerr << "acidcam: Could not load plugin... exiting...\n";
+                        exit(EXIT_FAILURE);
+                    }
+                }
                     break;
                 default:
                     std::cerr << "acidcam: Error incorrect input..\n";

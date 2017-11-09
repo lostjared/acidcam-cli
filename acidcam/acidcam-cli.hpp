@@ -49,6 +49,7 @@
 #include<iomanip>
 #include<vector>
 #include<unistd.h>
+#include<dlfcn.h>
 
 namespace cmd {
     
@@ -56,6 +57,7 @@ namespace cmd {
     std::ostream &operator<<(std::ostream &out, const File_Type &type);
     void setCursorPos(int y, int x);
     void clearCursor();
+    using plugin_filter = void (*)(cv::Mat &frame);
     
     class AC_Program {
     public:
@@ -69,6 +71,9 @@ namespace cmd {
         void run();
         void stop();
         
+        bool loadPlugin(const std::string &s);
+        void callPlugin(cv::Mat &frame);
+        
         std::string getInput() const { return input_file; }
         std::string getOutput() const { return output_file; }
     private:
@@ -79,6 +84,8 @@ namespace cmd {
         bool is_visible;
         bool active;
         File_Type file_type;
+        void *library;
+        plugin_filter plugin;
     };
 }
 

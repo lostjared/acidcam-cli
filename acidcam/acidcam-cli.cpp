@@ -65,6 +65,25 @@ namespace cmd {
         return out;
     }
     
+    bool AC_Program::loadPlugin(const std::string &s) {
+        library = dlopen(s.c_str(), RTLD_LAZY);
+        if(library == NULL)
+            return false;
+        
+        void *addr = dlsym(library, "filter");
+        const char *err = dlerror();
+        if(err) {
+            std::cerr << "Could not locate function: filter in " << s << "\n";
+            return false;
+        }
+        plugin = reinterpret_cast<plugin_filter>(addr);
+        return true;
+    }
+    
+    void AC_Program::callPlugin(cv::Mat &frame) {
+        plugin(frame);
+    }
+    
     bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col) {
         file_type = ftype;
         is_visible = visible;
