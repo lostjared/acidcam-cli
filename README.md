@@ -33,6 +33,8 @@ After you do that if everything goes according to plan you can test it with:
 	-v [image visible]
 
 	-c R,G,B [value RGB offsets]
+	
+	-p plugin.so [plugin written in C++ see plugins folder]
 
 You can use either .mov (quicktime) or .avi (xvid) for the filename extension.
 
@@ -47,3 +49,9 @@ Or to view progress:
 To List filters:
 
 	$ acidcam -l
+
+To use plugin:
+
+	$ acidcam -i input.mov -o output.mov -p path/to/shared.so -f 129
+
+
