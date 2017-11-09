@@ -67,14 +67,12 @@ namespace cmd {
         AC_Program(AC_Program &&) = delete;
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
-        
         bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col);
         void run();
         void stop();
-        
         bool loadPlugin(const std::string &s);
         void callPlugin(cv::Mat &frame);
-        
+        bool isPluginLoaded() const { return (library != nullptr); }
         std::string getInput() const { return input_file; }
         std::string getOutput() const { return output_file; }
     private:

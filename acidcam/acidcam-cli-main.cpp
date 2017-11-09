@@ -62,7 +62,12 @@ bool blend_set = false;
 void custom_filter(cv::Mat &frame) {}
 
 void ac::plugin(cv::Mat &frame) {
-    program.callPlugin(frame);
+    if(program.isPluginLoaded()) {
+    	program.callPlugin(frame);
+    } else {
+        std::cerr << "acidcam: Error no plugin loaded exiting...\n";
+        exit(EXIT_FAILURE);
+    }
 }
 
 template<typename F>
