@@ -55,7 +55,6 @@
  -v image visible
  -c r,g,b set colors
  -p plugin
-  
  */
 cmd::AC_Program program;
 cv::Mat blend_image;
@@ -229,7 +228,7 @@ int main(int argc, char **argv) {
             }
         }
     } else {
-        std::cout << "acidcam [ -l list -i input -o output ]\n";
+        std::cout << "acidcam [ -l list -i input -o output -f filters -p plugin -v visible -c R,G,B ]\n";
         exit(EXIT_FAILURE);
     }
     if(input.length()==0 || output.length()==0) {
