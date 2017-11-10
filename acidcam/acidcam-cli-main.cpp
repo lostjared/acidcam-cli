@@ -108,8 +108,6 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
     }
     if(number.length() > 0) {
         unsigned int value = 0;
-        std::cout << "*" << number <<"*\n";
-        exit(0);
         if(number == "plugin")
             value = ac::filter_map["Plugin"];
         else
