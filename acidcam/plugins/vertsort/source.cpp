@@ -6,8 +6,6 @@
 #include<functional>
 #include<algorithm>
 
-inline void procPos(int &direction, double &pos, double &pos_max, const double max_size = 15);
-
 extern "C" void filter(cv::Mat &frame) {
     int w = frame.cols;// frame width
     int h = frame.rows;// frame height
@@ -44,26 +42,3 @@ extern "C" void filter(cv::Mat &frame) {
         v.erase(v.begin(), v.end());
     }
 }
-
-// proc position
-void procPos(int &direction, double &pos, double &pos_max, const double max_size) {
-    // static int direction
-    // pos max
-    // if direction equals 1
-    if(direction == 1) {
-        pos += 0.05; // pos plus equal 0.05
-        if(pos > pos_max) { // if pos > pos max
-            pos = pos_max; // pos = pos_max
-            direction = 0;// direction equals 0
-            pos_max += 0.5; // pos_max increases by 0.5
-        }
-    } else if(direction == 0) {// direction equals 1
-        pos -= 0.05;// pos -= 0.05
-        if(pos <= 1.0) {// if pos <= 1.0
-            if(pos_max > max_size) pos_max = 1.0;// if pos max at maxmium
-            // set to 1.0
-            direction = 1;// set direction back to 1
-        }
-    }
-}
-
