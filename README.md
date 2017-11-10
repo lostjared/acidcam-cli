@@ -52,6 +52,11 @@ To List filters:
 
 To use plugin:
 
-	$ acidcam -i input.mov -o output.mov -p path/to/shared.so -f 129
+	$ acidcam -i input.mov -o output.mov -p path/to/shared.so -f plugin
+
+or Add other filters:
+
+	$ acidcam -i input.mov -o output.mov -p path/to/shared.so -f 0,plugin,1
+
 
 

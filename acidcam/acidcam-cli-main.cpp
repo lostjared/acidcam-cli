@@ -94,7 +94,11 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
         if(args[pos] != ',')
             number += args[pos];
         if(args[pos] == ',') {
-            unsigned int value = atoi(number.c_str());
+            unsigned int value = 0;
+            if(number == "plugin")
+                value = ac::filter_map["Plugin"];
+            else
+                value = atoi(number.c_str());
             number = "";
             if(func(value))
             	v.push_back(value);
@@ -102,7 +106,12 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
         ++pos;
     }
     if(number.length() > 0) {
-        unsigned int value = atoi(number.c_str());
+        unsigned int value = 0;
+        if(number == "plugin")
+            value = ac::filter_map["Plugin"];
+        else
+            value = atoi(number.c_str());
+        
         if(func(value))
         	v.push_back(value);
     }
