@@ -55,6 +55,7 @@
  -v image visible
  -c r,g,b set colors
  -p plugin
+  
  */
 cmd::AC_Program program;
 cv::Mat blend_image;
@@ -107,6 +108,8 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
     }
     if(number.length() > 0) {
         unsigned int value = 0;
+        std::cout << "*" << number <<"*\n";
+        exit(0);
         if(number == "plugin")
             value = ac::filter_map["Plugin"];
         else
@@ -164,7 +167,12 @@ int main(int argc, char **argv) {
                     std::string args = optarg;
                     auto pos = args.find(",");
                     if(pos == std::string::npos && args.length() > 0) {
-                        unsigned int value = atoi(optarg);
+                        unsigned int value = 0;
+                        std::string plug = optarg;
+                        if(plug == "plugin")
+                            value = ac::filter_map["Plugin"];
+                        else
+                            value = atoi(optarg);
                         if(value < ac::draw_max-4) {
                             filter_list.push_back(value);
                         } else {

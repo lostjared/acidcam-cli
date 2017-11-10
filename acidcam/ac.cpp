@@ -3650,7 +3650,7 @@ void ac::SquareSwap(cv::Mat &frame) {
             SquareSwap16x8(frame);
             break;
         case 3:
-            SquareSwap64x32(frame);
+            //SquareSwap64x32(frame);
             break;
     }
     ++cnt;
