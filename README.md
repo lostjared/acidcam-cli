@@ -30,7 +30,7 @@ After you do that if everything goes according to plan you can test it with:
 
 	-f 0,1,2 [filter list]
 
-	-v [image visible]
+	-v [show video while being processed]
 
 	-c R,G,B [value RGB offsets]
 	
@@ -57,6 +57,4 @@ To use plugin:
 or Add other filters:
 
 	$ acidcam -i input.mov -o output.mov -p path/to/shared.so -f 0,plugin,1
-
-
 
