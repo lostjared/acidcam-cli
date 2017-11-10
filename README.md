@@ -36,25 +36,30 @@ After you do that if everything goes according to plan you can test it with:
 	
 	-p plugin.so [plugin written in C++ see plugins folder]
 
-You can use either .mov (quicktime) or .avi (xvid) for the filename extension.
+If you install from .deb package the programs name is acidcam-cli to not conflict
+with name of Acid Cam Qt program name. To install download .deb for your platform and
+
+	$ sudo dpkg -i acidcam-cli*deb
+
+Once you have it installed you can use either .mov (quicktime) or .avi (xvid) for the filename extension.
 
 Example:
 
-	$ acidcam -i input.mov -o output.mov -f 1,2,3
+	$ acidcam-cli -i input.mov -o output.mov -f 1,2,3
 
 Or to view progress:
 
-	$ acidcam -i input.mov -o output.mov -f 0 -v
+	$ acidcam-cli -i input.mov -o output.mov -f 0 -v
 
 To List filters:
 
-	$ acidcam -l
+	$ acidcam-cli -l
 
 To use plugin:
 
-	$ acidcam -i input.mov -o output.mov -p path/to/shared.so -f plugin
+	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.so -f plugin
 
 or Add other filters:
 
-	$ acidcam -i input.mov -o output.mov -p path/to/shared.so -f 0,plugin,1
+	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.so -f 0,plugin,1
 
