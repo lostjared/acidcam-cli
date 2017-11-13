@@ -45,6 +45,10 @@
 #include<cstdlib>
 #include<cstring>
 #include<cctype>
+#include<dirent.h>
+#include<vector>
+#include<sys/stat.h>
+
 /* required to be declared in source file */
 /*
  Command Line Arguments
@@ -60,6 +64,7 @@ cmd::AC_Program program;
 cv::Mat blend_image;
 bool blend_set = false;
 void custom_filter(cv::Mat &frame) {}
+void listPlugins(std::string path, std::vector<std::string> &files);
 
 void ac::plugin(cv::Mat &frame) {
     if(program.isPluginLoaded()) {
@@ -117,6 +122,36 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
     }
 }
 
+void listPlugins(std::string path, std::vector<std::string> &files) {
+    DIR *dir = opendir(path.c_str());
+    if(dir == NULL) {
+        std::cerr << "Error could not open directory: " << path << "\n";
+        return;
+    }
+    dirent *file_info;
+    while( (file_info = readdir(dir)) != 0 ) {
+        std::string f_info = file_info->d_name;
+        if(f_info == "." || f_info == "..")  continue;
+        std::string fullpath=path+"/"+f_info;
+        struct stat s;
+        
+        lstat(fullpath.c_str(), &s);
+        if(S_ISDIR(s.st_mode)) {
+            if(f_info.length()>0 && f_info[0] != '.')
+                listPlugins(path+"/"+f_info, files);
+            
+            continue;
+        }
+        if(f_info.length()>0 && f_info[0] != '.') {
+            if(fullpath.rfind(".ac") != std::string::npos) {
+            	files.push_back(fullpath);
+                continue;
+            }
+        }
+    }
+    closedir(dir);
+}
+
 void control_Handler(int sig) {
 	program.stop();
     std::cout << "\nacidcam: Signal caught stopping...\n";
@@ -133,7 +168,7 @@ int main(int argc, char **argv) {
     
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:x")) != -1) {
             switch(opt) {
                 case 'l':
                     listFilters();
@@ -219,6 +254,20 @@ int main(int argc, char **argv) {
                         std::cerr << "acidcam: Could not load plugin... exiting...\n";
                         exit(EXIT_FAILURE);
                     }
+                }
+                    break;
+                case 'x': {
+                    std::vector<std::string> v;
+                    listPlugins(".", v);
+                    if(v.size() > 0) {
+                        std::cout << "acidcam: Plugins found\n";
+                        for(unsigned int i = 0; i < v.size(); ++i) {
+                            std::cout << v[i] << "\n";
+                        }
+                    } else {
+                        std::cout << "acidcam: No plugins fond\n";
+                    }
+                    exit(EXIT_SUCCESS);
                 }
                     break;
                 default:
