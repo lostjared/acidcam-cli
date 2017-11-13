@@ -5,6 +5,6 @@ in and it will be concatinated with other filters then written to the video file
 
 Use a plugin like this:
 	
-	$ acidcam -i input_file.mov -o output_file.avi -p path/to/plugin.so -f plugin
+	$ acidcam -i input_file.mov -o output_file.avi -p path/to/plugin.ac -f plugin
 
 
