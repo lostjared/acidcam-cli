@@ -34,7 +34,7 @@ After you do that if everything goes according to plan you can test it with:
 
 	-c R,G,B [value RGB offsets]
 	
-	-p plugin.so [plugin written in C++ see plugins folder]
+	-p plugin.ac [plugin written in C++ see plugins folder]
 
 	-x [list plugins in current directory (end with .ac)]
 
