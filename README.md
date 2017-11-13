@@ -34,7 +34,7 @@ After you do that if everything goes according to plan you can test it with:
 
 	-c R,G,B [value RGB offsets]
 	
-	-p plugin.ac [plugin written in C++ see plugins folder]
+	-p plugin.acf [plugin written in C++ see plugins folder]
 
 	-x [list plugins in current directory (end with .ac)]
 
@@ -63,9 +63,9 @@ To List plugins:
 
 To use plugin:
 
-	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.ac -f plugin
+	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f plugin
 
 or Add other filters:
 
-	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.ac -f 0,plugin,1
+	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f 0,plugin,1
 
