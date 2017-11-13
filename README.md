@@ -63,9 +63,9 @@ To List plugins:
 
 To use plugin:
 
-	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.so -f plugin
+	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.ac -f plugin
 
 or Add other filters:
 
-	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.so -f 0,plugin,1
+	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.ac -f 0,plugin,1
 
