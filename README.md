@@ -66,7 +66,9 @@ To List plugins:
 To use plugin:
 
 	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f plugin
+
 Or use:
+
 	$ acidcam-cli -x
 
 Lists the plugins found then use -n index
