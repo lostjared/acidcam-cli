@@ -36,6 +36,8 @@ After you do that if everything goes according to plan you can test it with:
 	
 	-p plugin.so [plugin written in C++ see plugins folder]
 
+	-x [list plugins in current directory (end with .ac)]
+
 If you install from .deb package the programs name is acidcam-cli to not conflict
 with name of Acid Cam Qt program name. To install download .deb for your platform and
 
@@ -54,6 +56,10 @@ Or to view progress:
 To List filters:
 
 	$ acidcam-cli -l
+
+To List plugins:
+
+	$ acidcam-cli -x
 
 To use plugin:
 
