@@ -37,6 +37,8 @@ After you do that if everything goes according to plan you can test it with:
 	-p plugin.acf [plugin written in C++ see plugins folder]
 
 	-x [list plugins in current directory (end with .ac)]
+	
+	-n index [uses plugin index from list printed out with -x]
 
 If you install from .deb package the programs name is acidcam-cli to not conflict
 with name of Acid Cam Qt program name. To install download .deb for your platform and
@@ -64,6 +66,12 @@ To List plugins:
 To use plugin:
 
 	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f plugin
+Or use:
+	$ acidcam-cli -x
+
+Lists the plugins found then use -n index
+
+	$ acidcam-cli -i input.mov -o output.mov -n 0 -f plugin
 
 or Add other filters:
 

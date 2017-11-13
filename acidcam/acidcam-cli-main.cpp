@@ -143,7 +143,7 @@ void listPlugins(std::string path, std::vector<std::string> &files) {
             continue;
         }
         if(f_info.length()>0 && f_info[0] != '.') {
-            if(fullpath.rfind(".ac") != std::string::npos) {
+            if(fullpath.rfind(".acf") != std::string::npos) {
             	files.push_back(fullpath);
                 continue;
             }
@@ -168,7 +168,7 @@ int main(int argc, char **argv) {
     
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:x")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:")) != -1) {
             switch(opt) {
                 case 'l':
                     listFilters();
@@ -262,12 +262,26 @@ int main(int argc, char **argv) {
                     if(v.size() > 0) {
                         std::cout << "acidcam: Plugins found\n";
                         for(unsigned int i = 0; i < v.size(); ++i) {
-                            std::cout << v[i] << "\n";
+                            std::cout << std::setw(4) << std::left << i << std::setw(50) << std::left << v[i] << "\n";
                         }
+                        
                     } else {
                         std::cout << "acidcam: No plugins fond\n";
                     }
                     exit(EXIT_SUCCESS);
+                }
+                    break;
+                case 'n': {
+                    std::vector<std::string> v;
+                    listPlugins(".", v);
+                    int plug = atoi(optarg);
+                    if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
+                        if(program.loadPlugin(v[plug])) {
+                            std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
+                        } else {
+                            std::cerr << "acidcam: Error could not load plugin: " << v[plug] << "\n";
+                        }
+                    }
                 }
                     break;
                 default:
