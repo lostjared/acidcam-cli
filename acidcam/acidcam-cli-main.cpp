@@ -168,8 +168,12 @@ int main(int argc, char **argv) {
     
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:h")) != -1) {
             switch(opt) {
+                case 'h':
+                    std::cout << argv[0] << " filters version: " << ac::version << "\n";
+                    exit(EXIT_SUCCESS);
+                    break;
                 case 'l':
                     listFilters();
                     exit(EXIT_SUCCESS);
@@ -291,7 +295,7 @@ int main(int argc, char **argv) {
             }
         }
     } else {
-        std::cout << "acidcam [ -l list -i input -o output -f filters -p plugin -v visible -c R,G,B ]\n";
+        std::cout << argv[0] << " filters version: " << ac::version << " [ -l list -i input -o output -f filters -p plugin -v visible -c R,G,B ]\n";
         exit(EXIT_FAILURE);
     }
     if(input.length()==0 || output.length()==0) {
