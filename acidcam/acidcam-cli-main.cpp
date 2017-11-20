@@ -165,13 +165,12 @@ int main(int argc, char **argv) {
     std::vector<unsigned int> col;
     bool visible = false;
     cmd::File_Type ftype;
-    
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:h")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hv")) != -1) {
             switch(opt) {
                 case 'h':
-                    std::cout << argv[0] << " filters version: " << ac::version << "\n";
+                    std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\nWritten by Jared Bruni\n\n";
                     exit(EXIT_SUCCESS);
                     break;
                 case 'l':
@@ -295,7 +294,7 @@ int main(int argc, char **argv) {
             }
         }
     } else {
-        std::cout << argv[0] << " filters version: " << ac::version << " [ -l list -i input -o output -f filters -p plugin -v visible -c R,G,B ]\n";
+        std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n[ -l list -i input -o output -f filters -p plugin -v visible -c R,G,B -x search ]\n";
         exit(EXIT_FAILURE);
     }
     if(input.length()==0 || output.length()==0) {
