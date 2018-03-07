@@ -80,7 +80,7 @@ void getList(std::string args, std::vector<int> &v, F func);
 
 void listFilters() {
     std::cout << "List of Filters by Index\n";
-    for(unsigned int i = 0; i < ac::draw_max-3; ++i) {
+    for(unsigned int i = 0; i < ac::draw_max-4; ++i) {
         std::cout << std::setw(4) << std::left << i << std::setw(50) << std::left << ac::draw_strings[i] << "\n";
     }
 }
