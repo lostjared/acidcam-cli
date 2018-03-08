@@ -59,6 +59,7 @@
  -v image visible
  -c r,g,b set colors
  -p plugin
+ -g image file for blend with image filters
  */
 cmd::AC_Program program;
 cv::Mat blend_image;
