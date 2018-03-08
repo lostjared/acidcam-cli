@@ -62,8 +62,7 @@
  -g image file for blend with image filters
  */
 cmd::AC_Program program;
-cv::Mat blend_image;
-bool blend_set = false;
+
 void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
 
