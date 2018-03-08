@@ -167,7 +167,7 @@ int main(int argc, char **argv) {
     cmd::File_Type ftype;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:h")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:")) != -1) {
             switch(opt) {
                 case 'h':
                     std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\nWritten by Jared Bruni\n" << "GitHub: http://github.com/lostjared\n\n";
@@ -286,6 +286,14 @@ int main(int argc, char **argv) {
                         }
                     }
                 }
+                    break;
+                case 'g':
+                    blend_image = cv::imread(optarg);
+                    if(blend_image.data == 0) {
+                        std::cerr << "Error could not find file: " << optarg << "\n";
+                        exit(EXIT_FAILURE);
+                    }
+                    blend_set = true;
                     break;
                 default:
                     std::cerr << "acidcam: Error incorrect input..\n";
