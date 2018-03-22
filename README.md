@@ -41,6 +41,12 @@ After you do that if everything goes according to plan you can test it with:
 	-n index [uses plugin index from list printed out with -x]
 
 	-g filename [uses image file for blend with image filters]
+	
+	-b brightness [value from 0-255]
+
+	-m gamma [value from 0-255]
+
+	-s saturation [value from 0-255]
 
 If you install from .deb package the programs name is acidcam-cli to not conflict
 with name of Acid Cam Qt program name. To install download .deb for your platform and

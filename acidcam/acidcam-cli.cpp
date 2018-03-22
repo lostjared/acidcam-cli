@@ -67,6 +67,7 @@ namespace cmd {
 
     AC_Program::AC_Program() {
         library = nullptr;
+        bright_ = gamma_ = sat_ = 0;
     }
     
     AC_Program::~AC_Program() {
@@ -143,6 +144,18 @@ namespace cmd {
         setCursorPos(filters.size()+3, 0);
     }
     
+    void AC_Program::setBrightness(int b) {
+        bright_ = b;
+    }
+    
+    void AC_Program::setGamma(int g) {
+        gamma_ = g;
+    }
+    
+    void AC_Program::setSaturation(int s) {
+        sat_ = s;
+    }
+    
     void AC_Program::run() {
         unsigned long frame_count_len = 0, frame_index = 0;
         unsigned int percent_now = 0;
@@ -179,6 +192,17 @@ namespace cmd {
                 for(unsigned int i = 0; i < filters.size(); ++i) {
                     ac::draw_func[filters[i]](frame);
                 }
+                
+                if(bright_ > 0)
+                    ac::setBrightness(frame, 1.0, bright_);
+                
+                if(gamma_ > 0) {
+                    cv::Mat cur = frame.clone();
+                    ac::setGamma(cur,frame,gamma_);
+                }
+                if(sat_ > 0)
+                    ac::setSaturation(frame, sat_);
+                
                 writer.write(frame);
                 double val = frame_index;
                 double size = frame_count_len;

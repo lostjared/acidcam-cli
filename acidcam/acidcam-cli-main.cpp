@@ -60,6 +60,9 @@
  -c r,g,b set colors
  -p plugin
  -g image file for blend with image filters
+ -b brightnerss
+ -m gamma
+ -s saturation
  */
 cmd::AC_Program program;
 
@@ -165,9 +168,10 @@ int main(int argc, char **argv) {
     std::vector<unsigned int> col;
     bool visible = false;
     cmd::File_Type ftype;
+    int bright_ = 0, gamma_ = 0, sat_ = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:b:m:s:")) != -1) {
             switch(opt) {
                 case 'h':
                     std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\nWritten by Jared Bruni\n" << "GitHub: http://github.com/lostjared\n\n";
@@ -179,6 +183,27 @@ int main(int argc, char **argv) {
                     break;
                 case 'i':
                     input = optarg;
+                    break;
+                case 'b':
+                    bright_ = atoi(optarg);
+                    if(bright_< 0 || bright_ > 255) {
+                        std::cerr << "acidcam: Error range for brigthness is 0-255.\n";
+                        exit(EXIT_FAILURE);
+                    }
+                    break;
+                case 'm':
+                    gamma_ = atoi(optarg);
+                    if(gamma_ < 0 || gamma_ > 255) {
+                        std::cerr << "acidcam: Error gamma is out of range should be 0-255\n";
+                        exit(EXIT_FAILURE);
+                    }
+                    break;
+                case 's':
+                    sat_ = atoi(optarg);
+                    if(sat_ < 0 || sat_  > 255) {
+                        std::cerr << "acidcam: Error Saturation is out of range should be 0-255\n";
+                        exit(EXIT_FAILURE);
+                    }
                     break;
                 case 'o': {
                     std::string output_l = optarg;
@@ -320,6 +345,9 @@ int main(int argc, char **argv) {
 
     try {
         if(program.initProgram(ftype, visible, input, output,filter_list, col)) {
+            program.setBrightness(bright_);
+            program.setGamma(gamma_);
+            program.setSaturation(sat_);
             program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";

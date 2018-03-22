@@ -71,6 +71,9 @@ namespace cmd {
         bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col);
         void run();
         void stop();
+        void setBrightness(int b);
+        void setGamma(int g);
+        void setSaturation(int s);
         bool loadPlugin(const std::string &s);
         void callPlugin(cv::Mat &frame);
         bool isPluginLoaded() const { return (library != nullptr); }
@@ -86,6 +89,7 @@ namespace cmd {
         File_Type file_type;
         void *library;
         plugin_filter plugin;
+        unsigned int bright_, gamma_, sat_;
     };
 }
 
