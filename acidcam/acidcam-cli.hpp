@@ -60,6 +60,8 @@ namespace cmd {
     void clearCursor();
     using plugin_filter = void (*)(cv::Mat &frame);
     
+    extern std::string colorMaps[];
+    
     class AC_Program {
     public:
         AC_Program();

@@ -49,6 +49,9 @@ extern void control_Handler(int sig);
 
 namespace cmd {
     
+    
+    std::string colorMaps[] = {"Autum", "Bone", "Jet", "Winter", "Rainbow", "Ocean","Summer","Spring","Cool", "HSV", "Pink", "Hot"};
+    
     void setCursorPos(int y, int x) {
         std::cout << "\033[" << (y+1) << ";" << (x+1) << "H";
     }
@@ -68,6 +71,7 @@ namespace cmd {
     AC_Program::AC_Program() {
         library = nullptr;
         bright_ = gamma_ = sat_ = 0;
+        color_map = 0;
     }
     
     AC_Program::~AC_Program() {
@@ -129,6 +133,9 @@ namespace cmd {
         for(unsigned int q = 0; q < filter_list.size(); ++q) {
             std::cout << ac::draw_strings[filter_list[q]] << "\n";
         }
+        if(color_map >= 1 && color_map < 13) {
+            std::cout << "\nApplied Color Map: " << colorMaps[color_map-1] << "\n";
+        }
         std::cout << "\n";
         if(col.size()==3) {
             ac::swapColor_b = static_cast<unsigned char>(col[0]);
@@ -136,7 +143,6 @@ namespace cmd {
             ac::swapColor_r = static_cast<unsigned char>(col[2]);
             std::cout << "Add RGB {" << col[0] << ", " << col[1] << ", " << col[2] << "}\n";
         }
-        color_map = 0;
         bright_ = gamma_ = sat_ = 0;
         return true;
     }
@@ -183,7 +189,7 @@ namespace cmd {
                 cv::namedWindow("acidcam_cli");
             active = true;
             
-            setCursorPos(5+filters.size(), 0);
+            setCursorPos(7+filters.size(), 0);
             std::cout << "acidcam: Working frame: [0/" << frame_count_len << "] - 0% Size: 0 MB \n";
             while(active == true) {
                 cv::Mat frame;
@@ -225,7 +231,7 @@ namespace cmd {
                         percent_now = percent_trunc;
                         struct stat buf;
                         lstat(output_file.c_str(), &buf);
-                        setCursorPos(5+filters.size(), 0);
+                        setCursorPos(7+filters.size(), 0);
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
                     }
                 }
@@ -240,7 +246,7 @@ namespace cmd {
             std::cerr << "acidcam: Error exception occoured..\n";
         }
         if(percent_now == 99) percent_now = 100;
-        setCursorPos(5+filters.size(), 0);
+        setCursorPos(7+filters.size(), 0);
         std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "]\n";
     }
 }

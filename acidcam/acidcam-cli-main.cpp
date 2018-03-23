@@ -356,11 +356,11 @@ int main(int argc, char **argv) {
     std::cout << "\n";
 
     try {
+        program.setColorMap(color_m);
         if(program.initProgram(ftype, visible, input, output,filter_list, col)) {
             program.setBrightness(bright_);
             program.setGamma(gamma_);
             program.setSaturation(sat_);
-            program.setColorMap(color_m);
             program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";
