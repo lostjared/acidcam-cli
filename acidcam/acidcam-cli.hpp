@@ -74,6 +74,7 @@ namespace cmd {
         void setBrightness(int b);
         void setGamma(int g);
         void setSaturation(int s);
+        void setColorMap(int m);
         bool loadPlugin(const std::string &s);
         void callPlugin(cv::Mat &frame);
         bool isPluginLoaded() const { return (library != nullptr); }
@@ -90,6 +91,7 @@ namespace cmd {
         void *library;
         plugin_filter plugin;
         unsigned int bright_, gamma_, sat_;
+        int color_map;
     };
 }
 

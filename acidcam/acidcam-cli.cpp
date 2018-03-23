@@ -136,6 +136,8 @@ namespace cmd {
             ac::swapColor_r = static_cast<unsigned char>(col[2]);
             std::cout << "Add RGB {" << col[0] << ", " << col[1] << ", " << col[2] << "}\n";
         }
+        color_map = 0;
+        bright_ = gamma_ = sat_ = 0;
         return true;
     }
     
@@ -154,6 +156,10 @@ namespace cmd {
     
     void AC_Program::setSaturation(int s) {
         sat_ = s;
+    }
+    
+    void AC_Program::setColorMap(int m) {
+        color_map = m;
     }
     
     void AC_Program::run() {
@@ -193,6 +199,11 @@ namespace cmd {
                     ac::draw_func[filters[i]](frame);
                 }
                 
+                if(color_map != 0 && color_map > 0 && color_map < 12) {
+                    ac::set_color_map = color_map;
+                    ac::ApplyColorMap(frame);
+                }
+                
                 if(bright_ > 0)
                     ac::setBrightness(frame, 1.0, bright_);
                 
@@ -202,6 +213,7 @@ namespace cmd {
                 }
                 if(sat_ > 0)
                     ac::setSaturation(frame, sat_);
+                
                 
                 writer.write(frame);
                 double val = frame_index;

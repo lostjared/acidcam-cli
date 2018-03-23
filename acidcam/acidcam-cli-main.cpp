@@ -168,10 +168,10 @@ int main(int argc, char **argv) {
     std::vector<unsigned int> col;
     bool visible = false;
     cmd::File_Type ftype;
-    int bright_ = 0, gamma_ = 0, sat_ = 0;
+    int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:b:m:s:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:b:m:s:r:")) != -1) {
             switch(opt) {
                 case 'h':
                     std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\nWritten by Jared Bruni\n" << "GitHub: http://github.com/lostjared\n\n";
@@ -183,6 +183,18 @@ int main(int argc, char **argv) {
                     break;
                 case 'i':
                     input = optarg;
+                    break;
+                case 'r':
+                    color_m = atoi(optarg);
+                    if(color_m == 0) {
+                        std::cerr << "acidcam: Error color map in range 1-12\n";
+                        exit(EXIT_FAILURE);
+                    }
+                    if(color_m <= 0 && color_m > 12) {
+                        std::cerr << "acidcam: Error color Map is in range: 1-12\n";
+                        exit(EXIT_FAILURE);
+                    }
+                        
                     break;
                 case 'b':
                     bright_ = atoi(optarg);
@@ -348,6 +360,7 @@ int main(int argc, char **argv) {
             program.setBrightness(bright_);
             program.setGamma(gamma_);
             program.setSaturation(sat_);
+            program.setColorMap(color_m);
             program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";
