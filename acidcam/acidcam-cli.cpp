@@ -99,7 +99,8 @@ namespace cmd {
         	plugin(frame);
     }
     
-    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col) {
+    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col, int c_map) {
+        color_map = c_map;
         file_type = ftype;
         is_visible = visible;
         input_file = input;

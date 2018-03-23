@@ -186,11 +186,7 @@ int main(int argc, char **argv) {
                     break;
                 case 'r':
                     color_m = atoi(optarg);
-                    if(color_m == 0) {
-                        std::cerr << "acidcam: Error color map not in range 1-12\n";
-                        exit(EXIT_FAILURE);
-                    }
-                    if(!(color_m >= 0 && color_m < 12)) {
+                    if(!(color_m > 0 && color_m < 12)) {
                         std::cerr << "acidcam: Error color Map is not in range: 1-12\n";
                         exit(EXIT_FAILURE);
                     }
@@ -356,8 +352,7 @@ int main(int argc, char **argv) {
     std::cout << "\n";
 
     try {
-        program.setColorMap(color_m);
-        if(program.initProgram(ftype, visible, input, output,filter_list, col)) {
+        if(program.initProgram(ftype, visible, input, output,filter_list, col, color_m)) {
             program.setBrightness(bright_);
             program.setGamma(gamma_);
             program.setSaturation(sat_);
