@@ -187,11 +187,11 @@ int main(int argc, char **argv) {
                 case 'r':
                     color_m = atoi(optarg);
                     if(color_m == 0) {
-                        std::cerr << "acidcam: Error color map in range 1-12\n";
+                        std::cerr << "acidcam: Error color map not in range 1-12\n";
                         exit(EXIT_FAILURE);
                     }
                     if(!(color_m >= 0 && color_m < 12)) {
-                        std::cerr << "acidcam: Error color Map is in range: 1-12\n";
+                        std::cerr << "acidcam: Error color Map is not in range: 1-12\n";
                         exit(EXIT_FAILURE);
                     }
                         
