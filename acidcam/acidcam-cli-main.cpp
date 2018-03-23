@@ -63,6 +63,7 @@
  -b brightnerss
  -m gamma
  -s saturation
+ -r colormap
  */
 cmd::AC_Program program;
 
@@ -85,6 +86,10 @@ void listFilters() {
     std::cout << "List of Filters by Index\n";
     for(unsigned int i = 0; i < ac::draw_max-4; ++i) {
         std::cout << std::setw(4) << std::left << i << std::setw(50) << std::left << ac::draw_strings[i] << "\n";
+    }
+    std::cout << "\nList of Color Maps\n";
+    for(unsigned int i = 1; i <= 12; ++i) {
+        std::cout << std::setw(4) << std::left << i << std::setw(50) << std::left << cmd::colorMaps[i-1] << "\n";
     }
 }
 
@@ -186,7 +191,7 @@ int main(int argc, char **argv) {
                     break;
                 case 'r':
                     color_m = atoi(optarg);
-                    if(!(color_m > 0 && color_m < 12)) {
+                    if(!(color_m > 0 && color_m <= 12)) {
                         std::cerr << "acidcam: Error color Map is not in range: 1-12\n";
                         exit(EXIT_FAILURE);
                     }

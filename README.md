@@ -48,6 +48,8 @@ After you do that if everything goes according to plan you can test it with:
 
 	-s saturation [value from 0-255]
 
+	-r color_map [value from 1-12]
+
 If you install from .deb package the programs name is acidcam-cli to not conflict
 with name of Acid Cam Qt program name. To install download .deb for your platform and
 

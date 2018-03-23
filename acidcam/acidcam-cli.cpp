@@ -134,7 +134,7 @@ namespace cmd {
         for(unsigned int q = 0; q < filter_list.size(); ++q) {
             std::cout << ac::draw_strings[filter_list[q]] << "\n";
         }
-        if(color_map >= 1 && color_map < 13) {
+        if(color_map >= 1 && color_map <= 12) {
             std::cout << "\nApplied Color Map: " << colorMaps[color_map-1] << "\n";
         }
         std::cout << "\n";
@@ -206,7 +206,7 @@ namespace cmd {
                     ac::draw_func[filters[i]](frame);
                 }
                 
-                if(color_map != 0 && color_map > 0 && color_map < 12) {
+                if(color_map != 0 && color_map > 0 && color_map <= 12) {
                     ac::set_color_map = color_map;
                     ac::ApplyColorMap(frame);
                 }
