@@ -70,7 +70,7 @@ cmd::AC_Program program;
 void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
 
-void ac::plugin(cv::Mat &frame) {
+void plugin_callback(cv::Mat &frame) {
     if(program.isPluginLoaded()) {
     	program.callPlugin(frame);
     } else {
@@ -168,6 +168,7 @@ void control_Handler(int sig) {
 /* main function */
 int main(int argc, char **argv) {
     ac::fill_filter_map();
+    ac::setPlugin(plugin_callback);
     std::string input,output;
     std::vector<unsigned int> filter_list;
     std::vector<unsigned int> col;
