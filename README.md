@@ -12,6 +12,12 @@ You will also require GCC or clang and autoconf, automake
 
 	$ sudo apt-get install autoconf automake
 
+Download libacidcam from: https://github.com/lostjared/libacidcam
+
+Compile and install the library
+
+	$ ./autogen.sh && ./configure && make && make install
+
 Then download this archive and enter the directory you extracted to in the terminal then:
 
 	$ ./autogen.sh && ./configure && make && sudo make install
