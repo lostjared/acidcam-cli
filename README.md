@@ -16,7 +16,7 @@ Download libacidcam from: https://github.com/lostjared/libacidcam
 
 Compile and install the library
 
-	$ ./autogen.sh && ./configure && make && suod make install
+	$ ./autogen.sh && ./configure && make && sudo make install
 
 If you are running on Linux you should use this command so it can find the library:
 
