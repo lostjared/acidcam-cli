@@ -60,7 +60,7 @@
  -c r,g,b set colors
  -p plugin
  -g image file for blend with image filters
- -b brightnerss
+ -b brightness
  -m gamma
  -s saturation
  -r colormap
