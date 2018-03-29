@@ -60,6 +60,21 @@ After you do that if everything goes according to plan you can test it with:
 
 	-r color_map [value from 1-12]
 
+List of the Different Color maps you can apply with -r:
+
+	1  Autum
+	2 Bone
+	3 Jet
+	4 Winter
+    	5 Rainbow
+	6 Ocean
+	7 Summer
+	8 Spring
+	9 Cool
+	10 HSV
+	11 Pink
+    	12 Hot
+
 If you install from .deb package the programs name is acidcam-cli to not conflict
 with name of Acid Cam Qt program name. To install download .deb for your platform and
 
@@ -98,4 +113,9 @@ Lists the plugins found then use -n index
 or Add other filters:
 
 	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f 0,plugin,1
+
+or Apply a color map:
+
+	$ acidcam-cli -i input.mov -o output.mov -f 28,1 -r 3
+
 
