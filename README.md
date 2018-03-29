@@ -66,14 +66,14 @@ List of the Different Color maps you can apply with -r:
 	2 Bone
 	3 Jet
 	4 Winter
-    	5 Rainbow
+	5 Rainbow
 	6 Ocean
 	7 Summer
 	8 Spring
 	9 Cool
 	10 HSV
 	11 Pink
-    	12 Hot
+	12 Hot
 
 If you install from .deb package the programs name is acidcam-cli to not conflict
 with name of Acid Cam Qt program name. To install download .deb for your platform and
