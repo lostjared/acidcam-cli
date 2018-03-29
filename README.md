@@ -62,7 +62,7 @@ After you do that if everything goes according to plan you can test it with:
 
 List of the Different Color maps you can apply with -r:
 
-	1  Autum
+	1 Autum
 	2 Bone
 	3 Jet
 	4 Winter
@@ -117,5 +117,8 @@ or Add other filters:
 or Apply a color map:
 
 	$ acidcam-cli -i input.mov -o output.mov -f 28,1 -r 3
+	
+or Apply brightness/gamma/saturation
 
+	$ acidcam -i input.mov -o output.mov -b 100 -m 2 -s 25 -f 0,1
 
