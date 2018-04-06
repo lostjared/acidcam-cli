@@ -177,6 +177,9 @@ namespace cmd {
             if(std::find(filters.begin(), filters.end(), ac::filter_map["Blend with Source"]) != filters.end()) {
                 copy_orig = true;
             }
+            if(colorkey_set == true && !color_image.empty()) {
+                copy_orig = true;
+            }
             frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
             struct sigaction sa;
             sigemptyset(&sa.sa_mask);
@@ -221,7 +224,11 @@ namespace cmd {
                 if(sat_ > 0)
                     ac::setSaturation(frame, sat_);
                 
-                
+                static cv::Vec3b color_key(255, 0, 255);
+                if(colorkey_set == true && !color_image.empty()) {
+                    cv::Mat cframe = frame.clone();
+                    ac::filterColorKeyed(color_key, ac::orig_frame, cframe, frame);
+                }
                 writer.write(frame);
                 double val = frame_index;
                 double size = frame_count_len;
