@@ -60,6 +60,8 @@ After you do that if everything goes according to plan you can test it with:
 
 	-r color_map [value from 1-12]
 
+	-k colorkey_image [filename for color keyed image (uses 255,0,255)]
+
 List of the Different Color maps you can apply with -r:
 
 	1 Autum
@@ -74,6 +76,13 @@ List of the Different Color maps you can apply with -r:
 	10 HSV
 	11 Pink
 	12 Hot
+
+
+	$ acidcam -i test.mov -o output.mov -f 1,2 -k /path/to/colorkey.png
+
+You can also apply a color key image 
+all the pixels in the image that have the color value 255,0,255 will contain the filtered data rest of the pixels will be the same
+
 
 If you install from .deb package the programs name is acidcam-cli to not conflict
 with name of Acid Cam Qt program name. To install download .deb for your platform and
