@@ -50,7 +50,7 @@
 #include<vector>
 #include<unistd.h>
 #include<dlfcn.h>
-#define APP_VERSION "v1.05"
+#define APP_VERSION "v1.06"
 
 namespace cmd {
     

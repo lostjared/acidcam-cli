@@ -67,7 +67,7 @@ namespace cmd {
             out << "XviD";
         return out;
     }
-
+    
     AC_Program::AC_Program() {
         library = nullptr;
         bright_ = gamma_ = sat_ = 0;
@@ -96,7 +96,7 @@ namespace cmd {
     
     void AC_Program::callPlugin(cv::Mat &frame) {
         if(library != nullptr)
-        	plugin(frame);
+            plugin(frame);
     }
     
     bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col, int c_map) {
