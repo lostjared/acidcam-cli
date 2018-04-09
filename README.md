@@ -37,6 +37,8 @@ After you do that if everything goes according to plan you can test it with:
 	-i filename [input video]
 
 	-o filename [output video]
+	
+	-a filename1.mov, filename2.mov ... [additional files to apply effect]
 
 	-f 0,1,2 [filter list]
 
