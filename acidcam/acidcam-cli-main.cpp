@@ -84,6 +84,8 @@ void plugin_callback(cv::Mat &frame) {
 template<typename F>
 void getList(std::string args, std::vector<int> &v, F func);
 
+void getStringList(std::string args, std::vector<std::string> &v);
+
 void listFilters() {
     std::cout << "List of Filters by Index\n";
     for(unsigned int i = 0; i < ac::draw_max-4; ++i) {
@@ -132,6 +134,23 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
     }
 }
 
+void getStringList(std::string args, std::vector<std::string> &v) {
+    std::string text;
+    unsigned int pos = 0;
+    while(pos < args.length()) {
+        if(args[pos] != ',')
+            text += args[pos];
+        if(args[pos] == ',') {
+            v.push_back(text);
+            text = "";
+        }
+        ++pos;
+    }
+    if(text.length() > 0) {
+        v.push_back(text);
+    }
+}
+
 void listPlugins(std::string path, std::vector<std::string> &files) {
     DIR *dir = opendir(path.c_str());
     if(dir == NULL) {
@@ -170,6 +189,7 @@ void control_Handler(int sig) {
 /* main function */
 int main(int argc, char **argv) {
     ac::fill_filter_map();
+    std::vector<std::string> files_list;
     ac::setPlugin(plugin_callback);
     std::string input,output;
     std::vector<unsigned int> filter_list;
@@ -221,9 +241,10 @@ int main(int argc, char **argv) {
                         exit(EXIT_FAILURE);
                     }
                     break;
-                case 'a':
+                case 'a': {
                     secondVideoFile = optarg;
-                    std::cout << "Second video set to: " << optarg << "\n";
+                    getStringList(secondVideoFile,files_list);
+                }
                     break;
                 case 'o': {
                     std::string output_l = optarg;
@@ -375,7 +396,7 @@ int main(int argc, char **argv) {
     try {
         if(program.initProgram(ftype, visible, input, output,filter_list, col, color_m)) {
             if(secondVideoFile != "") {
-                if(!program.setVideo(secondVideoFile)) {
+                if(!program.setVideo(files_list)) {
                     std::cerr << "acidcam: Error could not open vidoe file..\n";
                     exit(EXIT_FAILURE);
                 }

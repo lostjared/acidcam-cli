@@ -62,6 +62,14 @@ namespace cmd {
     
     extern std::string colorMaps[];
     
+    class AC_VideoCapture {
+    public:
+        AC_VideoCapture() = default;
+        void setVideo(std::string filename);
+        bool getFrame(cv::Mat &frame);
+        cv::VideoCapture capture;
+    };
+    
     class AC_Program {
     public:
         AC_Program();
@@ -73,7 +81,7 @@ namespace cmd {
         bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col, int color_map);
         void run();
         void stop();
-        bool setVideo(const std::string &text);
+        bool setVideo(std::vector<std::string> &filenames);
         void setBrightness(int b);
         void setGamma(int g);
         void setSaturation(int s);
@@ -83,9 +91,10 @@ namespace cmd {
         bool isPluginLoaded() const { return (library != nullptr); }
         std::string getInput() const { return input_file; }
         std::string getOutput() const { return output_file; }
+        std::vector<AC_VideoCapture*> video_files;
     private:
         std::string input_file, output_file;
-        cv::VideoCapture capture, video_capture;
+        cv::VideoCapture capture;
         cv::VideoWriter writer;
         std::vector<unsigned int> filters;
         bool is_visible;

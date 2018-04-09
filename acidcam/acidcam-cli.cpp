@@ -58,7 +58,7 @@ namespace cmd {
         float yp = (float)y * (float)oldh / (float)nh;
         return (int)yp;
     }
-
+    
     std::string colorMaps[] = {"Autum", "Bone", "Jet", "Winter", "Rainbow", "Ocean","Summer","Spring","Cool", "HSV", "Pink", "Hot"};
     
     void setCursorPos(int y, int x) {
@@ -75,6 +75,23 @@ namespace cmd {
         else
             out << "XviD";
         return out;
+    }
+    
+    void AC_VideoCapture::setVideo(std::string filename) {
+        if(filename.length() > 0) {
+            capture.open(filename);
+            if(!capture.isOpened()) {
+                std::cerr << "acidcam: Error opening video: " << filename << "\n";
+                exit(EXIT_FAILURE);
+            } else {
+                std::cout << "File: " << filename << " opened for reading...\n";
+            }
+        }
+    }
+    
+    bool AC_VideoCapture::getFrame(cv::Mat &frame) {
+        if(capture.read(frame) == true) return true;
+        return false;
     }
     
     AC_Program::AC_Program() {
@@ -166,14 +183,12 @@ namespace cmd {
         setCursorPos(filters.size()+3, 0);
     }
     
-    bool AC_Program::setVideo(const std::string &text) {
-        video_capture.open(text);
-        if(!video_capture.isOpened()) {
-            secondVideo = false;
-            std::cerr << "acidcam: Error could not open video file " << text << "\n";
-            return false;
+    bool AC_Program::setVideo(std::vector<std::string> &v) {
+        for(unsigned int i = 0; i < v.size(); ++i) {
+            AC_VideoCapture *cap = new AC_VideoCapture();
+            cap->setVideo(v[i]);
+            video_files.push_back(cap);
         }
-        secondVideo = true;
         return true;
     }
     
@@ -225,21 +240,19 @@ namespace cmd {
                     break;
                 }
                 cv::Mat frame2;
-                if(secondVideo == true && video_capture.isOpened()) {
-                    if(video_capture.read(frame2) == true) {
+                for(unsigned int q = 0; q < video_files.size(); ++q) {
+                    if(video_files[q]->capture.isOpened() && video_files[q]->capture.read(frame2) == true) {
                         for(unsigned int z = 0; z < frame.rows; ++z) {
-                        	for(unsigned int i = 0; i < frame.cols; ++i) {
+                            for(unsigned int i = 0; i < frame.cols; ++i) {
                                 cv::Vec3b &pixel = frame.at<cv::Vec3b>(z, i);
                                 int cX = AC_GetFX(frame2.cols, i, frame.cols);
                                 int cY = AC_GetFZ(frame2.rows, z, frame.rows);
                                 cv::Vec3b second_pixel = frame2.at<cv::Vec3b>(cY, cX);
                                 for(unsigned int j = 0; j < 3; ++j)
                                     pixel[j] += second_pixel[j];
-                        	}
+                            }
                         }
                     }
-                } else if(secondVideo) {
-                    std::cerr << "Could not access video_capture of second fiel...\n";
                 }
                 
                 if(copy_orig == true) ac::orig_frame = frame.clone();
