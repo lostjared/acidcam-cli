@@ -67,6 +67,7 @@
  -k color key image
  */
 cmd::AC_Program program;
+std::string secondVideoFile;
 
 void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
@@ -178,7 +179,7 @@ int main(int argc, char **argv) {
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:b:m:s:r:k:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:b:m:s:r:k:a:")) != -1) {
             switch(opt) {
                 case 'h':
                     std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\nWritten by Jared Bruni\n" << "GitHub: http://github.com/lostjared\n\n";
@@ -219,6 +220,10 @@ int main(int argc, char **argv) {
                         std::cerr << "acidcam: Error Saturation is out of range should be 0-255\n";
                         exit(EXIT_FAILURE);
                     }
+                    break;
+                case 'a':
+                    secondVideoFile = optarg;
+                    std::cout << "Second video set to: " << optarg << "\n";
                     break;
                 case 'o': {
                     std::string output_l = optarg;
@@ -369,6 +374,12 @@ int main(int argc, char **argv) {
 
     try {
         if(program.initProgram(ftype, visible, input, output,filter_list, col, color_m)) {
+            if(secondVideoFile != "") {
+                if(!program.setVideo(secondVideoFile)) {
+                    std::cerr << "acidcam: Error could not open vidoe file..\n";
+                    exit(EXIT_FAILURE);
+                }
+            }
             program.setBrightness(bright_);
             program.setGamma(gamma_);
             program.setSaturation(sat_);

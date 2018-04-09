@@ -73,6 +73,7 @@ namespace cmd {
         bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col, int color_map);
         void run();
         void stop();
+        bool setVideo(const std::string &text);
         void setBrightness(int b);
         void setGamma(int g);
         void setSaturation(int s);
@@ -84,7 +85,7 @@ namespace cmd {
         std::string getOutput() const { return output_file; }
     private:
         std::string input_file, output_file;
-        cv::VideoCapture capture;
+        cv::VideoCapture capture, video_capture;
         cv::VideoWriter writer;
         std::vector<unsigned int> filters;
         bool is_visible;
@@ -94,6 +95,8 @@ namespace cmd {
         plugin_filter plugin;
         unsigned int bright_, gamma_, sat_;
         int color_map;
+        bool secondVideo;
+        int second_w, second_h;
     };
 }
 
