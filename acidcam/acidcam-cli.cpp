@@ -83,8 +83,6 @@ namespace cmd {
             if(!capture.isOpened()) {
                 std::cerr << "acidcam: Error opening video: " << filename << "\n";
                 exit(EXIT_FAILURE);
-            } else {
-                std::cout << "File: " << filename << " opened for reading...\n";
             }
         }
     }
@@ -106,6 +104,11 @@ namespace cmd {
     AC_Program::~AC_Program() {
         if(library != nullptr)
             dlclose(library);
+        
+        if(video_files.size() > 0) {
+            for(unsigned int i = 0; i < video_files.size(); ++i)
+            	delete video_files[i];
+        }
     }
     
     bool AC_Program::loadPlugin(const std::string &s) {
