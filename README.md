@@ -139,3 +139,8 @@ or Apply brightness/gamma/saturation
 
 	$ acidcam -i input.mov -o output.mov -b 100 -m 2 -s 25 -f 0,1
 
+
+A example of using acidcam-cli:
+
+	$ acidcam -i jaredoffice.mov -o blend.mov -g pencil.nin.png -f 31,168 - "peace.1080p.mov, test.mov" -e -r 3 -c 0,0,50
+
