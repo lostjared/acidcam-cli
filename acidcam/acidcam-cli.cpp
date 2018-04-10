@@ -171,7 +171,7 @@ namespace cmd {
             return false;
         }
         unsigned int num_frames = capture.get(CV_CAP_PROP_FRAME_COUNT);
-        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "flipped" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] "<< "format[" << file_type << "]\n";
+        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] "<< "format[" << file_type << "]\n";
         
         if(video_files.size() > 0) {
         	std::cout << "\nAdditional Videos: \n";
