@@ -67,7 +67,9 @@ namespace cmd {
         AC_VideoCapture() = default;
         void setVideo(std::string filename);
         bool getFrame(cv::Mat &frame);
+        
         cv::VideoCapture capture;
+        std::string name;
     };
     
     class AC_Program {

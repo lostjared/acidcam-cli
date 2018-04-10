@@ -65,6 +65,7 @@
  -s saturation
  -r colormap
  -k color key image
+ -a additional videos
  */
 cmd::AC_Program program;
 std::string secondVideoFile;
@@ -394,13 +395,14 @@ int main(int argc, char **argv) {
     std::cout << "\n";
 
     try {
-        if(program.initProgram(ftype, visible, input, output,filter_list, col, color_m)) {
-            if(secondVideoFile != "") {
-                if(!program.setVideo(files_list)) {
-                    std::cerr << "acidcam: Error could not open vidoe file..\n";
-                    exit(EXIT_FAILURE);
-                }
+        if(secondVideoFile != "") {
+            if(!program.setVideo(files_list)) {
+                std::cerr << "acidcam: Error could not open vidoe file..\n";
+                exit(EXIT_FAILURE);
             }
+        }
+        if(program.initProgram(ftype, visible, input, output,filter_list, col, color_m)) {
+            
             program.setBrightness(bright_);
             program.setGamma(gamma_);
             program.setSaturation(sat_);
