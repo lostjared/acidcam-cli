@@ -130,6 +130,10 @@ namespace cmd {
         return true;
     }
     
+    void AC_Program::setFlip(bool f) {
+        flip = f;
+    }
+    
     void AC_Program::callPlugin(cv::Mat &frame) {
         if(library != nullptr)
             plugin(frame);
@@ -166,7 +170,7 @@ namespace cmd {
             return false;
         }
         unsigned int num_frames = capture.get(CV_CAP_PROP_FRAME_COUNT);
-        std::cout << "acidcam: input[" << input_file << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] "<< "format[" << file_type << "]\n";
+        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "flipped" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] "<< "format[" << file_type << "]\n";
         
         if(video_files.size() > 0) {
         	std::cout << "\nAdditional Videos: \n";
@@ -248,9 +252,17 @@ namespace cmd {
             setCursorPos(7+video_files.size()+1+filters.size(), 0);
             std::cout << "acidcam: Working frame: [0/" << frame_count_len << "] - 0% Size: 0 MB \n";
             while(active == true) {
-                cv::Mat frame;
+                cv::Mat frame, temp_frame;
                 if(capture.read(frame) == false) {
                     break;
+                }
+                if(flip == true) {
+                    cv::flip(frame, temp_frame, 1);
+                    frame = temp_frame;
+                }
+                if(flip == true) {
+                    cv::flip(frame, temp_frame, 0);
+                    frame = temp_frame;
                 }
                 cv::Mat frame2;
                 for(unsigned int q = 0; q < video_files.size(); ++q) {

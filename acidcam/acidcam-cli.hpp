@@ -83,6 +83,7 @@ namespace cmd {
         bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col, int color_map);
         void run();
         void stop();
+        void setFlip(bool flip_);
         bool setVideo(std::vector<std::string> &filenames);
         void setBrightness(int b);
         void setGamma(int g);
@@ -108,6 +109,7 @@ namespace cmd {
         int color_map;
         bool secondVideo;
         int second_w, second_h;
+        bool flip;
     };
 }
 

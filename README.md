@@ -46,6 +46,8 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-f 0,1,2 [filter list]
 
+	-e flip input frame
+
 	-v [show video while being processed]
 
 	-c R,G,B [value RGB offsets]

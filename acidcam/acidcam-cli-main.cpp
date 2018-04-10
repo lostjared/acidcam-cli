@@ -66,6 +66,7 @@
  -r colormap
  -k color key image
  -a additional videos
+ -e source flip video frame
  */
 cmd::AC_Program program;
 std::string secondVideoFile;
@@ -200,7 +201,7 @@ int main(int argc, char **argv) {
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:b:m:s:r:k:a:")) != -1) {
+        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:b:m:s:r:k:a:e")) != -1) {
             switch(opt) {
                 case 'h':
                     std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\nWritten by Jared Bruni\n" << "GitHub: http://github.com/lostjared\n\n";
@@ -370,6 +371,9 @@ int main(int argc, char **argv) {
                     }
                     std::cout << "acidcam: Color Key Set to R: 255 G: 0 B: 255 w/ image: " << optarg << "\n";
                     colorkey_set = true;
+                    break;
+                case 'e':
+                    program.setFlip(true);
                     break;
                 default:
                     std::cerr << "acidcam: Error incorrect input..\n";
