@@ -100,6 +100,7 @@ namespace cmd {
         secondVideo = false;
         second_w = 0;
         second_h = 0;
+        flip = false;
     }
     
     AC_Program::~AC_Program() {
