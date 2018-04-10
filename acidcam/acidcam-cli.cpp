@@ -198,7 +198,7 @@ namespace cmd {
     
     void AC_Program::stop() {
         active = false;
-        setCursorPos(filters.size()+1+video_files.size()+4, 0);
+        setCursorPos(filters.size()+2+video_files.size()+4, 0);
     }
     
     bool AC_Program::setVideo(std::vector<std::string> &v) {
@@ -250,7 +250,7 @@ namespace cmd {
                 cv::namedWindow("acidcam_cli");
             active = true;
             
-            setCursorPos(7+video_files.size()+1+filters.size(), 0);
+            setCursorPos(7+video_files.size()+2+filters.size(), 0);
             std::cout << "acidcam: Working frame: [0/" << frame_count_len << "] - 0% Size: 0 MB \n";
             while(active == true) {
                 cv::Mat frame, temp_frame;
@@ -320,7 +320,7 @@ namespace cmd {
                         percent_now = percent_trunc;
                         struct stat buf;
                         lstat(output_file.c_str(), &buf);
-                        setCursorPos(7+video_files.size()+1+filters.size(), 0);
+                        setCursorPos(7+video_files.size()+2+filters.size(), 0);
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
                     }
                 }
@@ -335,7 +335,7 @@ namespace cmd {
             std::cerr << "acidcam: Error exception occoured..\n";
         }
         if(percent_now == 99) percent_now = 100;
-        setCursorPos(7+video_files.size()+1+filters.size(), 0);
+        setCursorPos(7+video_files.size()+2+filters.size(), 0);
         std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "]\n";
     }
 }
