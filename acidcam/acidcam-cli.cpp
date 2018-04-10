@@ -187,9 +187,9 @@ namespace cmd {
         }
         std::cout << "\n";
         if(col.size()==3) {
-            ac::swapColor_b = static_cast<unsigned char>(col[0]);
+            ac::swapColor_b = static_cast<unsigned char>(col[2]);
             ac::swapColor_g = static_cast<unsigned char>(col[1]);
-            ac::swapColor_r = static_cast<unsigned char>(col[2]);
+            ac::swapColor_r = static_cast<unsigned char>(col[0]);
             std::cout << "Add RGB {" << col[0] << ", " << col[1] << ", " << col[2] << "}\n";
         }
         bright_ = gamma_ = sat_ = 0;
