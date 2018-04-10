@@ -30,6 +30,10 @@ After you do that if everything goes according to plan you can test it with:
 
 	$ acidcam -l
 
+
+Remember to put quotes around arguments that use spaces for like file names etc..
+
+
  Command Line Arguments
 
 	-l [List filters]
@@ -38,7 +42,7 @@ After you do that if everything goes according to plan you can test it with:
 
 	-o filename [output video]
 	
-	-a filename1.mov, filename2.mov ... [additional files to apply effect]
+	-a "filename1.mov, filename2.mov ..." [additional files to apply effect]
 
 	-f 0,1,2 [filter list]
 
