@@ -48,6 +48,7 @@
 #include<iostream>
 #include<iomanip>
 #include<vector>
+#include<algorithm>
 #include<unistd.h>
 #include<dlfcn.h>
 #define APP_VERSION "v1.06"

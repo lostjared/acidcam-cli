@@ -53,6 +53,7 @@
 /*
  Command Line Arguments
  -l List filters
+ -L list filters sorted by name
  -i input video
  -o output video
  -f filter list
@@ -88,10 +89,17 @@ void getList(std::string args, std::vector<int> &v, F func);
 
 void getStringList(std::string args, std::vector<std::string> &v);
 
-void listFilters() {
+void listFilters(bool sorted = false) {
     std::cout << "List of Filters by Index\n";
-    for(unsigned int i = 0; i < ac::draw_max-4; ++i) {
-        std::cout << std::setw(4) << std::left << i << std::setw(50) << std::left << ac::draw_strings[i] << "\n";
+    std::vector<std::string> filter_names;
+    for(unsigned int i = 0; i < ac::draw_max-4; ++i)
+        filter_names.push_back(ac::draw_strings[i]);
+    
+    if(sorted == true) sort(filter_names.begin(), filter_names.end());
+    
+    for(unsigned int i = 0; i < filter_names.size(); ++i) {
+        int index = ac::filter_map[filter_names[i]];
+        std::cout << std::setw(4) << std::left << index << std::setw(50) << std::left << filter_names[i] << "\n";
     }
     std::cout << "\nList of Color Maps\n";
     for(unsigned int i = 1; i <= 12; ++i) {
@@ -201,7 +209,7 @@ int main(int argc, char **argv) {
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "li:o:f:vc:p:xn:hg:b:m:s:r:k:a:e")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:e")) != -1) {
             switch(opt) {
                 case 'h':
                     std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\nWritten by Jared Bruni\n" << "GitHub: http://github.com/lostjared\n\n";
@@ -210,6 +218,9 @@ int main(int argc, char **argv) {
                 case 'l':
                     listFilters();
                     exit(EXIT_SUCCESS);
+                    break;
+                case 'L':
+                    listFilters(true);
                     break;
                 case 'i':
                     input = optarg;

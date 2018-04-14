@@ -38,6 +38,8 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-l [List filters]
 
+	-L [List Filters by Name]
+
 	-i filename [input video]
 
 	-o filename [output video]
