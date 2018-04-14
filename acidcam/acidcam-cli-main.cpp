@@ -221,6 +221,7 @@ int main(int argc, char **argv) {
                     break;
                 case 'L':
                     listFilters(true);
+                    exit(EXIT_SUCCESS);
                     break;
                 case 'i':
                     input = optarg;
