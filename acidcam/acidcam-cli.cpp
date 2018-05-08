@@ -227,6 +227,7 @@ namespace cmd {
     }
     
     void AC_Program::run() {
+        struct stat buf;
         unsigned long frame_count_len = 0, frame_index = 0;
         unsigned int percent_now = 0;
         try {
@@ -318,7 +319,7 @@ namespace cmd {
                     unsigned int percent_trunc = static_cast<unsigned int>(percent);
                     if(percent_trunc > percent_now) {
                         percent_now = percent_trunc;
-                        struct stat buf;
+                        
                         lstat(output_file.c_str(), &buf);
                         setCursorPos(7+video_files.size()+2+filters.size(), 0);
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
@@ -336,6 +337,6 @@ namespace cmd {
         }
         if(percent_now == 99) percent_now = 100;
         setCursorPos(7+video_files.size()+2+filters.size(), 0);
-        std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "]\n";
+        std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "] Size: " << ((buf.st_size/1024)/1024) << " MB\n";
     }
 }
