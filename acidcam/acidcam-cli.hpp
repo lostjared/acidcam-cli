@@ -51,7 +51,7 @@
 #include<algorithm>
 #include<unistd.h>
 #include<dlfcn.h>
-#define APP_VERSION "v1.06"
+#define APP_VERSION "v1.07"
 
 namespace cmd {
     
