@@ -161,7 +161,6 @@ namespace cmd {
             std::cerr << "acidcam: Invalid frame rate...\n";
             exit(EXIT_FAILURE);
         }
-        
         if(file_type == File_Type::MOV)
             writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
         else
@@ -257,6 +256,10 @@ namespace cmd {
                 cv::Mat frame, temp_frame;
                 if(capture.read(frame) == false) {
                     break;
+                }
+                if(blend_set == true && (blend_image_scaled.size() != frame.size())) {
+                    ac::resolution = frame.size();
+                    cv::resize(blend_image, blend_image_scaled, ac::resolution);
                 }
                 if(flip == true) {
                     cv::flip(frame, temp_frame, 1);
