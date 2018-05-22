@@ -257,10 +257,6 @@ namespace cmd {
                 if(capture.read(frame) == false) {
                     break;
                 }
-                if(blend_set == true && (blend_image_scaled.size() != frame.size())) {
-                    ac::resolution = frame.size();
-                    cv::resize(blend_image, blend_image_scaled, ac::resolution);
-                }
                 if(flip == true) {
                     cv::flip(frame, temp_frame, 1);
                     frame = temp_frame;
