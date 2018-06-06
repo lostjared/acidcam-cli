@@ -140,6 +140,10 @@ namespace cmd {
             plugin(frame);
     }
     
+    void AC_Program::setImageFilename(const std::string &img) {
+        image_file_blend = img;
+    }
+    
     bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col, int c_map) {
         color_map = c_map;
         file_type = ftype;
@@ -170,7 +174,13 @@ namespace cmd {
             return false;
         }
         unsigned int num_frames = capture.get(CV_CAP_PROP_FRAME_COUNT);
-        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] "<< "format[" << file_type << "]\n";
+        
+        std::string img_str;
+        if(image_file_blend.length() > 0) {
+            img_str = " image[" + image_file_blend + "]";
+        }
+        
+        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] "<< "format[" << file_type << "] " << img_str << "\n";;
         
         if(video_files.size() > 0) {
         	std::cout << "\nAdditional Videos: \n";

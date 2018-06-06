@@ -82,6 +82,7 @@ namespace cmd {
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
         bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col, int color_map);
+        void setImageFilename(const std::string &img);
         void run();
         void stop();
         void setFlip(bool flip_);
@@ -97,7 +98,7 @@ namespace cmd {
         std::string getOutput() const { return output_file; }
         std::vector<AC_VideoCapture*> video_files;
     private:
-        std::string input_file, output_file;
+        std::string input_file, output_file, image_file_blend;
         cv::VideoCapture capture;
         cv::VideoWriter writer;
         std::vector<unsigned int> filters;

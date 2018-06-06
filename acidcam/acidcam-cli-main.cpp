@@ -374,6 +374,7 @@ int main(int argc, char **argv) {
                         exit(EXIT_FAILURE);
                     }
                     blend_set = true;
+                    program.setImageFilename(optarg);
                     break;
                 case 'k':
                     color_image = cv::imread(optarg);
