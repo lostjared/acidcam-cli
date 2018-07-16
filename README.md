@@ -18,7 +18,7 @@ To compile, first Install OpenCV if you are using debian you can do this with:
 
 You will also require GCC or clang and autoconf, automake
 
-	$ sudo apt-get install autoconf automake
+	$ sudo apt-get install autoconf automake and libtool
 
 Download libacidcam from: https://github.com/lostjared/libacidcam
 
