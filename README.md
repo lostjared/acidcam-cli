@@ -1,5 +1,7 @@
 # acidcam-cli
 
+# GitLab
+
 Acid Cam distorts video to create art. It is designed to bo used with other software or on its own. There is multiple versions of the program for macOS, Linux, and Windows as well as a command line version of the program.
 
 This project was created in hopes of providing some entertainment, or for the Glitch artist to give you a starting image/video to use with other tools.
@@ -79,6 +81,8 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 	-r color_map [value from 1-12]
 
 	-k colorkey_image [filename for color keyed image (uses 255,0,255)]
+
+	-S subfilter [subfilter used in some filters]
 
 List of the Different Color maps you can apply with -r:
 

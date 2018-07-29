@@ -69,6 +69,7 @@
  -k color key image
  -a additional videos
  -e source flip video frame
+ -S subfilter
  */
 cmd::AC_Program program;
 std::string secondVideoFile;
@@ -213,7 +214,7 @@ int main(int argc, char **argv) {
         while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:")) != -1) {
             switch(opt) {
                 case 'h':
-                    std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n";
+                    std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n-S subfilter\n";
                     exit(EXIT_SUCCESS);
                     break;
                 case 'l':
@@ -404,7 +405,7 @@ int main(int argc, char **argv) {
             }
         }
     } else {
-        std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n";
+        std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n-S subfilter\n";
         exit(EXIT_FAILURE);
     }
     if(input.length()==0 || output.length()==0) {
