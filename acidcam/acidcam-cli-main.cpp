@@ -57,6 +57,7 @@
  -i input video
  -o output video
  -f filter list
+ -S subfilter
  -v image visible
  -c r,g,b set colors
  -p plugin
@@ -209,7 +210,7 @@ int main(int argc, char **argv) {
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:e")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:")) != -1) {
             switch(opt) {
                 case 'h':
                     std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n";
@@ -387,6 +388,14 @@ int main(int argc, char **argv) {
                     break;
                 case 'e':
                     program.setFlip(true);
+                    break;
+                case 'S': {
+                    int subf = atoi(optarg);
+                    if(subf >= 0 && subf <= ac::draw_max-6) {
+                        ac::setSubFilter(subf);
+                        std::cout << "acidcam: Subfilter set to: " << ac::draw_strings[subf] << "\n";
+                    }
+                }
                     break;
                 default:
                     std::cerr << "acidcam: Error incorrect input..\n";

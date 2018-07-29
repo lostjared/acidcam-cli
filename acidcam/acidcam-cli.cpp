@@ -179,8 +179,12 @@ namespace cmd {
         if(image_file_blend.length() > 0) {
             img_str = " image[" + image_file_blend + "]";
         }
+
+        std::ostringstream substream;
+        if(ac::subfilter != -1)
+            substream << "subfilter[" << ac::subfilter << "] ";
         
-        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] "<< "format[" << file_type << "] " << img_str << "\n";;
+        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] " << substream.str() << "format[" << file_type << "] " << img_str << "\n";;
         
         if(video_files.size() > 0) {
         	std::cout << "\nAdditional Videos: \n";
