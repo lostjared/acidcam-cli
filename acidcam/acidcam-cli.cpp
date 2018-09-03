@@ -370,7 +370,9 @@ namespace cmd {
                         
                         lstat(output_file.c_str(), &buf);
                         setCursorPos(7+video_files.size()+2+filters.size(), 0);
-                        std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB\n";
+                        unsigned int seconds_ = static_cast<unsigned int>(frame_index/ac::fps);
+                        
+                        std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB - " << seconds_ << " Seconds\n";
                     }
                 }
                 if(is_visible) {
