@@ -84,6 +84,8 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-S subfilter [subfilter used in some filters]
 
+	-u Resolution to Resize ex 1920x1080 or 1280x720
+
 List of the Different Color maps you can apply with -r:
 
 	1 Autum

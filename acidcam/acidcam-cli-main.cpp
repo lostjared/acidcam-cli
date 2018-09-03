@@ -88,8 +88,8 @@ void plugin_callback(cv::Mat &frame) {
 
 template<typename F>
 void getList(std::string args, std::vector<int> &v, F func);
-
 void getStringList(std::string args, std::vector<std::string> &v);
+bool parseRes(const std::string &text, int &fw, int &fh);
 
 void listFilters(bool sorted = false) {
     std::cout << "List of Filters by Index\n";
@@ -198,6 +198,20 @@ void control_Handler(int sig) {
     std::cout << "\nacidcam: Signal caught stopping...\n";
 }
 
+bool parseRes(const std::string &text, int &fw, int &fh) {
+    auto pos = text.find("x");
+    if(pos == std::string::npos)
+        return false;
+    std::string left = text.substr(0, pos);
+    std::string right = text.substr(pos+1, text.length()-pos);
+    fw = atoi(left.c_str());
+    fh = atoi(right.c_str());
+    std::cout << "parsed Resolution: " << fw << "x" << fh << "\n";
+    if(fw > 320 && fh > 240)
+        return true;
+    return false;
+}
+
 /* main function */
 int main(int argc, char **argv) {
     ac::fill_filter_map();
@@ -211,10 +225,10 @@ int main(int argc, char **argv) {
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:")) != -1) {
             switch(opt) {
                 case 'h':
-                    std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n-S subfilter\n";
+                    std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n-S subfilter\n-u Resolution ex:  1920x1080\n";
                     exit(EXIT_SUCCESS);
                     break;
                 case 'l':
@@ -398,6 +412,18 @@ int main(int argc, char **argv) {
                     }
                 }
                     break;
+                    
+                case 'u': {
+                    std::string text = optarg;
+                    int frame_width = 0, frame_height = 0;
+                    if(!parseRes(text, frame_width, frame_height)) {
+                        std::cerr << "acidcam: Error Resolution String invalid..\n";
+                        exit(EXIT_FAILURE);
+                    }
+                    program.setResolutionResize(frame_width, frame_height);
+                }
+                    break;
+                    
                 default:
                     std::cerr << "acidcam: Error incorrect input..\n";
                     exit(EXIT_FAILURE);
@@ -405,7 +431,7 @@ int main(int argc, char **argv) {
             }
         }
     } else {
-        std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n-S subfilter\n";
+        std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n";
         exit(EXIT_FAILURE);
     }
     if(input.length()==0 || output.length()==0) {

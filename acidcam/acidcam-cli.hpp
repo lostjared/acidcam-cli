@@ -55,6 +55,8 @@
 
 namespace cmd {
     
+    cv::Mat resizeKeepAspectRatio(const cv::Mat &input, const cv::Size &dstSize, const cv::Scalar &bgcolor);
+    
     enum class File_Type { MOV, AVI };
     std::ostream &operator<<(std::ostream &out, const File_Type &type);
     void setCursorPos(int y, int x);
@@ -81,6 +83,7 @@ namespace cmd {
         AC_Program(AC_Program &&) = delete;
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
+        void setResolutionResize(int rw, int rh);
         bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col, int color_map);
         void setImageFilename(const std::string &img);
         void run();
@@ -112,6 +115,8 @@ namespace cmd {
         bool secondVideo;
         int second_w, second_h;
         bool flip;
+        bool res_resize;
+        int res_w, res_h;
     };
 }
 

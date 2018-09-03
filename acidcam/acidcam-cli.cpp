@@ -48,6 +48,27 @@
 extern void control_Handler(int sig);
 
 namespace cmd {
+    
+    //  Function below from Stack Overflow
+    // https://stackoverflow.com/questions/28562401/resize-an-image-to-a-square-but-keep-aspect-ratio-c-opencv
+    cv::Mat resizeKeepAspectRatio(const cv::Mat &input, const cv::Size &dstSize, const cv::Scalar &bgcolor) {
+        cv::Mat output;
+        double h1 = dstSize.width * (input.rows/(double)input.cols);
+        double w2 = dstSize.height * (input.cols/(double)input.rows);
+        if( h1 <= dstSize.height) {
+            cv::resize( input, output, cv::Size(dstSize.width, h1));
+        } else {
+            cv::resize( input, output, cv::Size(w2, dstSize.height));
+        }
+        int top = (dstSize.height-output.rows) / 2;
+        int down = (dstSize.height-output.rows+1) / 2;
+        int left = (dstSize.width - output.cols) / 2;
+        int right = (dstSize.width - output.cols+1) / 2;
+        cv::copyMakeBorder(output, output, top, down, left, right, cv::BORDER_CONSTANT, bgcolor );
+        return output;
+    }
+    
+    
     // Resize X variable
     inline int AC_GetFX(int oldw,int x, int nw) {
         float xp = (float)x * (float)oldw / (float)nw;
@@ -101,6 +122,9 @@ namespace cmd {
         second_w = 0;
         second_h = 0;
         flip = false;
+        res_resize = false;
+        res_w = 0;
+        res_h = 0;
     }
     
     AC_Program::~AC_Program() {
@@ -158,6 +182,12 @@ namespace cmd {
         }
         int aw = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));
         int ah = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
+        
+        if(res_resize == true) {
+            aw = res_w;
+            ah = res_h;
+        }
+        
         double fps = capture.get(CV_CAP_PROP_FPS);
         second_w = aw;
         second_h = ah;
@@ -271,6 +301,11 @@ namespace cmd {
                 if(capture.read(frame) == false) {
                     break;
                 }
+                
+                if(res_resize == true) {
+                	frame = resizeKeepAspectRatio(frame, cv::Size(res_w, res_h), cv::Scalar(0, 0, 0));
+                }
+                
                 if(flip == true) {
                     cv::flip(frame, temp_frame, 1);
                     frame = temp_frame;
@@ -352,4 +387,11 @@ namespace cmd {
         setCursorPos(7+video_files.size()+2+filters.size(), 0);
         std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "] Size: " << ((buf.st_size/1024)/1024) << " MB\n";
     }
+    
+    void AC_Program::setResolutionResize(int rw, int rh) {
+        res_resize = true;
+        res_w = rw;
+        res_h = rh;
+    }
 }
+
