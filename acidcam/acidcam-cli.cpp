@@ -189,6 +189,7 @@ namespace cmd {
         }
         
         double fps = capture.get(CV_CAP_PROP_FPS);
+        ac::fps = fps;
         second_w = aw;
         second_h = ah;
         if(fps < 1) {
@@ -370,8 +371,8 @@ namespace cmd {
                         
                         lstat(output_file.c_str(), &buf);
                         setCursorPos(7+video_files.size()+2+filters.size(), 0);
-                        unsigned int seconds_ = static_cast<unsigned int>(frame_index/ac::fps);
-                        
+                        double sec_fps = frame_index/ac::fps;
+                        unsigned int seconds_ = static_cast<unsigned int>(sec_fps);
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB - " << seconds_ << " Seconds\n";
                     }
                 }
