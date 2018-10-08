@@ -213,9 +213,9 @@ namespace cmd {
 
         std::ostringstream substream;
         if(ac::subfilter != -1)
-            substream << "subfilter[" << ac::subfilter << "] ";
+            substream << "subfilter[" << ac::draw_strings[ac::subfilter] << "] ";
         
-        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] " << substream.str() << "format[" << file_type << "] " << img_str << "\n";;
+        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] " << substream.str() << "format[" << file_type << "] " << img_str << "\n";
         
         if(video_files.size() > 0) {
         	std::cout << "\nAdditional Videos: \n";
@@ -316,6 +316,10 @@ namespace cmd {
                     frame = temp_frame;
                 }
                 cv::Mat frame2;
+                double fade_amount = 1.0;
+                if(video_files.size()>0)
+                    fade_amount = 1.0/video_files.size();
+                
                 for(unsigned int q = 0; q < video_files.size(); ++q) {
                     if(video_files[q]->capture.isOpened() && video_files[q]->capture.read(frame2) == true) {
                         for(unsigned int z = 0; z < frame.rows; ++z) {
@@ -325,12 +329,11 @@ namespace cmd {
                                 int cY = AC_GetFZ(frame2.rows, z, frame.rows);
                                 cv::Vec3b second_pixel = frame2.at<cv::Vec3b>(cY, cX);
                                 for(unsigned int j = 0; j < 3; ++j)
-                                    pixel[j] += second_pixel[j];
+                                    pixel[j] += static_cast<unsigned char>(second_pixel[j]*fade_amount);
                             }
                         }
                     }
                 }
-                
                 if(copy_orig == true) ac::orig_frame = frame.clone();
                 frame_index ++;
                 if(frame_index >= frame_count_len) {
