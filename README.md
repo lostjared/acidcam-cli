@@ -1,7 +1,5 @@
 # acidcam-cli
 
-# GitLab
-
 Acid Cam distorts video to create art. It is designed to bo used with other software or on its own. There is multiple versions of the program for macOS, Linux, and Windows as well as a command line version of the program.
 
 This project was created in hopes of providing some entertainment, or for the Glitch artist to give you a starting image/video to use with other tools.
@@ -101,7 +99,6 @@ List of the Different Color maps you can apply with -r:
 	11 Pink
 	12 Hot
 
-
 	$ acidcam -i test.mov -o output.mov -f 1,2 -k /path/to/colorkey.png
 
 You can also apply a color key image 
@@ -118,6 +115,10 @@ Once you have it installed you can use either .mov (quicktime) or .avi (xvid) fo
 Example:
 
 	$ acidcam-cli -i input.mov -o output.mov -f 1,2,3
+
+or resize video
+
+	$ acidcam-cli -i input.mov -o output.mov -f 1,2,3 -u 1920x1080
 
 Or to view progress:
 
