@@ -125,6 +125,7 @@ namespace cmd {
         res_resize = false;
         res_w = 0;
         res_h = 0;
+        add_type = AddType::AT_ADD;
     }
     
     AC_Program::~AC_Program() {
@@ -223,7 +224,10 @@ namespace cmd {
         std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] " << substream.str() << "format[" << file_type << "] " << img_str << "\n";
         
         if(video_files.size() > 0) {
-        	std::cout << "\nAdditional Videos: \n";
+            std::string add_type_str = "ADD";
+            if(add_type == AddType::AT_XOR)
+                add_type_str = "XOR";
+        	std::cout << "\nAdditional Videos: [" << add_type_str << "] \n";
         	for(unsigned int q = 0; q < video_files.size(); ++q)
             	std::cout << video_files[q]->name << "\n";
         }

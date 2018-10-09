@@ -70,6 +70,8 @@
  -a additional videos
  -e source flip video frame
  -S subfilter
+ -X concat add type set to Xor
+ -A concat add type set to Add
  */
 cmd::AC_Program program;
 std::string secondVideoFile;
@@ -225,7 +227,7 @@ int main(int argc, char **argv) {
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:XA")) != -1) {
             switch(opt) {
                 case 'h':
                     std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-e source flip video frame\n-S subfilter\n-u Resolution ex:  1920x1080\n";
@@ -423,7 +425,12 @@ int main(int argc, char **argv) {
                     program.setResolutionResize(frame_width, frame_height);
                 }
                     break;
-                    
+                case 'X':
+                    program.addType(cmd::AddType::AT_XOR);
+                    break;
+                case 'A':
+                    program.addType(cmd::AddType::AT_ADD);
+                    break;
                 default:
                     std::cerr << "acidcam: Error incorrect input..\n";
                     exit(EXIT_FAILURE);
