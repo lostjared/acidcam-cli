@@ -75,6 +75,8 @@ namespace cmd {
         std::string name;
     };
     
+    enum class AddType { AT_ADD, AT_XOR };
+
     class AC_Program {
     public:
         AC_Program();
@@ -94,6 +96,7 @@ namespace cmd {
         void setGamma(int g);
         void setSaturation(int s);
         void setColorMap(int m);
+        void addType(AddType at_type);
         bool loadPlugin(const std::string &s);
         void callPlugin(cv::Mat &frame);
         bool isPluginLoaded() const { return (library != nullptr); }
@@ -117,6 +120,7 @@ namespace cmd {
         bool flip;
         bool res_resize;
         int res_w, res_h;
+        AddType add_type;
     };
 }
 

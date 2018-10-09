@@ -159,6 +159,10 @@ namespace cmd {
         flip = f;
     }
     
+    void AC_Program::addType(AddType at_type) {
+        add_type = at_type;
+    }
+    
     void AC_Program::callPlugin(cv::Mat &frame) {
         if(library != nullptr)
             plugin(frame);
@@ -170,6 +174,7 @@ namespace cmd {
     
     bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col, int c_map) {
         color_map = c_map;
+        add_type = AddType::AT_ADD;
         file_type = ftype;
         is_visible = visible;
         input_file = input;
@@ -318,7 +323,7 @@ namespace cmd {
                 cv::Mat frame2;
                 double fade_amount = 1.0;
                 if(video_files.size()>0)
-                    fade_amount = 1.0/video_files.size();
+                    fade_amount = 1.0/1+video_files.size();
                 
                 for(unsigned int q = 0; q < video_files.size(); ++q) {
                     if(video_files[q]->capture.isOpened() && video_files[q]->capture.read(frame2) == true) {
@@ -328,8 +333,16 @@ namespace cmd {
                                 int cX = AC_GetFX(frame2.cols, i, frame.cols);
                                 int cY = AC_GetFZ(frame2.rows, z, frame.rows);
                                 cv::Vec3b second_pixel = frame2.at<cv::Vec3b>(cY, cX);
-                                for(unsigned int j = 0; j < 3; ++j)
-                                    pixel[j] += static_cast<unsigned char>(second_pixel[j]*fade_amount);
+                                for(unsigned int j = 0; j < 3; ++j) {
+                                    switch(add_type) {
+                                        case AddType::AT_ADD:
+                                            pixel[j] += static_cast<unsigned char>(second_pixel[j]*fade_amount);
+                                            break;
+                                        case AddType::AT_XOR:
+                                            pixel[j] ^= static_cast<unsigned char>(second_pixel[j]*fade_amount);
+                                            break;
+                                    }
+                                }
                             }
                         }
                     }
