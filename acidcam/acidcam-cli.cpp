@@ -175,7 +175,6 @@ namespace cmd {
     
     bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col, int c_map) {
         color_map = c_map;
-        add_type = AddType::AT_ADD;
         file_type = ftype;
         is_visible = visible;
         input_file = input;
@@ -343,7 +342,7 @@ namespace cmd {
                                             pixel[j] += static_cast<unsigned char>(second_pixel[j]*fade_amount);
                                             break;
                                         case AddType::AT_XOR:
-                                            pixel[j] ^= static_cast<unsigned char>(second_pixel[j]*fade_amount);
+                                            pixel[j] = pixel[j]^second_pixel[j];
                                             break;
                                     }
                                 }
