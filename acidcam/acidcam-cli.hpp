@@ -75,7 +75,7 @@ namespace cmd {
         std::string name;
     };
     
-    enum class AddType { AT_ADD, AT_XOR };
+    enum class AddType { AT_ADD, AT_ADD_SCALE, AT_XOR, AT_AND, AT_OR };
 
     class AC_Program {
     public:

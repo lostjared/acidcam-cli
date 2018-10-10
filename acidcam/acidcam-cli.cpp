@@ -224,9 +224,24 @@ namespace cmd {
         
         if(video_files.size() > 0) {
             std::string add_type_str = "ADD";
-            if(add_type == AddType::AT_XOR)
-                add_type_str = "XOR";
-        	std::cout << "\nAdditional Videos: [" << add_type_str << "] \n";
+            switch(add_type) {
+                case AddType::AT_ADD:
+                    add_type_str = "ADD";
+                    break;
+                case AddType::AT_ADD_SCALE:
+                    add_type_str = "ADD SCALE";
+                    break;
+                case AddType::AT_OR:
+                    add_type_str = "OR";
+                    break;
+                case AddType::AT_AND:
+                    add_type_str = "AND";
+                    break;
+                case AddType::AT_XOR:
+                    add_type_str = "XOR";
+                    break;
+            }
+            std::cout << "\nAdditional Videos: [" << add_type_str << "] \n";
         	for(unsigned int q = 0; q < video_files.size(); ++q)
             	std::cout << video_files[q]->name << "\n";
         }
@@ -339,10 +354,19 @@ namespace cmd {
                                 for(unsigned int j = 0; j < 3; ++j) {
                                     switch(add_type) {
                                         case AddType::AT_ADD:
+                                            pixel[j] += second_pixel[j];
+                                            break;
+                                        case AddType::AT_ADD_SCALE:
                                             pixel[j] += static_cast<unsigned char>(second_pixel[j]*fade_amount);
                                             break;
                                         case AddType::AT_XOR:
                                             pixel[j] = pixel[j]^second_pixel[j];
+                                            break;
+                                        case AddType::AT_AND:
+                                            pixel[j] = pixel[j]&second_pixel[j];
+                                            break;
+                                        case AddType::AT_OR:
+                                            pixel[j] = pixel[j]|second_pixel[j];
                                             break;
                                     }
                                 }
