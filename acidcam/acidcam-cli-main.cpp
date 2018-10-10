@@ -214,6 +214,10 @@ bool parseRes(const std::string &text, int &fw, int &fh) {
     return false;
 }
 
+void output_software_info(std::string name) {
+    std::cout << name << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-C add together by scale of how many videos\n-O Use or to concat multiple videos\n-N use and to concat multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n";
+}
+
 /* main function */
 int main(int argc, char **argv) {
     ac::fill_filter_map();
@@ -230,7 +234,7 @@ int main(int argc, char **argv) {
         while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANO")) != -1) {
             switch(opt) {
                 case 'h':
-                    std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-C add together by scale of how many videos\n-O Use or to concat multiple videos\n-N use and to concat multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex:  1920x1080\n";
+                    output_software_info(argv[0]);
                     exit(EXIT_SUCCESS);
                     break;
                 case 'l':
@@ -447,7 +451,7 @@ int main(int argc, char **argv) {
             }
         }
     } else {
-        std::cout << argv[0] << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n";
+        output_software_info(argv[0]);
         exit(EXIT_FAILURE);
     }
     if(input.length()==0 || output.length()==0) {
