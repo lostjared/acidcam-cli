@@ -231,7 +231,7 @@ int main(int argc, char **argv) {
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANO")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:")) != -1) {
             switch(opt) {
                 case 'h':
                     output_software_info(argv[0]);
@@ -443,6 +443,16 @@ int main(int argc, char **argv) {
                     break;
                 case 'O':
                     program.addType(cmd::AddType::AT_OR);
+                    break;
+                case 'F': {
+                    double val = atof(optarg);
+                    if(val >= 4)
+                        program.forceFPS(val);
+                    else {
+                        std::cerr << "acidcam: Invalid FPS\n";
+                        exit(0);
+                    }
+                }
                     break;
                 default:
                     std::cerr << "acidcam: Error incorrect input..\n";

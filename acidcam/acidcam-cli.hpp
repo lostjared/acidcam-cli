@@ -2,7 +2,6 @@
  * Acid Cam v2 - OpenCV Edition
  * written by Jared Bruni ( http://lostsidedead.com / https://github.com/lostjared )
  
- 
  GitHub: http://github.com/lostjared
  Website: http://lostsidedead.com
  YouTube: http://youtube.com/LostSideDead
@@ -103,6 +102,7 @@ namespace cmd {
         std::string getInput() const { return input_file; }
         std::string getOutput() const { return output_file; }
         std::vector<AC_VideoCapture*> video_files;
+        void forceFPS(double fval);
     private:
         std::string input_file, output_file, image_file_blend;
         cv::VideoCapture capture;
@@ -121,6 +121,7 @@ namespace cmd {
         bool res_resize;
         int res_w, res_h;
         AddType add_type;
+        double fps_force;
     };
 }
 

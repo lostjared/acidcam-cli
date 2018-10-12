@@ -126,6 +126,7 @@ namespace cmd {
         res_w = 0;
         res_h = 0;
         add_type = AddType::AT_ADD;
+        fps_force = 0;
     }
     
     AC_Program::~AC_Program() {
@@ -201,6 +202,10 @@ namespace cmd {
             std::cerr << "acidcam: Invalid frame rate...\n";
             exit(EXIT_FAILURE);
         }
+        
+        if(fps_force != 0)
+            fps = fps_force;
+        
         if(file_type == File_Type::MOV)
             writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
         else
@@ -220,7 +225,11 @@ namespace cmd {
         if(ac::subfilter != -1)
             substream << "subfilter[" << ac::draw_strings[ac::subfilter] << "] ";
         
-        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] " << substream.str() << "format[" << file_type << "] " << img_str << "\n";
+        std::string force_;
+        if(fps_force != 0)
+            force_ = "force";
+        
+        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] " << force_ << " fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] " << substream.str() << "format[" << file_type << "] " << img_str << "\n";
         
         if(video_files.size() > 0) {
             std::string add_type_str = "ADD";
@@ -438,6 +447,10 @@ namespace cmd {
         res_resize = true;
         res_w = rw;
         res_h = rh;
+    }
+    
+    void AC_Program::forceFPS(double fval) {
+        fps_force = fval;
     }
 }
 
