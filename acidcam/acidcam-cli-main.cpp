@@ -370,7 +370,7 @@ int main(int argc, char **argv) {
                             std::string two2 = number.substr(number.find(":")+1, number.length());
                             value = atoi(one1.c_str());
                             subfilter_value = atoi(two2.c_str());
-                            if(value < ac::draw_max-6 && subfilter_value < ac::draw_max-6) {
+                            if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
                                 if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
                                     std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
                                     exit(EXIT_FAILURE);
@@ -487,7 +487,7 @@ int main(int argc, char **argv) {
                     break;
                 case 'S': {
                     int subf = atoi(optarg);
-                    if(subf >= 0 && subf <= ac::draw_max-6) {
+                    if(subf >= 0 && subf <= ac::draw_max-4) {
                         ac::setSubFilter(subf);
                         std::cout << "acidcam: Subfilter set to: " << ac::draw_strings[subf] << "\n";
                     }
