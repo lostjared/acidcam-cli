@@ -127,6 +127,8 @@ namespace cmd {
         res_h = 0;
         add_type = AddType::AT_ADD;
         fps_force = 0;
+        skip_frames = 0;
+        skip_index = 0;
     }
     
     AC_Program::~AC_Program() {
@@ -228,8 +230,13 @@ namespace cmd {
         std::string force_;
         if(fps_force != 0)
             force_ = "force";
+        std::string skip_f;
         
-        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] " << force_ << " fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] " << substream.str() << "format[" << file_type << "] " << img_str << "\n";
+        std::ostringstream skip_stream;
+        if(skip_frames != 0)
+            skip_stream << "skip frames: [" << skip_frames << "] ";
+        
+        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] " << force_ << " fps[" << fps << "] length[" << static_cast<unsigned int>((num_frames/fps)) << " seconds] " << skip_stream.str() << substream.str() << "format[" << file_type << "] " << img_str << "\n";
         
         if(video_files.size() > 0) {
             std::string add_type_str = "ADD";
@@ -412,7 +419,14 @@ namespace cmd {
                     cv::Mat cframe = frame.clone();
                     ac::filterColorKeyed(color_key, ac::orig_frame, cframe, frame);
                 }
-                writer.write(frame);
+                if(skip_frames == 0)
+                    writer.write(frame);
+                else {
+                    if((frame_index%skip_frames)==0) {
+                        ++skip_index;
+                        writer.write(frame);
+                    }
+                }
                 double val = frame_index;
                 double size = frame_count_len;
                 if(size != 0) {
@@ -425,6 +439,10 @@ namespace cmd {
                         setCursorPos(7+video_files.size()+2+filters.size(), 0);
                         double sec_fps = frame_index/ac::fps;
                         unsigned int seconds_ = static_cast<unsigned int>(sec_fps);
+                        if(skip_frames != 0) {
+                            sec_fps = skip_index/ac::fps;
+                            seconds_ = static_cast<unsigned int>(sec_fps);
+                        }
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB - " << seconds_ << " Seconds\n";
                     }
                 }
@@ -451,6 +469,11 @@ namespace cmd {
     
     void AC_Program::forceFPS(double fval) {
         fps_force = fval;
+    }
+    
+    void AC_Program::skipFrames(unsigned int number) {
+        skip_frames = number;
+        skip_index = 0;
     }
 }
 

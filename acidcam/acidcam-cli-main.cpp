@@ -215,7 +215,7 @@ bool parseRes(const std::string &text, int &fw, int &fh) {
 }
 
 void output_software_info(std::string name) {
-    std::cout << name << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-C add together by scale of how many videos\n-O Use or to concat multiple videos\n-N use and to concat multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n";
+    std::cout << name << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-C add together by scale of how many videos\n-O Use or to concat multiple videos\n-N use and to concat multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n-F force fps\n-I skip frames\n";
 }
 
 /* main function */
@@ -231,7 +231,7 @@ int main(int argc, char **argv) {
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:")) != -1) {
             switch(opt) {
                 case 'h':
                     output_software_info(argv[0]);
@@ -450,6 +450,16 @@ int main(int argc, char **argv) {
                         program.forceFPS(val);
                     else {
                         std::cerr << "acidcam: Invalid FPS\n";
+                        exit(0);
+                    }
+                }
+                    break;
+                case 'I': {
+                    int skip_ = atoi(optarg);
+                    if(skip_ > 1) {
+                        program.skipFrames(skip_);
+                    } else {
+                        std::cerr << "acidcam: Requires to skip at least 2 frames\n";
                         exit(0);
                     }
                 }

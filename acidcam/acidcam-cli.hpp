@@ -103,6 +103,7 @@ namespace cmd {
         std::string getOutput() const { return output_file; }
         std::vector<AC_VideoCapture*> video_files;
         void forceFPS(double fval);
+        void skipFrames(unsigned int number);
     private:
         std::string input_file, output_file, image_file_blend;
         cv::VideoCapture capture;
@@ -122,6 +123,7 @@ namespace cmd {
         int res_w, res_h;
         AddType add_type;
         double fps_force;
+        unsigned int skip_frames, skip_index;
     };
 }
 
