@@ -84,6 +84,10 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-u Resolution to Resize ex 1920x1080 or 1280x720
 
+	-F frame_rate force output frame rate
+
+	-I frames skip any number of frames outputted to file
+
 List of the Different Color maps you can apply with -r:
 
 	1 Autum
