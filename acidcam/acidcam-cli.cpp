@@ -448,6 +448,10 @@ namespace cmd {
                             sec_fps = skip_index/ac::fps;
                             seconds_ = static_cast<unsigned int>(sec_fps);
                         }
+                        if(fps_force != 0) {
+                            sec_fps = frame_index/fps_force;
+                            seconds_ = static_cast<unsigned int>(sec_fps);
+                        }
                         std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB - " << seconds_ << " Seconds\n";
                     }
                 }
