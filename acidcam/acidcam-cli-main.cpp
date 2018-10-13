@@ -89,7 +89,7 @@ void plugin_callback(cv::Mat &frame) {
 }
 
 template<typename F>
-void getList(std::string args, std::vector<int> &v, F func);
+void getList(std::string args, std::vector<std::pair<int,int>> &v, F func);
 void getStringList(std::string args, std::vector<std::string> &v);
 bool parseRes(const std::string &text, int &fw, int &fh);
 
@@ -118,9 +118,11 @@ void toLower(std::string &text) {
 }
 
 template<typename F>
-void getList(std::string args, std::vector<unsigned int> &v, F func) {
+void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
     std::string number;
     unsigned int pos = 0;
+    int subfilter_value = -1;
+
     while(pos < args.length()) {
         if(args[pos] != ',')
             number += args[pos];
@@ -128,11 +130,37 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
             unsigned int value = 0;
             if(number == "plugin")
                 value = ac::filter_map["Plugin"];
-            else
-                value = atoi(number.c_str());
+            else {
+                if(number.find(":") == std::string::npos) {
+                	value = atoi(number.c_str());
+                    subfilter_value = -1;
+                    if(ac::draw_strings[value].find("SubFilter") != std::string::npos) {
+                        std::cerr << "acidcam: Error filter: " << ac::draw_strings[value] << " requires subfilter...\n";
+                        exit(EXIT_FAILURE);
+                    }
+                } else {
+                    std::string one1 = number.substr(0, number.find(":"));
+                    std::string two2 = number.substr(number.find(":")+1, number.length());
+                    value = atoi(one1.c_str());
+                    subfilter_value = atoi(two2.c_str());
+                    if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+                        if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
+                            std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
+                            exit(EXIT_FAILURE);
+                        }
+                        if(ac::draw_strings[subfilter_value].find("SubFilter") != std::string::npos) {
+                            std::cerr << "acidcam: " << ac::draw_strings[subfilter_value] << " not a vaild subfilter...\n";
+                            exit(EXIT_FAILURE);
+                        }
+                    } else {
+                        std::cerr << "acidcam: Filter: " << one1 << " out of range...\n";
+                        exit(EXIT_SUCCESS);
+                    }
+                }
+            }
             number = "";
             if(func(value))
-            	v.push_back(value);
+                v.push_back(std::make_pair(value,subfilter_value));
         }
         ++pos;
     }
@@ -143,8 +171,26 @@ void getList(std::string args, std::vector<unsigned int> &v, F func) {
         else
             value = atoi(number.c_str());
         
+        std::string one1 = number.substr(0, number.find(":"));
+        std::string two2 = number.substr(number.find(":")+1, number.length());
+        value = atoi(one1.c_str());
+        subfilter_value = atoi(two2.c_str());
+        if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+            if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
+                std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
+                exit(EXIT_FAILURE);
+            }
+            if(ac::draw_strings[subfilter_value].find("SubFilter") != std::string::npos) {
+                std::cerr << "acidcam: " << ac::draw_strings[subfilter_value] << " not a vaild subfilter...\n";
+                exit(EXIT_FAILURE);
+            }
+        } else {
+            std::cerr << "acidcam: Filter: " << one1 << " out of range...\n";
+            exit(EXIT_SUCCESS);
+        }
+        
         if(func(value))
-        	v.push_back(value);
+            v.push_back(std::make_pair(value, subfilter_value));
     }
 }
 
@@ -224,8 +270,8 @@ int main(int argc, char **argv) {
     std::vector<std::string> files_list;
     ac::setPlugin(plugin_callback);
     std::string input,output;
-    std::vector<unsigned int> filter_list;
-    std::vector<unsigned int> col;
+    std::vector<std::pair<int, int>> filter_list;
+    std::vector<std::pair<int, int>> col;
     bool visible = false;
     cmd::File_Type ftype;
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
@@ -305,13 +351,41 @@ int main(int argc, char **argv) {
                     auto pos = args.find(",");
                     if(pos == std::string::npos && args.length() > 0) {
                         unsigned int value = 0;
+                        int subfilter_value = -1;
+                        std::string number = optarg;
                         std::string plug = optarg;
                         if(plug == "plugin")
                             value = ac::filter_map["Plugin"];
-                        else
+                        else if(number.find(":") == std::string::npos) {
+                            value = atoi(number.c_str());
+                            if(value < ac::draw_max-4) {
+                                if(ac::draw_strings[value].find("SubFilter") != std::string::npos) {
+                                    std::cout << "acidcam: Filter " << ac::draw_strings[value] << " requires SubFilter use Filter:SubFilter format\n";
+                                    exit(EXIT_FAILURE);
+                                }
+                            }
+                        } else {
                             value = atoi(optarg);
+                            std::string one1 = number.substr(0, number.find(":"));
+                            std::string two2 = number.substr(number.find(":")+1, number.length());
+                            value = atoi(one1.c_str());
+                            subfilter_value = atoi(two2.c_str());
+                            if(value < ac::draw_max-6 && subfilter_value < ac::draw_max-6) {
+                                if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
+                                    std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
+                                    exit(EXIT_FAILURE);
+                                }
+                                if(ac::draw_strings[subfilter_value].find("SubFilter") != std::string::npos) {
+                                    std::cerr << "acidcam: " << ac::draw_strings[subfilter_value] << " not a vaild subfilter...\n";
+                                    exit(EXIT_FAILURE);
+                                }
+                            } else {
+                                std::cerr << "acidcam: Filter: " << one1 << " out of range...\n";
+                                exit(EXIT_SUCCESS);
+                            }
+                        }
                         if(value < ac::draw_max-4) {
-                            filter_list.push_back(value);
+                            filter_list.push_back(std::make_pair(value, subfilter_value));
                         } else {
                             std::cerr << "acidcam: Error filter out of bounds..\n";
                         }
@@ -327,6 +401,7 @@ int main(int argc, char **argv) {
                             std::cerr << "acidcam: Error value must be one of the listed integer filter indexes.\n";
                             exit(EXIT_FAILURE);
                         });
+                        
                     }
                 }
                     break;

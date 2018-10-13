@@ -176,7 +176,7 @@ namespace cmd {
         image_file_blend = img;
     }
     
-    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list,std::vector<unsigned int> &col, int c_map) {
+    bool AC_Program::initProgram(const File_Type &ftype, bool visible, const std::string &input, const std::string &output, std::vector<std::pair<int,int>> &filter_list,std::vector<std::pair<int, int>> &col, int c_map) {
         color_map = c_map;
         file_type = ftype;
         is_visible = visible;
@@ -263,17 +263,21 @@ namespace cmd {
         }
         std::cout << "\nFilters to Apply: \n";
         for(unsigned int q = 0; q < filter_list.size(); ++q) {
-            std::cout << ac::draw_strings[filter_list[q]] << "\n";
+            std::cout << ac::draw_strings[filter_list[q].first];
+            if(filter_list[q].second != -1)
+                std::cout << " SubFilter: " << ac::draw_strings[filter_list[q].second] << "\n";
+            else
+                std::cout << "\n";
         }
         if(color_map >= 1 && color_map <= 12) {
             std::cout << "\nApplied Color Map: " << colorMaps[color_map-1] << "\n";
         }
         std::cout << "\n";
         if(col.size()==3) {
-            ac::swapColor_b = static_cast<unsigned char>(col[2]);
-            ac::swapColor_g = static_cast<unsigned char>(col[1]);
-            ac::swapColor_r = static_cast<unsigned char>(col[0]);
-            std::cout << "Add RGB {" << col[0] << ", " << col[1] << ", " << col[2] << "}\n";
+            ac::swapColor_b = static_cast<unsigned char>(col[2].first);
+            ac::swapColor_g = static_cast<unsigned char>(col[1].first);
+            ac::swapColor_r = static_cast<unsigned char>(col[0].first);
+            std::cout << "Add RGB {" << col[0].first << ", " << col[1].first << ", " << col[2].first << "}\n";
         }
         bright_ = gamma_ = sat_ = 0;
         return true;
@@ -315,7 +319,7 @@ namespace cmd {
         unsigned int percent_now = 0;
         try {
             bool copy_orig = false;
-            if(std::find(filters.begin(), filters.end(), ac::filter_map["Blend with Source"]) != filters.end()) {
+            if(std::find(filters.begin(), filters.end(), std::make_pair(ac::filter_map["Blend with Source"], -1)) != filters.end()) {
                 copy_orig = true;
             }
             if(colorkey_set == true && !color_image.empty()) {
@@ -396,7 +400,8 @@ namespace cmd {
                     break;
                 }
                 for(unsigned int i = 0; i < filters.size(); ++i) {
-                    ac::draw_func[filters[i]](frame);
+                    ac::setSubFilter(filters[i].second);
+                    ac::draw_func[filters[i].first](frame);
                 }
                 
                 if(color_map != 0 && color_map > 0 && color_map <= 12) {

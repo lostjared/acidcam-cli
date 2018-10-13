@@ -85,7 +85,7 @@ namespace cmd {
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
         void setResolutionResize(int rw, int rh);
-        bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<unsigned int> &filter_list, std::vector<unsigned int> &col, int color_map);
+        bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<std::pair<int,int>> &filter_list, std::vector<std::pair<int,int>> &col, int color_map);
         void setImageFilename(const std::string &img);
         void run();
         void stop();
@@ -108,7 +108,7 @@ namespace cmd {
         std::string input_file, output_file, image_file_blend;
         cv::VideoCapture capture;
         cv::VideoWriter writer;
-        std::vector<unsigned int> filters;
+        std::vector<std::pair<int, int>> filters;
         bool is_visible;
         bool active;
         File_Type file_type;
