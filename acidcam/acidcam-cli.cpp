@@ -240,7 +240,7 @@ namespace cmd {
         if(fps_force != 0)
             frame_length = static_cast<unsigned int>((num_frames/fps_force));
         
-        std::cout << "acidcam: input[" << input_file << " " << ((flip == true) ? "[flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] " << force_ << " fps[" << fps << "] length[" << frame_length << " seconds] " << skip_stream.str() << substream.str() << "format[" << file_type << "] " << img_str << "\n";
+        std::cout << "acidcam: input[" << input_file  << ((flip == true) ? " [flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] " << force_ << " fps[" << fps << "] length[" << frame_length << " seconds] " << skip_stream.str() << substream.str() << "format[" << file_type << "] " << img_str << "\n";
         
         if(video_files.size() > 0) {
             std::string add_type_str = "ADD";
