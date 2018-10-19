@@ -180,7 +180,7 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
             if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
                 if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
                     std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
-                    //exit(EXIT_FAILURE);
+                    exit(EXIT_FAILURE);
                 }
                 if(ac::draw_strings[subfilter_value].find("SubFilter") != std::string::npos) {
                     std::cerr << "acidcam: " << ac::draw_strings[subfilter_value] << " not a vaild subfilter...\n";
