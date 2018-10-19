@@ -171,22 +171,25 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
         else
             value = atoi(number.c_str());
         
-        std::string one1 = number.substr(0, number.find(":"));
-        std::string two2 = number.substr(number.find(":")+1, number.length());
-        value = atoi(one1.c_str());
-        subfilter_value = atoi(two2.c_str());
-        if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
-            if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
-                std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
-                exit(EXIT_FAILURE);
+        if(number.find(":") != std::string::npos) {
+            
+            std::string one1 = number.substr(0, number.find(":"));
+            std::string two2 = number.substr(number.find(":")+1, number.length());
+            value = atoi(one1.c_str());
+            subfilter_value = atoi(two2.c_str());
+            if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+                if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
+                    std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
+                    //exit(EXIT_FAILURE);
+                }
+                if(ac::draw_strings[subfilter_value].find("SubFilter") != std::string::npos) {
+                    std::cerr << "acidcam: " << ac::draw_strings[subfilter_value] << " not a vaild subfilter...\n";
+                    exit(EXIT_FAILURE);
+                }
+            } else {
+                std::cerr << "acidcam: Filter: " << one1 << " out of range...\n";
+                exit(EXIT_SUCCESS);
             }
-            if(ac::draw_strings[subfilter_value].find("SubFilter") != std::string::npos) {
-                std::cerr << "acidcam: " << ac::draw_strings[subfilter_value] << " not a vaild subfilter...\n";
-                exit(EXIT_FAILURE);
-            }
-        } else {
-            std::cerr << "acidcam: Filter: " << one1 << " out of range...\n";
-            exit(EXIT_SUCCESS);
         }
         
         if(func(value))
