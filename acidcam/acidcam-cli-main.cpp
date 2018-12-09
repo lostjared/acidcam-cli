@@ -124,6 +124,7 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
     int subfilter_value = -1;
 
     while(pos < args.length()) {
+        subfilter_value = -1;
         if(args[pos] != ',')
             number += args[pos];
         if(args[pos] == ',') {
@@ -192,8 +193,10 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
             }
         }
         
-        if(func(value))
+        if(func(value)) {
             v.push_back(std::make_pair(value, subfilter_value));
+            subfilter_value = -1;
+        }
     }
 }
 
