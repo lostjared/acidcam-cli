@@ -166,6 +166,7 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
         ++pos;
     }
     if(number.length() > 0) {
+        subfilter_value = -1;
         unsigned int value = 0;
         if(number == "plugin")
             value = ac::filter_map["Plugin"];
