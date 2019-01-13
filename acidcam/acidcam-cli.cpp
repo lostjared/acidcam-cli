@@ -441,7 +441,8 @@ namespace cmd {
                 if(size != 0) {
                     double percent = (val/size)*100;
                     unsigned int percent_trunc = static_cast<unsigned int>(percent);
-                    if(percent_trunc > percent_now) {
+                    unsigned int frame_fps = static_cast<unsigned int>(ac::fps);
+                    if((percent_trunc > percent_now) || ((frame_index%frame_fps)==0) ) {
                         percent_now = percent_trunc;
                         
                         lstat(output_file.c_str(), &buf);
