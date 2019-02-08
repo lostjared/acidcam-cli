@@ -129,6 +129,7 @@ namespace cmd {
         fps_force = 0;
         skip_frames = 0;
         skip_index = 0;
+        is_stretch = false;
     }
     
     AC_Program::~AC_Program() {
@@ -137,11 +138,15 @@ namespace cmd {
         
         if(video_files.size() > 0) {
             for(unsigned int i = 0; i < video_files.size(); ++i)
-            	delete video_files[i];
+                delete video_files[i];
             
             if(!video_files.empty())
-            	video_files.erase(video_files.begin(), video_files.end());
+                video_files.erase(video_files.begin(), video_files.end());
         }
+    }
+    
+    void AC_Program::setStretch(bool b) {
+        is_stretch = b;
     }
     
     bool AC_Program::loadPlugin(const std::string &s) {
@@ -222,7 +227,7 @@ namespace cmd {
         if(image_file_blend.length() > 0) {
             img_str = " image[" + image_file_blend + "]";
         }
-
+        
         std::ostringstream substream;
         if(ac::subfilter != -1)
             substream << "subfilter[" << ac::draw_strings[ac::subfilter] << "] ";
@@ -262,8 +267,8 @@ namespace cmd {
                     break;
             }
             std::cout << "\nAdditional Videos: [" << add_type_str << "] \n";
-        	for(unsigned int q = 0; q < video_files.size(); ++q)
-            	std::cout << video_files[q]->name << "\n";
+            for(unsigned int q = 0; q < video_files.size(); ++q)
+                std::cout << video_files[q]->name << "\n";
         }
         std::cout << "\nFilters to Apply: \n";
         for(unsigned int q = 0; q < filter_list.size(); ++q) {
@@ -351,7 +356,12 @@ namespace cmd {
                 }
                 
                 if(res_resize == true) {
-                	frame = resizeKeepAspectRatio(frame, cv::Size(res_w, res_h), cv::Scalar(0, 0, 0));
+                    if(is_stretch) {
+                        cv::Mat copy1 = frame.clone();
+                        cv::resize(copy1, frame, cv::Size(res_w, res_h));
+                    } else {
+                        frame = resizeKeepAspectRatio(frame, cv::Size(res_w, res_h), cv::Scalar(0, 0, 0));
+                    }
                 }
                 
                 if(flip == true) {

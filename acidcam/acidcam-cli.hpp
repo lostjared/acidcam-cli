@@ -50,7 +50,7 @@
 #include<algorithm>
 #include<unistd.h>
 #include<dlfcn.h>
-#define APP_VERSION "v1.09.0"
+#define APP_VERSION "v1.10.0"
 
 namespace cmd {
     
@@ -84,6 +84,7 @@ namespace cmd {
         AC_Program(AC_Program &&) = delete;
         AC_Program &operator=(const AC_Program &) = delete;
         AC_Program &operator=(AC_Program &&) = delete;
+        void setStretch(bool b);
         void setResolutionResize(int rw, int rh);
         bool initProgram(const File_Type &ft, bool visible, const std::string &input, const std::string &output, std::vector<std::pair<int,int>> &filter_list, std::vector<std::pair<int,int>> &col, int color_map);
         void setImageFilename(const std::string &img);
@@ -110,6 +111,7 @@ namespace cmd {
         cv::VideoWriter writer;
         std::vector<std::pair<int, int>> filters;
         bool is_visible;
+        bool is_stretch;
         bool active;
         File_Type file_type;
         void *library;
