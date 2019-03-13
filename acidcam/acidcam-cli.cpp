@@ -415,7 +415,7 @@ namespace cmd {
                 }
                 for(unsigned int i = 0; i < filters.size(); ++i) {
                     ac::setSubFilter(filters[i].second);
-                    ac::draw_func[filters[i].first](frame);
+                    ac::CallFilter(filters[i].first, frame);
                 }
                 
                 if(color_map != 0 && color_map > 0 && color_map <= 12) {
