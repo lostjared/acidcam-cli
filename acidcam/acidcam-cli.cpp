@@ -49,6 +49,8 @@ extern void control_Handler(int sig);
 
 namespace cmd {
     
+    using namespace cv;
+    
     //  Function below from Stack Overflow
     // https://stackoverflow.com/questions/28562401/resize-an-image-to-a-square-but-keep-aspect-ratio-c-opencv
     cv::Mat resizeKeepAspectRatio(const cv::Mat &input, const cv::Size &dstSize, const cv::Scalar &bgcolor) {
@@ -193,15 +195,15 @@ namespace cmd {
             std::cerr << "acidcam: Error could not open file: " << input_file << "\n";
             return false;
         }
-        int aw = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));
-        int ah = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
+        int aw = static_cast<int>(capture.get(cv::CAP_PROP_FRAME_WIDTH));
+        int ah = static_cast<int>(capture.get(cv::CAP_PROP_FRAME_HEIGHT));
         
         if(res_resize == true) {
             aw = res_w;
             ah = res_h;
         }
         
-        double fps = capture.get(CV_CAP_PROP_FPS);
+        double fps = capture.get(cv::CAP_PROP_FPS);
         ac::fps = fps;
         second_w = aw;
         second_h = ah;
@@ -214,14 +216,14 @@ namespace cmd {
             fps = fps_force;
         
         if(file_type == File_Type::MOV)
-            writer.open(output_file, CV_FOURCC('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
+            writer.open(output_file, VideoWriter::fourcc('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
         else
-            writer.open(output_file, CV_FOURCC('X', 'V', 'I', 'D'), fps, cv::Size(aw, ah), true);
+            writer.open(output_file, VideoWriter::fourcc('X', 'V', 'I', 'D'), fps, cv::Size(aw, ah), true);
         if(!writer.isOpened()) {
             std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
             return false;
         }
-        unsigned int num_frames = capture.get(CV_CAP_PROP_FRAME_COUNT);
+        unsigned int num_frames = capture.get(cv::CAP_PROP_FRAME_COUNT);
         
         std::string img_str;
         if(image_file_blend.length() > 0) {
@@ -334,7 +336,7 @@ namespace cmd {
             if(colorkey_set == true && !color_image.empty()) {
                 copy_orig = true;
             }
-            frame_count_len = capture.get(CV_CAP_PROP_FRAME_COUNT);
+            frame_count_len = capture.get(cv::CAP_PROP_FRAME_COUNT);
             struct sigaction sa;
             sigemptyset(&sa.sa_mask);
             sa.sa_flags = 0;
