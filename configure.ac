@@ -24,7 +24,11 @@ AC_C_INLINE
 # Checks for library functions.
 AC_FUNC_LSTAT_FOLLOWS_SLASHED_SYMLINK
 
+PKG_CHECK_MODULES(OPENCV, opencv, found=1, found=0)
+
+if test $found = 0; then
 PKG_CHECK_MODULES(OPENCV, opencv4, found=1, found=0)
+fi
 
 if test $found = 0; then
 AC_MSG_ERROR(Error could not find OpenCV pkg-config file is it installed?)
