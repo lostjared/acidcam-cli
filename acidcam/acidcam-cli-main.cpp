@@ -104,11 +104,11 @@ void listFilters(bool sorted = false) {
     
     for(unsigned int i = 0; i < filter_names.size(); ++i) {
         int index = ac::filter_map[filter_names[i]];
-        std::cout << std::setw(4) << std::left << index << std::setw(50) << std::left << filter_names[i] << "\n";
+        std::cout << std::setw(6) << std::left << index << std::setw(50) << std::left << filter_names[i] << "\n";
     }
     std::cout << "\nList of Color Maps\n";
     for(unsigned int i = 1; i <= 12; ++i) {
-        std::cout << std::setw(4) << std::left << i << std::setw(50) << std::left << cmd::colorMaps[i-1] << "\n";
+        std::cout << std::setw(6) << std::left << i << std::setw(50) << std::left << cmd::colorMaps[i-1] << "\n";
     }
 }
 
