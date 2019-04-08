@@ -14,11 +14,7 @@ Use Ctrl+C to break processing and still be able to use what has already been fi
 
 To compile, first Install OpenCV if you are using debian you can do this with:
 
-	$ sudo apt-get install libopencv-dev
-
-You will also require GCC or clang and autoconf, automake
-
-	$ sudo apt-get install autoconf automake and libtool
+	$ sudo apt-get install libopencv-dev g++ autoconf automake libtool git
 
 Download libacidcam from: https://github.com/lostjared/libacidcam
 
