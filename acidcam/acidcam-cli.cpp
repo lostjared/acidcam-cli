@@ -44,6 +44,7 @@
 #include<sys/stat.h>
 #include<sys/types.h>
 #include<signal.h>
+#include<cmath>
 
 extern void control_Handler(int sig);
 
@@ -204,6 +205,7 @@ namespace cmd {
         }
         
         double fps = capture.get(cv::CAP_PROP_FPS);
+        fps = floorf(fps * 100) / 100;
         ac::fps = fps;
         second_w = aw;
         second_h = ah;
@@ -243,10 +245,11 @@ namespace cmd {
         if(skip_frames != 0)
             skip_stream << "skip frames: [" << skip_frames << "] ";
         
-        unsigned int frame_length = static_cast<unsigned int>((num_frames/fps));
-        if(fps_force != 0)
-            frame_length = static_cast<unsigned int>((num_frames/fps_force));
+        double frame_length = num_frames/fps;
         
+        if(fps_force != 0)
+            frame_length = (num_frames/fps_force);
+        frame_length = floorf(frame_length * 100) / 100;
         std::cout << "acidcam: input[" << input_file  << ((flip == true) ? " [flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] " << force_ << " fps[" << fps << "] length[" << frame_length << " seconds] " << skip_stream.str() << substream.str() << "format[" << file_type << "] " << img_str << "\n";
         
         if(video_files.size() > 0) {
@@ -484,7 +487,7 @@ namespace cmd {
         }
         if(percent_now == 99) percent_now = 100;
         setCursorPos(7+video_files.size()+2+filters.size(), 0);
-        std::cout << "acidcam: " << percent_now << "% Done wrote to file [" << output_file << "] format[" << file_type << "] Size: " << ((buf.st_size/1024)/1024) << " MB\n";
+        std::cout << "acidcam: Done wrote to file [" << output_file << "] format[" << file_type << "] Size: " << ((buf.st_size/1024)/1024) << " MB\n";
     }
     
     void AC_Program::setResolutionResize(int rw, int rh) {
