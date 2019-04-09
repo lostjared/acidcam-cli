@@ -12,6 +12,9 @@ Command Line Version of Acid Cam for Linux/Unix with OpenCV:
 
 Use Ctrl+C to break processing and still be able to use what has already been filtered.
 
+You can watch a tutorial here on how to compile for Linux:
+https://youtu.be/Gxuudn2zXtM
+
 To compile, first Install OpenCV if you are using debian you can do this with:
 
 	$ sudo apt-get install libopencv-dev g++ autoconf automake libtool git
@@ -104,60 +107,54 @@ List of the Different Color maps you can apply with -r:
 You can also apply a color key image 
 all the pixels in the image that have the color value 255,0,255 will contain the filtered data rest of the pixels will be the same
 
-
-If you install from .deb package the programs name is acidcam-cli to not conflict
-with name of Acid Cam Qt program name. To install download .deb for your platform and
-
-	$ sudo dpkg -i acidcam-cli*deb
-
 Once you have it installed you can use either .mov (quicktime) or .avi (xvid) for the filename extension.
 
 Example:
 
-	$ acidcam-cli -i input.mov -o output.mov -f 1,2,3
+	$ acidcam -i input.mov -o output.mov -f 1,2,3
 
 or resize video
 
-	$ acidcam-cli -i input.mov -o output.mov -f 1,2,3 -u 1920x1080
+	$ acidcam -i input.mov -o output.mov -f 1,2,3 -u 1920x1080
 
 Or to view progress:
 
-	$ acidcam-cli -i input.mov -o output.mov -f 0 -v
+	$ acidcam -i input.mov -o output.mov -f 0 -v
 
 To List filters:
 
-	$ acidcam-cli -l
+	$ acidcam -l
 
 To List plugins:
 
-	$ acidcam-cli -x
+	$ acidcam -x
 
 To use plugin:
 
-	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f plugin
+	$ acidcam -i input.mov -o output.mov -p path/to/shared.acf -f plugin
 
 Or use:
 
-	$ acidcam-cli -x
+	$ acidcam -x
 
 Lists the plugins found then use -n index
 
-	$ acidcam-cli -i input.mov -o output.mov -n 0 -f plugin
+	$ acidcam -i input.mov -o output.mov -n 0 -f plugin
 
 or Add other filters:
 
-	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f 0,plugin,1
+	$ acidcam -i input.mov -o output.mov -p path/to/shared.acf -f 0,plugin,1
 
 or Apply a color map:
 
-	$ acidcam-cli -i input.mov -o output.mov -f 28,1 -r 3
+	$ acidcam -i input.mov -o output.mov -f 28,1 -r 3
 	
 or Apply brightness/gamma/saturation
 
 	$ acidcam -i input.mov -o output.mov -b 100 -m 2 -s 25 -f 0,1
 
 
-A example of using acidcam-cli:
+A example of using acidcam:
 
 	$ acidcam -i jaredoffice.mov -o blend.mov -g pencil.nin.png -f 31,168 -a "peace.1080p.mov, test.mov" -e -r 3 -c 0,0,50
 
