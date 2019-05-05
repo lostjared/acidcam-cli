@@ -50,6 +50,7 @@
 #include<unistd.h>
 #include<dlfcn.h>
 #define APP_VERSION "v1.12.0"
+#include<metacall/metacall.h>
 
 namespace cmd {
     

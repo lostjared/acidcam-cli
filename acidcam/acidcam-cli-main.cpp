@@ -47,7 +47,6 @@
 #include<dirent.h>
 #include<vector>
 #include<sys/stat.h>
-#include<metacall/metacall.h>
 /* required to be declared in source file */
 /*
  Command Line Arguments
@@ -76,15 +75,14 @@
  */
 cmd::AC_Program program;
 std::string secondVideoFile;
+bool plugin_active = false;
 
 void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
 
+
 void plugin_callback(cv::Mat &frame) {
-    const char * py_scripts[] = {
-        "plugin.py"
-    };
-    if (metacall_load_from_file("py", py_scripts, sizeof(py_scripts) / sizeof(py_scripts[0]), NULL) == 0) {
+    if (plugin_active == true) {
         /* script loaded */
         void * result = metacall("sum", 4, 6);
         long ten = metacall_value_to_long(result);
@@ -450,8 +448,10 @@ int main(int argc, char **argv) {
                 case 'p': {
                     if(program.loadPlugin(optarg)) {
                         std::cout << "acidcam: Loaded plugin: " << optarg << "\n";
+                        plugin_active = true;
                     } else {
                         std::cerr << "acidcam: Could not load plugin... exiting...\n";
+                        plugin_active = false;
                         exit(EXIT_FAILURE);
                     }
                 }
