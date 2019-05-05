@@ -47,7 +47,7 @@
 #include<dirent.h>
 #include<vector>
 #include<sys/stat.h>
-
+#include<metacall/metacall.h>
 /* required to be declared in source file */
 /*
  Command Line Arguments
@@ -81,11 +81,15 @@ void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
 
 void plugin_callback(cv::Mat &frame) {
-    if(program.isPluginLoaded()) {
-    	program.callPlugin(frame);
-    } else {
-        std::cerr << "acidcam: Error no plugin loaded exiting...\n";
-        exit(EXIT_FAILURE);
+    const char * py_scripts[] = {
+        "plugin.py"
+    };
+    if (metacall_load_from_file("py", py_scripts, sizeof(py_scripts) / sizeof(py_scripts[0]), NULL) == 0) {
+        /* script loaded */
+        void * result = metacall("sum", 4, 6);
+        long ten = metacall_value_to_long(result);
+        std::cout << "Value is: " << ten << "\n";
+        metacall_value_destroy(result);
     }
 }
 
@@ -283,6 +287,11 @@ int main(int argc, char **argv) {
     bool visible = false;
     cmd::File_Type ftype;
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
+    
+    metacall_log_stdio_type log_stdio = { stdout };
+    metacall_log(METACALL_LOG_STDIO, (void *)&log_stdio);
+    metacall_initialize();
+    
     if(argc > 1) {
         int opt = 0;
         while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:R")) != -1) {
@@ -588,6 +597,7 @@ int main(int argc, char **argv) {
             program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";
+            metacall_destroy();
             exit(EXIT_FAILURE);
         }
     }
@@ -595,6 +605,7 @@ int main(int argc, char **argv) {
         std::cerr << "acidcam: Exception: " << e.what() << "\n";
     } catch(...) {
         std::cerr << "acidcam: Exception thrown...\n";
+        metacall_destroy();
         exit(EXIT_FAILURE);
     }
     return 0;

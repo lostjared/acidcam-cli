@@ -61,10 +61,15 @@ fi
 #echo "includes: $CV_INCLUDES $AC_CFLAGS"
 #echo "libraries:  $CV_LIBS $AC_LIBS"
 
+METACALL_CLFAGS="-I/usr/local/include"
+METACALL_LDFLAGS="-L/usr/local/lib -lmetacall"
+
 AC_SUBST(OPENCV_CFLAGS)
 AC_SUBST(CV_INCLUDES)
 AC_SUBST(CV_LIBS)
 AC_SUBST(AC_CFLAGS)
 AC_SUBST(AC_LIBS)
+AC_SUBST(METACALL_CFLAGS)
+AC_SUBST(METACALL_LDFLAGS)
 
 AC_OUTPUT(Makefile acidcam/Makefile)
