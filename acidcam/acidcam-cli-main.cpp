@@ -84,10 +84,11 @@ void listPlugins(std::string path, std::vector<std::string> &files);
 void plugin_callback(cv::Mat &frame) {
     if (plugin_active == true) {
         /* script loaded */
+        /*
         void * result = metacall("sum", 4, 6);
         long ten = metacall_value_to_long(result);
         std::cout << "Value is: " << ten << "\n";
-        metacall_value_destroy(result);
+        metacall_value_destroy(result); */
     }
 }
 
