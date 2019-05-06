@@ -83,12 +83,26 @@ void listPlugins(std::string path, std::vector<std::string> &files);
 
 void plugin_callback(cv::Mat &frame) {
     if (plugin_active == true) {
-        /* script loaded */
-        /*
-        void * result = metacall("sum", 4, 6);
-        long ten = metacall_value_to_long(result);
-        std::cout << "Value is: " << ten << "\n";
-        metacall_value_destroy(result); */
+        void *ret = 0;
+        // initalize buffer with pixel data
+        void *buffer = frame.ptr();
+        int size_w = frame.cols, size_h = frame.rows;
+        // get pointer to allocated memory;
+        void * buffer_value = metacall_value_create_buffer((void *)buffer,size_w*size_h*3);
+        void * args[] = {
+            buffer_value // pass buffer_value
+        };
+        // call the function with arguments
+        ret = metacallv("bytebuff", args);
+        // destroy buffer_value
+        metacall_value_destroy(buffer_value);
+        // allocate memory from ret
+        void *buf = metacall_value_to_buffer(ret);
+        // rebuild mat
+        cv::Mat output(frame.rows, frame.cols, CV_8UC3, buf);
+        frame = output.clone();
+        // destroy memory
+        metacall_value_destroy(ret);
     }
 }
 
@@ -243,7 +257,7 @@ void listPlugins(std::string path, std::vector<std::string> &files) {
             continue;
         }
         if(f_info.length()>0 && f_info[0] != '.') {
-            if(fullpath.rfind(".acf") != std::string::npos) {
+            if(fullpath.rfind(".py") != std::string::npos) {
             	files.push_back(fullpath);
                 continue;
             }
