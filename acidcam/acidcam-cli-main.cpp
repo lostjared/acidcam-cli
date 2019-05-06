@@ -80,7 +80,6 @@ bool plugin_active = false;
 void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
 
-
 void plugin_callback(cv::Mat &frame) {
     if (plugin_active == true) {
         void *ret = 0;
@@ -88,7 +87,9 @@ void plugin_callback(cv::Mat &frame) {
         void *buffer = frame.ptr();
         int size_w = frame.cols, size_h = frame.rows;
         // get pointer to allocated memory;
-        void * buffer_value = metacall_value_create_buffer((void *)buffer,size_w*size_h*3);
+        assert(frame.rows * frame.cols * frame.channels() == frame.channels() * frame.total());
+        
+        void * buffer_value = metacall_value_create_buffer((void *)buffer,frame.channels() * frame.total());
         void * args[] = {
             buffer_value // pass buffer_value
         };
@@ -99,8 +100,8 @@ void plugin_callback(cv::Mat &frame) {
         // allocate memory from ret
         void *buf = metacall_value_to_buffer(ret);
         // rebuild mat
-        cv::Mat output(frame.rows, frame.cols, CV_8UC3, buf);
-        frame = output.clone();
+        //cv::Mat output(frame.rows, frame.cols, CV_8UC3, buf);
+        //frame = output.clone();
         // destroy memory
         metacall_value_destroy(ret);
     }
