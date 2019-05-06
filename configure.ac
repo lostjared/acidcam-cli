@@ -30,18 +30,21 @@ fi
 CV_INCLUDES=$OPENCV_CFLAGS
 CV_LIBS=$OPENCV_LIBS
 PKG_CHECK_MODULES(ACIDCAM, acidcam, found=1, found=0)
+
 if test $found = 0; then
 AC_MSG_ERROR(Error could not find libacidcam pkg-config file is it installed?)
 else
 echo "libacidcam Found!"
 fi
+
 AC_CFLAGS=$ACIDCAM_CFLAGS
 AC_LIBS=$ACIDCAM_LIBS
-if test $found = 0; then
-AC_MSG_ERROR(Error could not find OpenCV pkg-config file is it installed?)
-else
-echo "OpenCV Found!"
-fi
+
+#if test $found = 0; then
+#AC_MSG_ERROR(Error could not find OpenCV pkg-config file is it installed?)
+#else
+#echo "OpenCV Found!"
+#fi
 
 #CV_INCLUDES=`pkg-config opencv --cflags`
 #CV_LIBS=`pkg-config opencv --libs`
