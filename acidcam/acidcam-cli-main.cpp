@@ -87,21 +87,18 @@ void plugin_callback(cv::Mat &frame) {
         void *buffer = frame.ptr();
         int size_w = frame.cols, size_h = frame.rows;
         // get pointer to allocated memory;
-        assert(frame.rows * frame.cols * frame.channels() == frame.channels() * frame.total());
-        
         void * buffer_value = metacall_value_create_buffer((void *)buffer,frame.channels() * frame.total());
         void * args[] = {
             buffer_value // pass buffer_value
         };
         // call the function with arguments
-        ret = metacallv("bytebuff", args);
+        ret = metacallv("filter", args);
         // destroy buffer_value
         metacall_value_destroy(buffer_value);
         // allocate memory from ret
         void *buf = metacall_value_to_buffer(ret);
-        // rebuild mat
-        //cv::Mat output(frame.rows, frame.cols, CV_8UC3, buf);
-        //frame = output.clone();
+        assert(buf != 0);
+        frame = cv::Mat(frame.rows, frame.cols, CV_8UC3, buf);
         // destroy memory
         metacall_value_destroy(ret);
     }
