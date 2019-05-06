@@ -81,6 +81,7 @@ void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
 
 void plugin_callback(cv::Mat &frame) {
+#if METACALL_ENABLED == 1
     if (plugin_active == true) {
         void *ret = 0;
         // initalize buffer with pixel data
@@ -102,6 +103,7 @@ void plugin_callback(cv::Mat &frame) {
         // destroy memory
         metacall_value_destroy(ret);
     }
+#endif
 }
 
 template<typename F>
@@ -298,11 +300,11 @@ int main(int argc, char **argv) {
     bool visible = false;
     cmd::File_Type ftype;
     int bright_ = 0, gamma_ = 0, sat_ = 0, color_m = 0;
-    
+#if METACALL_ENABLED == 1
     metacall_log_stdio_type log_stdio = { stdout };
     metacall_log(METACALL_LOG_STDIO, (void *)&log_stdio);
     metacall_initialize();
-    
+#endif
     if(argc > 1) {
         int opt = 0;
         while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:R")) != -1) {
@@ -610,7 +612,9 @@ int main(int argc, char **argv) {
             program.run();
         } else {
             std::cerr << "acidcam: Start of program failed..\n";
+#if METACALL_ENABLED == 1
             metacall_destroy();
+#endif
             exit(EXIT_FAILURE);
         }
     }
@@ -618,7 +622,9 @@ int main(int argc, char **argv) {
         std::cerr << "acidcam: Exception: " << e.what() << "\n";
     } catch(...) {
         std::cerr << "acidcam: Exception thrown...\n";
+#if METACALL_ENABLED == 1
         metacall_destroy();
+#endif
         exit(EXIT_FAILURE);
     }
     return 0;

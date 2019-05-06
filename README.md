@@ -33,6 +33,12 @@ Then download this archive and enter the directory you extracted to in the termi
 
 	$ ./autogen.sh && ./configure && make && sudo make install
 
+If you wish to use Python scripts for filters:
+First download and install Metacall http://github.com/metacall install
+then configure and compile.
+
+	$ ./autogen.sh && ./configure --enable-metacall && make && sudo make install
+
 After you do that if everything goes according to plan you can test it with:
 
 	$ acidcam -l

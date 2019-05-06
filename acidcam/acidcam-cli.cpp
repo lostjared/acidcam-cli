@@ -153,12 +153,14 @@ namespace cmd {
     }
     
     bool AC_Program::loadPlugin(const std::string &s) {
+#if METACALL_ENABLED == 1
         const char * py_scripts[] = {
             s.c_str(),
         };
         if (metacall_load_from_file("py", py_scripts, sizeof(py_scripts) / sizeof(py_scripts[0]), NULL) == 0) {
             return true;
         }
+#endif
         return false;
     }
     
