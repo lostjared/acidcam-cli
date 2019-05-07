@@ -67,9 +67,9 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-c R,G,B [value RGB offsets]
 	
-	-p plugin.acf [plugin written in C++ see plugins folder]
+	-p plugin.py [plugin written in Python see plugins folder]
 
-	-x [list plugins in current directory (end with .ac)]
+	-x [list plugins in current directory (end with .py)]
 	
 	-n index [uses plugin index from list printed out with -x]
 
@@ -92,6 +92,8 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 	-F frame_rate force output frame rate
 
 	-I frames skip any number of frames outputted to file
+
+	-P path for metacall install
 
 List of the Different Color maps you can apply with -r:
 
