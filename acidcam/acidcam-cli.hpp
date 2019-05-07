@@ -49,7 +49,7 @@
 #include<algorithm>
 #include<unistd.h>
 #include<dlfcn.h>
-#define APP_VERSION "v1.12.0"
+#define APP_VERSION "v1.13.0"
 #if defined(HAVE_CONFIG_H)
 #include<config.h>
 #endif

@@ -46,7 +46,6 @@ After you do that if everything goes according to plan you can test it with:
 
 Remember to put quotes around arguments that use spaces for like file names etc..
 
-
  Command Line Arguments
 
 	-l [List filters]
@@ -93,7 +92,7 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-I frames skip any number of frames outputted to file
 
-	-P path for metacall install
+	-P path for metacall install location (usually /usr/local)
 
 List of the Different Color maps you can apply with -r:
 
@@ -165,4 +164,8 @@ or Apply brightness/gamma/saturation
 A example of using acidcam:
 
 	$ acidcam -i jaredoffice.mov -o blend.mov -g pencil.nin.png -f 31,168 -a "peace.1080p.mov, test.mov" -e -r 3 -c 0,0,50
+
+Another Example:
+
+	$ acidcam -i videofile.mov -o videooutput.mov -P /usr/local -n 0 -f plugin
 
