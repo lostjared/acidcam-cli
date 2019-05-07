@@ -307,7 +307,7 @@ int main(int argc, char **argv) {
 #endif
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:R")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:")) != -1) {
             switch(opt) {
                 case 'h':
                     output_software_info(argv[0]);
@@ -461,6 +461,10 @@ int main(int argc, char **argv) {
                     visible = true;
                     break;
                 case 'p': {
+#if METACALL_ENABLED == 1
+                    std::string dir = optarg;
+                    std::string path = dir.substr(0, dir.rfind("/"));
+                    setenv("LOADER_SCRIPT_PATH", path.c_str(), 1);
                     if(program.loadPlugin(optarg)) {
                         std::cout << "acidcam: Loaded plugin: " << optarg << "\n";
                         plugin_active = true;
@@ -470,8 +474,10 @@ int main(int argc, char **argv) {
                         exit(EXIT_FAILURE);
                     }
                 }
+#endif
                     break;
                 case 'x': {
+#if METACALL_ENABLED == 1
                     std::vector<std::string> v;
                     listPlugins(".", v);
                     if(v.size() > 0) {
@@ -481,23 +487,44 @@ int main(int argc, char **argv) {
                         }
                         
                     } else {
-                        std::cout << "acidcam: No plugins fond\n";
+                        std::cout << "acidcam: No plugins found\n";
                     }
                     exit(EXIT_SUCCESS);
                 }
+#endif
                     break;
                 case 'n': {
+#if METACALL_ENABLED == 1
                     std::vector<std::string> v;
                     listPlugins(".", v);
                     int plug = atoi(optarg);
                     if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
-                        if(program.loadPlugin(v[plug])) {
+                        std::string dir = v[plug];
+                        std::string path = dir.substr(0, dir.rfind("/"));
+                        setenv("LOADER_SCRIPT_PATH", path.c_str(), 1);
+                        std::string script_name=v[plug].substr(v[plug].rfind("/")+1, v[plug].length());
+                        if(program.loadPlugin(script_name)) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
+                            plugin_active = true;
                         } else {
                             std::cerr << "acidcam: Error could not load plugin: " << v[plug] << "\n";
+                            plugin_active = false;
                         }
                     }
+#endif
                 }
+                    break;
+                case 'P': {
+#if METACALL_ENABLED == 1
+                    std::string path = optarg;
+                    std::string lib_folder = path+"/lib";
+                    std::string share_folder = path+"/share/metacall/configurations/global.json";
+                    setenv("CONFIGURATION_PATH", share_folder.c_str(), 1);
+                    setenv("LOADER_LIBRARY_PATH", lib_folder.c_str(), 1);
+                    setenv("SERIAL_LIBRARY_PATH", lib_folder.c_str(), 1);
+                    setenv("DETOUR_LIBRARY", lib_folder.c_str(), 1);
+                }
+#endif
                     break;
                 case 'g':
                     blend_image = cv::imread(optarg);
@@ -605,7 +632,6 @@ int main(int argc, char **argv) {
             }
         }
         if(program.initProgram(ftype, visible, input, output,filter_list, col, color_m)) {
-            
             program.setBrightness(bright_);
             program.setGamma(gamma_);
             program.setSaturation(sat_);
