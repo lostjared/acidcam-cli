@@ -471,11 +471,12 @@ int main(int argc, char **argv) {
                     break;
                 case 'p': {
 #if METACALL_ENABLED == 1
+                    /*
                     std::string dir = optarg;
                     std::string path = dir.substr(0, dir.rfind("/"));
                     std::string script_name=dir.substr(dir.rfind("/")+1, dir.length());
-                    //setenv("LOADER_SCRIPT_PATH", path.c_str(), 1);
-                    if(program.loadPlugin(script_name)) {
+                    //setenv("LOADER_SCRIPT_PATH", path.c_str(), 1); */
+                    if(program.loadPlugin(optarg)) {
                         std::cout << "acidcam: Loaded plugin: " << optarg << "\n";
                         plugin_active = true;
                     } else {
@@ -509,13 +510,7 @@ int main(int argc, char **argv) {
                     listPlugins(".", v);
                     int plug = atoi(optarg);
                     if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
-                        std::string dir = v[plug];
-                        std::string path = dir.substr(0, dir.rfind("/"));
-                        //setenv("LOADER_SCRIPT_PATH", path.c_str(), 1);
-                        std::string script_name=v[plug].substr(v[plug].rfind("/")+1, v[plug].length());
-                        std::cout << script_name << "\n";
-                        exit(0);
-                        if(program.loadPlugin(script_name)) {
+                        if(program.loadPlugin(v[plug])) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
                             plugin_active = true;
                         } else {

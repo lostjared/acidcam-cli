@@ -155,10 +155,13 @@ namespace cmd {
     bool AC_Program::loadPlugin(const std::string &s) {
         if(s.find(".py") != std::string::npos) {
 #if METACALL_ENABLED == 1
-            std::cout << "Attempting to load: " << s << "\n";
-        const char * py_scripts[] = {
-            s.c_str(),
-        };
+            std::string dir = s;
+            std::string path = dir.substr(0, dir.rfind("/"));
+            std::string script_name=s.substr(s.rfind("/")+1, s.length());
+            std::cout << "Attempting to load: " << script_name << "\n";
+            const char * py_scripts[] = {
+                script_name.c_str(),
+            };
         if (metacall_load_from_file("py", py_scripts, sizeof(py_scripts) / sizeof(py_scripts[0]), NULL) == 0) {
             return true;
         }
