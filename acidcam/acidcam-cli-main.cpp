@@ -90,8 +90,20 @@ void plugin_callback(cv::Mat &frame) {
         // get pointer to allocated memory;
         void * buffer_value = metacall_value_create_buffer((void *)buffer,frame.channels() * frame.total());
         void * args[] = {
-            buffer_value // pass buffer_value
+            buffer_value
         };
+        
+        static int value_set = 0;
+        if(value_set == 0) {
+            ret = metacall("array_size", frame.cols, frame.rows);
+            long value = metacall_value_to_long(ret);
+            if(value != 0) {
+                std::cerr << "acidcam: array_size should return 0.\n";
+                exit(EXIT_FAILURE);
+            }
+            metacall_value_destroy(ret);
+            value_set = 1;
+        }
         // call the function with arguments
         ret = metacallv("filter", args);
         // destroy buffer_value
@@ -471,11 +483,6 @@ int main(int argc, char **argv) {
                     break;
                 case 'p': {
 #if METACALL_ENABLED == 1
-                    /*
-                    std::string dir = optarg;
-                    std::string path = dir.substr(0, dir.rfind("/"));
-                    std::string script_name=dir.substr(dir.rfind("/")+1, dir.length());
-                    //setenv("LOADER_SCRIPT_PATH", path.c_str(), 1); */
                     if(program.loadPlugin(optarg)) {
                         std::cout << "acidcam: Loaded plugin: " << optarg << "\n";
                         plugin_active = true;
