@@ -1,7 +1,5 @@
 import random
 
-import random
-
 def array_size(width: int, height: int) -> int:
     global screen_width
     global screen_height
