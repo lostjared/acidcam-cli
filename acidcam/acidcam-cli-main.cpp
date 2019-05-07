@@ -102,8 +102,12 @@ void plugin_callback(cv::Mat &frame) {
         frame = cv::Mat(frame.rows, frame.cols, CV_8UC3, buf);
         // destroy memory
         metacall_value_destroy(ret);
+        return;
     }
 #endif
+    if(program.isPluginLoaded() && plugin_active == false) {
+        program.callPlugin(frame);
+    }
 }
 
 template<typename F>
@@ -257,7 +261,7 @@ void listPlugins(std::string path, std::vector<std::string> &files) {
             continue;
         }
         if(f_info.length()>0 && f_info[0] != '.') {
-            if(fullpath.rfind(".py") != std::string::npos) {
+            if((fullpath.rfind(".py") != std::string::npos) || (fullpath.rfind(".acf") != std::string::npos)) {
             	files.push_back(fullpath);
                 continue;
             }
@@ -312,7 +316,7 @@ int main(int argc, char **argv) {
 #endif
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:")) != -1) {
             switch(opt) {
                 case 'h':
                     output_software_info(argv[0]);
@@ -469,8 +473,9 @@ int main(int argc, char **argv) {
 #if METACALL_ENABLED == 1
                     std::string dir = optarg;
                     std::string path = dir.substr(0, dir.rfind("/"));
-                    setenv("LOADER_SCRIPT_PATH", path.c_str(), 1);
-                    if(program.loadPlugin(optarg)) {
+                    std::string script_name=dir.substr(dir.rfind("/")+1, dir.length());
+                    //setenv("LOADER_SCRIPT_PATH", path.c_str(), 1);
+                    if(program.loadPlugin(script_name)) {
                         std::cout << "acidcam: Loaded plugin: " << optarg << "\n";
                         plugin_active = true;
                     } else {
@@ -498,7 +503,7 @@ int main(int argc, char **argv) {
                 }
 #endif
                     break;
-                case 'n': {
+                case 'E': {
 #if METACALL_ENABLED == 1
                     std::vector<std::string> v;
                     listPlugins(".", v);
@@ -506,8 +511,10 @@ int main(int argc, char **argv) {
                     if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
                         std::string dir = v[plug];
                         std::string path = dir.substr(0, dir.rfind("/"));
-                        setenv("LOADER_SCRIPT_PATH", path.c_str(), 1);
+                        //setenv("LOADER_SCRIPT_PATH", path.c_str(), 1);
                         std::string script_name=v[plug].substr(v[plug].rfind("/")+1, v[plug].length());
+                        std::cout << script_name << "\n";
+                        exit(0);
                         if(program.loadPlugin(script_name)) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
                             plugin_active = true;
@@ -516,7 +523,20 @@ int main(int argc, char **argv) {
                             plugin_active = false;
                         }
                     }
+                }
 #endif
+                    break;
+                case 'n': {
+                    std::vector<std::string> v;
+                    listPlugins(".", v);
+                    int plug = atoi(optarg);
+                    if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
+                        if(program.loadPlugin(v[plug])) {
+                            std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
+                        } else {
+                            std::cerr << "acidcam: Error could not load plugin: " << v[plug] << "\n";
+                        }
+                    }
                 }
                     break;
                 case 'P': {

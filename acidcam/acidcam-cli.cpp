@@ -153,14 +153,32 @@ namespace cmd {
     }
     
     bool AC_Program::loadPlugin(const std::string &s) {
+        if(s.find(".py") != std::string::npos) {
 #if METACALL_ENABLED == 1
+            std::cout << "Attempting to load: " << s << "\n";
         const char * py_scripts[] = {
             s.c_str(),
         };
         if (metacall_load_from_file("py", py_scripts, sizeof(py_scripts) / sizeof(py_scripts[0]), NULL) == 0) {
             return true;
         }
+#else
+            std::cerr << "Error Python Not Enabled...\n";
+            exit(EXIT_FAILURE);
 #endif
+        } else {
+            library = dlopen(s.c_str(), RTLD_LAZY);
+            if(library == NULL)
+                return false;
+            
+            void *addr = dlsym(library, "filter");
+            const char *err = dlerror();
+            if(err) {
+                std::cerr << "Could not locate function: filter in " << s << "\n";
+                return false;
+            }
+            plugin = reinterpret_cast<plugin_filter>(addr);
+        }
         return false;
     }
     
