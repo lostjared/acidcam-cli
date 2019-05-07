@@ -40,19 +40,6 @@ fi
 AC_CFLAGS=$ACIDCAM_CFLAGS
 AC_LIBS=$ACIDCAM_LIBS
 
-#if test $found = 0; then
-#AC_MSG_ERROR(Error could not find OpenCV pkg-config file is it installed?)
-#else
-#echo "OpenCV Found!"
-#fi
-
-#CV_INCLUDES=`pkg-config opencv --cflags`
-#CV_LIBS=`pkg-config opencv --libs`
-#echo "includes: $CV_INCLUDES $AC_CFLAGS"
-#echo "libraries:  $CV_LIBS $AC_LIBS"
-
-
-
 META_PATH="/usr/local"
 
 if test ${prefix} != "NONE"; then
@@ -75,10 +62,6 @@ else
 	METACALL_CLFAGS=
 	METACALL_LDFLAGS=
 fi
-
-
-#METACALL_CLFAGS="-I/usr/local/include"
-#METACALL_LDFLAGS="-L/usr/local/lib -lmetacall"
 
 AC_SUBST(OPENCV_CFLAGS)
 AC_SUBST(CV_INCLUDES)
