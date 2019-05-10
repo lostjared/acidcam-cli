@@ -491,8 +491,9 @@ int main(int argc, char **argv) {
                         plugin_active = false;
                         exit(EXIT_FAILURE);
                     }
-                }
 #endif
+
+                }
                     break;
                 case 'x': {
 #if METACALL_ENABLED == 1
@@ -508,8 +509,8 @@ int main(int argc, char **argv) {
                         std::cout << "acidcam: No plugins found\n";
                     }
                     exit(EXIT_SUCCESS);
-                }
 #endif
+                }
                     break;
                 case 'E': {
 #if METACALL_ENABLED == 1
@@ -525,8 +526,9 @@ int main(int argc, char **argv) {
                             plugin_active = false;
                         }
                     }
-                }
 #endif
+                }
+
                     break;
                 case 'n': {
                     std::vector<std::string> v;
@@ -550,8 +552,8 @@ int main(int argc, char **argv) {
                     setenv("LOADER_LIBRARY_PATH", lib_folder.c_str(), 1);
                     setenv("SERIAL_LIBRARY_PATH", lib_folder.c_str(), 1);
                     setenv("DETOUR_LIBRARY", lib_folder.c_str(), 1);
-                }
 #endif
+                }
                     break;
                 case 'g':
                     blend_image = cv::imread(optarg);
