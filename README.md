@@ -98,6 +98,8 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-P path for metacall install location (usually /usr/local)
 
+	-T thread count for Multithreaded filters (default is 4)
+
 List of the Different Color maps you can apply with -r:
 
 	1 Autum

@@ -72,6 +72,7 @@
  -A concat add type set to Add
  -R stretch resize
  -u reszie
+ -T set number of threads for mulithreaded filters
  */
 cmd::AC_Program program;
 std::string secondVideoFile;
@@ -302,7 +303,7 @@ bool parseRes(const std::string &text, int &fw, int &fh) {
 }
 
 void output_software_info(std::string name) {
-    std::cout << name << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-x list plugins in path\n-n plugin index\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-C add together by scale of how many videos\n-O Use or to concat multiple videos\n-N use and to concat multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n-R stretch on resize\n-F force fps\n-I skip frames\n";
+    std::cout << name << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-x list plugins in path\n-n plugin index\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-C add together by scale of how many videos\n-O Use or to concat multiple videos\n-N use and to concat multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n-R stretch on resize\n-F force fps\n-I skip frames\n-T Set thread count (default is 4)\n";
     
 #if METACALL_ENABLED
     std::cout << "-P set python script path\n";
@@ -329,7 +330,7 @@ int main(int argc, char **argv) {
 #endif
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:")) != -1) {
             switch(opt) {
                 case 'h':
                     output_software_info(argv[0]);
@@ -629,6 +630,13 @@ int main(int argc, char **argv) {
                         std::cerr << "acidcam: Requires to skip at least 2 frames\n";
                         exit(0);
                     }
+                }
+                    break;
+                case 'T': {
+                    int num = atoi(optarg);
+                    if(num >= 1)
+                        ac::setThreadCount(num);
+                    std::cout << "acidcam: Thread count set to: " << num << "\n";
                 }
                     break;
                 default:
