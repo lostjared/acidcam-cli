@@ -313,6 +313,7 @@ void output_software_info(std::string name) {
 /* main function */
 int main(int argc, char **argv) {
     ac::fill_filter_map();
+    ac::setThreadCount(4);
     std::vector<std::string> files_list;
     ac::setPlugin(plugin_callback);
     std::string input,output;
