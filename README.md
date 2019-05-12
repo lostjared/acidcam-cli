@@ -39,7 +39,7 @@ then configure and compile.
 
 	$ ./autogen.sh && ./configure --enable-metacall && make && sudo make install
 
-If are going to use acidcam with Metacall you need to set the shell envoriment variable LOADER_SCRPT_PATH to the path with the python code you want to use an example:
+If are going to use acidcam with Metacall you need to set the shell envoriment variable LOADER_SCRIPT_PATH to the path with the python code you want to use an example:
 
 	$ export LOADER_SCRIPT_PATH=/home/jared/scripts
 
