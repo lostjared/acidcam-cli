@@ -6,7 +6,7 @@ This project was created in hopes of providing some entertainment, or for the Gl
 
 I call the art that I create with Acid Cam an Acid Glitch, but you can call it whatever you want. It is just meant to be a tool to use with other programs to help aid in the creation of artistic images/videos.
 
-Acid Cam's effects are created by using Acid Cam 'filters', or pieces of code that distort an image and can be combined to produce some interesting results. The project currently has 200 filters to mix and match.
+Acid Cam's effects are created by using Acid Cam 'filters', or pieces of code that distort an image and can be combined to produce some interesting results. The project currently has over 1,000 filters to mix and match.
 
 Command Line Version of Acid Cam for Linux/Unix with OpenCV:
 
