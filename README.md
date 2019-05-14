@@ -35,7 +35,7 @@ Then download this archive and enter the directory you extracted to in the termi
 
 If you wish to use Python scripts for filters:
 First download and install Metacall http://github.com/metacall install
-then configure and compile.
+then configure and compile. You will also need to install the Metacall python module with pip3
 
 	$ ./autogen.sh && ./configure --enable-metacall && make && sudo make install
 
@@ -43,10 +43,13 @@ If are going to use acidcam with Metacall you need to set the shell envoriment v
 
 	$ export LOADER_SCRIPT_PATH=/home/jared/scripts
 
+Also set the library path for the metacall shared object files (.so)
+
+	$ export PORT_LIBRARY_PATH=/usr/local/lib
+
 After you do that if everything goes according to plan you can test it with:
 
 	$ acidcam -l
-
 
 Remember to put quotes around arguments that use spaces for like file names etc..
 
