@@ -1,4 +1,6 @@
-import random
+import random, sys
+sys.path.append("/usr/local/lib")
+from metacall import metacall
 
 def array_size(width: int, height: int) -> int:
     global screen_width
@@ -9,13 +11,10 @@ def array_size(width: int, height: int) -> int:
     pitch_value = width*3
     return 0
 
-def filter(data: bytes) -> bytes:
-    mutable_bytes = bytearray(data)
+def filter(matrix):
     for z in range(0, screen_height-1):
         for i in range(0, screen_width-1):
-            mutable_bytes[(z * pitch_value)+(i*3)] = random.randint(0, 255) # B
-            mutable_bytes[(z * pitch_value)+(i*3)+1] = random.randint(0, 255) # G
-            mutable_bytes[(z * pitch_value)+(i*3)+2] = random.randint(0, 255) # R
-    return bytes(mutable_bytes)
+            metacall('matrix_setpixel',matrix, i, z, 0)
+    return 0
 
 

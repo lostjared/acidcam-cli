@@ -81,19 +81,24 @@ bool plugin_active = false;
 void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
 
+#if METACALL_ENABLED == 1
+
+void *matrixSetPixel(void *args[]) {
+    cv::Mat *type = (cv::Mat*)metacall_value_to_ptr(args[0]);
+    long x = metacall_value_to_long(args[1]);
+    long y = metacall_value_to_long(args[2]);
+    int color_value = metacall_value_to_int(args[3]);
+    const unsigned char *bgr = (const unsigned char*)&color_value;
+    type->at<cv::Vec3b>(y, x) = cv::Vec3b(bgr[0], bgr[1], bgr[2]);
+    return metacall_value_create_ptr((void*)type);
+}
+
+#endif
+
 void plugin_callback(cv::Mat &frame) {
 #if METACALL_ENABLED == 1
     if (plugin_active == true) {
         void *ret = 0;
-        // initalize buffer with pixel data
-        void *buffer = frame.ptr();
-        int size_w = frame.cols, size_h = frame.rows;
-        // get pointer to allocated memory;
-        void * buffer_value = metacall_value_create_buffer((void *)buffer,frame.channels() * frame.total());
-        void * args[] = {
-            buffer_value
-        };
-        
         static int value_set = 0;
         if(value_set == 0) {
             ret = metacall("array_size", frame.cols, frame.rows);
@@ -105,15 +110,11 @@ void plugin_callback(cv::Mat &frame) {
             metacall_value_destroy(ret);
             value_set = 1;
         }
-        // call the function with arguments
-        ret = metacallv("filter", args);
-        // destroy buffer_value
-        metacall_value_destroy(buffer_value);
-        // allocate memory from ret
-        void *buf = metacall_value_to_buffer(ret);
-        assert(buf != 0);
-        frame = cv::Mat(frame.rows, frame.cols, CV_8UC3, buf);
-        // destroy memory
+        const enum metacall_value_id ids[] =
+        {
+            METACALL_PTR
+        };
+        ret = metacallt("filter", ids, (void*)&frame);
         metacall_value_destroy(ret);
         return;
     }
@@ -487,6 +488,7 @@ int main(int argc, char **argv) {
 #if METACALL_ENABLED == 1
                     if(program.loadPlugin(optarg)) {
                         std::cout << "acidcam: Loaded plugin: " << optarg << "\n";
+                        metacall_register("matrix_setpixel", matrixSetPixel, METACALL_PTR,4, METACALL_PTR, METACALL_LONG, METACALL_LONG, METACALL_INT);
                         plugin_active = true;
                     } else {
                         std::cerr << "acidcam: Could not load plugin... exiting...\n";
@@ -523,6 +525,7 @@ int main(int argc, char **argv) {
                         if(program.loadPlugin(v[plug])) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
                             plugin_active = true;
+                            metacall_register("matrix_setpixel", matrixSetPixel, METACALL_PTR, 4, METACALL_PTR, METACALL_LONG, METACALL_LONG, METACALL_INT);
                         } else {
                             std::cerr << "acidcam: Error could not load plugin: " << v[plug] << "\n";
                             plugin_active = false;
