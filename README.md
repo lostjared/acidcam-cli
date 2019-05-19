@@ -53,6 +53,9 @@ After you do that if everything goes according to plan you can test it with:
 
 	$ acidcam -l
 
+
+NOTE: Some of the filters that contain either a 720 or 1080 at the end require a lot of ram if you do not have enough the program will exit.
+
 Remember to put quotes around arguments that use spaces for like file names etc..
 
  Command Line Arguments
