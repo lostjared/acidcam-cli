@@ -304,7 +304,9 @@ bool parseRes(const std::string &text, int &fw, int &fh) {
 }
 
 void output_software_info(std::string name) {
-    std::cout << name << " " << APP_VERSION << " filters version: " << ac::version << "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-x list plugins in path\n-n plugin index\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-C add together by scale of how many videos\n-O Use or to concat multiple videos\n-N use and to concat multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n-R stretch on resize\n-F force fps\n-I skip frames\n-T Set thread count (default is 4)\n";
+    std::cout << name << " " << APP_VERSION << " filters version: " << ac::version <<
+    ((ac::OpenCL_Enabled()) ? "\nOpenCL Enabled." : "\nOpenCL Not Enabled") <<
+    "\n\nCommand Line Arguments\n-l List filters\n-L list filters sorted by name\n-i input video\n-o output video\n-f filter list\n-v image visible\n-c r,g,b set colors\n-p plugin\n-x list plugins in path\n-n plugin index\n-g image file for blend with image filters\n-b brightness\n-m gamma\n-s saturation\n-r colormap\n-k color key image\n-a additional videos\n-A add together frames for multiple video files.\n-C add together by scale of how many videos\n-O Use or to concat multiple videos\n-N use and to concat multiple video files.\n-X Xor frames for multiple video files.\n-e source flip video frame\n-S subfilter\n-u Resolution ex: 1920x1080\n-R stretch on resize\n-F force fps\n-I skip frames\n-T Set thread count (default is 4)\n";
     
 #if METACALL_ENABLED
     std::cout << "-P set python script path\n";
