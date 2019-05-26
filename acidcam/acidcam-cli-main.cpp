@@ -82,17 +82,49 @@ void custom_filter(cv::Mat &frame) {}
 void listPlugins(std::string path, std::vector<std::string> &files);
 
 #if METACALL_ENABLED == 1
+void init_metacall();
+void *matrix_SetPixel(void *args[]);
+void *matrix_GetPixel(void *args[]);
+void *matrix_SetPixelBGR(void *args[]);
 
-void *matrixSetPixel(void *args[]) {
+void init_metacall() {
+    metacall_register("matrix_setpixel", matrix_SetPixel, METACALL_PTR,4, METACALL_PTR, METACALL_INT, METACALL_INT, METACALL_INT);
+    metacall_register("matrix_setpixel_bgr", matrix_SetPixelBGR, METACALL_PTR,6, METACALL_PTR, METACALL_INT, METACALL_INT, METACALL_INT, METACALL_INT, METACALL_INT);
+    
+    metacall_register("matrix_getpixel", matrix_GetPixel, METACALL_ARRAY, 3, METACALL_PTR, METACALL_INT, METACALL_INT);
+}
+
+void *matrix_SetPixel(void *args[]) {
     cv::Mat *type = (cv::Mat*)metacall_value_to_ptr(args[0]);
-    long x = metacall_value_to_long(args[1]);
-    long y = metacall_value_to_long(args[2]);
+    int x = metacall_value_to_int(args[1]);
+    int y = metacall_value_to_int(args[2]);
     int color_value = metacall_value_to_int(args[3]);
     const unsigned char *bgr = (const unsigned char*)&color_value;
     type->at<cv::Vec3b>(y, x) = cv::Vec3b(bgr[0], bgr[1], bgr[2]);
     return metacall_value_create_ptr((void*)type);
 }
 
+void *matrix_SetPixelBGR(void *args[]) {
+    cv::Mat *type = (cv::Mat*)metacall_value_to_ptr(args[0]);
+    int x = metacall_value_to_int(args[1]);
+    int y = metacall_value_to_int(args[2]);
+    int color_value[3];
+    color_value[0] = metacall_value_to_int(args[3]);
+    color_value[1] = metacall_value_to_int(args[4]);
+    color_value[2] = metacall_value_to_int(args[5]);
+    cv::Vec3b pixel(color_value[0], color_value[1], color_value[2]);
+    type->at<cv::Vec3b>(y, x) = pixel;
+    return metacall_value_create_ptr((void*)type);
+}
+
+void *matrix_GetPixel(void *args[]) {
+    cv::Mat *type = (cv::Mat*)metacall_value_to_ptr(args[0]);
+    int x = metacall_value_to_int(args[1]);
+    int y = metacall_value_to_int(args[2]);
+    cv::Vec3b color_v = type->at<cv::Vec3b>(y, x);
+    void *array[] = {metacall_value_create_char(color_v[0]), metacall_value_create_char(color_v[1]),metacall_value_create_char(color_v[2])};
+    return metacall_value_create_array((const void **)array, sizeof(array)/sizeof(array[0]));
+}
 #endif
 
 void plugin_callback(cv::Mat &frame) {
@@ -330,6 +362,7 @@ int main(int argc, char **argv) {
     metacall_log_stdio_type log_stdio = { stdout };
     metacall_log(METACALL_LOG_STDIO, (void *)&log_stdio);
     metacall_initialize();
+    init_metacall();
 #endif
     if(argc > 1) {
         int opt = 0;
@@ -490,7 +523,7 @@ int main(int argc, char **argv) {
 #if METACALL_ENABLED == 1
                     if(program.loadPlugin(optarg)) {
                         std::cout << "acidcam: Loaded plugin: " << optarg << "\n";
-                        metacall_register("matrix_setpixel", matrixSetPixel, METACALL_PTR,4, METACALL_PTR, METACALL_LONG, METACALL_LONG, METACALL_INT);
+                        init_metacall();
                         plugin_active = true;
                     } else {
                         std::cerr << "acidcam: Could not load plugin... exiting...\n";
@@ -527,7 +560,7 @@ int main(int argc, char **argv) {
                         if(program.loadPlugin(v[plug])) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
                             plugin_active = true;
-                            metacall_register("matrix_setpixel", matrixSetPixel, METACALL_PTR, 4, METACALL_PTR, METACALL_LONG, METACALL_LONG, METACALL_INT);
+                            init_metacall();
                         } else {
                             std::cerr << "acidcam: Error could not load plugin: " << v[plug] << "\n";
                             plugin_active = false;

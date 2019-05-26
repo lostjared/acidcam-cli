@@ -12,9 +12,12 @@ def array_size(width: int, height: int) -> int:
     return 0
 
 def filter(matrix):
+    alpha = 1.0
     for z in range(0, screen_height-1):
         for i in range(0, screen_width-1):
-            metacall('matrix_setpixel',matrix, i, z, 0)
+            value = metacall('matrix_getpixel',matrix, i, z)
+            metacall('matrix_setpixel_bgr',matrix, i, z, value[0]*alpha,value[1]*alpha,value[2]*alpha)
+            alpha += 0.01
     return 0
 
 
