@@ -16,7 +16,7 @@ def filter(matrix):
     for z in range(0, screen_height-1):
         for i in range(0, screen_width-1):
             value = metacall('matrix_getpixel',matrix, i, z)
-            metacall('matrix_setpixel_bgr',matrix, i, z, random.randint(0,255),random.randint(0, 255),random.randint(0,255))
+            metacall('matrix_setpixel_bgr',matrix, i, z, value[0]*alpha,value[1]*alpha,value[2]*alpha)
             alpha += 0.01
     return 0
 

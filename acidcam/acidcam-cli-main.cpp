@@ -85,6 +85,7 @@ void listPlugins(std::string path, std::vector<std::string> &files);
 void init_metacall();
 void *matrix_SetPixel(void *args[]);
 void *matrix_GetPixel(void *args[]);
+void *matrix_GetPixelInteger(void *args[]);
 void *matrix_SetPixelBGR(void *args[]);
 
 void init_metacall() {
@@ -92,6 +93,7 @@ void init_metacall() {
     metacall_register("matrix_setpixel_bgr", matrix_SetPixelBGR, METACALL_PTR,6, METACALL_PTR, METACALL_INT, METACALL_INT, METACALL_INT, METACALL_INT, METACALL_INT);
     
     metacall_register("matrix_getpixel", matrix_GetPixel, METACALL_ARRAY, 3, METACALL_PTR, METACALL_INT, METACALL_INT);
+    metacall_register("matrix_getpixel_int", matrix_GetPixelInteger, METACALL_INT, 3, METACALL_PTR, METACALL_INT, METACALL_INT);
 }
 
 void *matrix_SetPixel(void *args[]) {
@@ -125,6 +127,15 @@ void *matrix_GetPixel(void *args[]) {
     void *array[] = {metacall_value_create_char(color_v[0]), metacall_value_create_char(color_v[1]),metacall_value_create_char(color_v[2])};
     return metacall_value_create_array((const void **)array, sizeof(array)/sizeof(array[0]));
 }
+
+void *matrix_GetPixelInteger(void *args[]) {
+    cv::Mat *type = (cv::Mat*)metacall_value_to_ptr(args[0]);
+    int x = metacall_value_to_int(args[1]);
+    int y = metacall_value_to_int(args[2]);
+    int col = metacall_value_to_int(args[3]);
+    return metacall_value_create_int(0);
+}
+
 #endif
 
 void plugin_callback(cv::Mat &frame) {
