@@ -87,6 +87,7 @@ void *matrix_SetPixel(void *args[]);
 void *matrix_GetPixel(void *args[]);
 void *matrix_GetPixelInteger(void *args[]);
 void *matrix_SetPixelBGR(void *args[]);
+void *call_filter(void *args[]);
 
 void init_metacall() {
     metacall_register("matrix_setpixel", matrix_SetPixel, METACALL_PTR,4, METACALL_PTR, METACALL_INT, METACALL_INT, METACALL_INT);
@@ -94,6 +95,8 @@ void init_metacall() {
     
     metacall_register("matrix_getpixel", matrix_GetPixel, METACALL_ARRAY, 3, METACALL_PTR, METACALL_INT, METACALL_INT);
     metacall_register("matrix_getpixel_int", matrix_GetPixelInteger, METACALL_INT, 3, METACALL_PTR, METACALL_INT, METACALL_INT);
+    
+    metacall_register("call_filter", call_filter, METACALL_INT,2, METACALL_PTR, METACALL_INT);
 }
 
 void *matrix_SetPixel(void *args[]) {
@@ -137,6 +140,13 @@ void *matrix_GetPixelInteger(void *args[]) {
     unsigned char *buf = (unsigned char *)&value;
     cv::Vec3b val(buf[0], buf[1], buf[2]);
     type->at<cv::Vec3b>(y, x) = val;
+    return metacall_value_create_int(0);
+}
+
+void *call_filter(void *args[]) {
+    cv::Mat *type = (cv::Mat*)metacall_value_to_ptr(args[0]);
+    int index = metacall_value_to_int(args[1]);
+    ac::CallFilter(index, *type);
     return metacall_value_create_int(0);
 }
 
