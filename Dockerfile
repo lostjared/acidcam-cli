@@ -37,4 +37,6 @@ RUN cd \
     && cd acidcam-cli && ./autogen.sh && ./configure && make -j8 && make install \
     && cd .. && rm -rf acidcam-cli
 
+RUN apt-get clean
+
 CMD ['/usr/local/bin/acidcam']
