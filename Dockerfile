@@ -35,8 +35,8 @@ RUN cd \
 RUN cd \
     && git clone https://github.com/lostjared/acidcam-cli.git \
     && cd acidcam-cli && ./autogen.sh && ./configure && make -j8 && make install \
-    && cd .. && rm -rf acidcam-cli
+    && cd .. && rm -rf acidcam-cli && ldconfig
 
-RUN apt-get clean
+RUN cd && apt-get clean
 
 CMD ['/usr/local/bin/acidcam']
