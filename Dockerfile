@@ -3,12 +3,7 @@ FROM ubuntu:16.04 as acidcam
 RUN apt-get update
 RUN apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev \
 libavformat-dev libswscale-dev python-dev python-numpy libtbb2 libtbb-dev \
-libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev unzip autoconf automake libtool pkg-config
-
-RUN apt-get install -y wget
-
-# Just get a simple editor for convienience (you could just cancel this line)
-RUN apt-get install -y nano
+libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev unzip autoconf automake libtool pkg-config wget nano
 
 RUN cd \
     && wget https://github.com/opencv/opencv/archive/3.2.0.zip \
@@ -35,9 +30,9 @@ RUN cd \
 
 RUN cd \
     && git clone https://github.com/lostjared/libacidcam.git \
-    && cd libacidcam && ./autogen.sh && ./configure && make && make install
+    && cd libacidcam && ./autogen.sh && ./configure && make -j8 && make install
 RUN cd \
     && git clone https://github.com/lostjared/acidcam-cli.git \
-    && cd acidcam-cli && ./autogen.sh && ./configure && make && make install
+    && cd acidcam-cli && ./autogen.sh && ./configure && make -j8 && make install
 
 CMD ['/usr/local/bin/acidcam']
