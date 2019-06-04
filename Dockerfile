@@ -3,7 +3,7 @@ FROM ubuntu:16.04 as acidcam
 RUN apt-get update
 RUN apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev \
 libavformat-dev libswscale-dev python-dev python-numpy libtbb2 libtbb-dev \
-libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev unzip autoconf automake libtool pkg-config wget nano
+libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev unzip autoconf automake libtool wget nano
 
 RUN cd \
     && wget https://github.com/opencv/opencv/archive/3.2.0.zip \
