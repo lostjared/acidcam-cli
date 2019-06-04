@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 as acidcam
+FROM ubuntu:16.04
 
 RUN apt-get update
 RUN apt-get install -y cmake git libgtk2.0-dev pkg-config libavcodec-dev \
@@ -16,7 +16,6 @@ RUN cd \
     && make install \
     && cd \
     && rm 3.2.0.zip
-
 
 RUN cd \
     && wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip \
