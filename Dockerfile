@@ -38,4 +38,4 @@ RUN cd \
 
 RUN cd && apt-get clean
 
-CMD ['/usr/local/bin/acidcam']
+CMD ['acidcam']
