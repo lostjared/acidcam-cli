@@ -35,8 +35,6 @@ Then download this archive and enter the directory you extracted to in the termi
 
 ** PYTHON SUPPORT STILL IN DEVELOPMENT **
 
-There were some problems with the library I am using so I have to wait on them to fix it before I can continue
-
 If you wish to use Python scripts for filters:
 First download and install Metacall http://github.com/metacall install
 then configure and compile. You will also need to install the Metacall python module with pip3
