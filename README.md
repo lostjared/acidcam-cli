@@ -1,5 +1,7 @@
 # acidcam-cli
 
+To be able to use all the filters in this program  your system should have at lest 8 GB of ram.
+
 Acid Cam distorts video to create art. It is designed to bo used with other software or on its own. There is multiple versions of the program for macOS, Linux, and Windows as well as a command line version of the program.
 
 This project was created in hopes of providing some entertainment, or for the Glitch artist to give you a starting image/video to use with other tools.
