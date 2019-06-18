@@ -140,48 +140,56 @@ or resize video
 
 	$ acidcam -i input.mov -o output.mov -f 1,2,3 -u 1920x1080
 
-Or to view progress:
+use a subfiler give the index number followed by a colon and the subfilter it will use like this:
+	
+	$ acidcam -i input.mov -o output.mov -f 962:3
+
+to use a subfilter and other files use:
+
+	$ acidcam -i input.mov -o output.mov -f 962:0,10,5
+
+or to view progress:
 
 	$ acidcam -i input.mov -o output.mov -f 0 -v
 
-To List filters:
+to list filters:
 
 	$ acidcam -l
 
-To List plugins:
+to list plugins:
 
 	$ acidcam -x
 
-To use plugin:
+to use plugin:
 
 	$ acidcam -i input.mov -o output.mov -p path/to/shared.acf -f plugin
 
-Or use:
+or use:
 
 	$ acidcam -x
 
-Lists the plugins found then use -n index
+lists the plugins found then use -n index
 
 	$ acidcam -i input.mov -o output.mov -n 0 -f plugin
 
-or Add other filters:
+or add other filters:
 
 	$ acidcam -i input.mov -o output.mov -p path/to/shared.acf -f 0,plugin,1
 
-or Apply a color map:
+or apply a color map:
 
 	$ acidcam -i input.mov -o output.mov -f 28,1 -r 3
 	
-or Apply brightness/gamma/saturation
+or apply brightness/gamma/saturation
 
 	$ acidcam -i input.mov -o output.mov -b 100 -m 2 -s 25 -f 0,1
 
 
-A example of using acidcam:
+a example of using acidcam:
 
 	$ acidcam -i jaredoffice.mov -o blend.mov -g pencil.nin.png -f 31,168 -a "peace.1080p.mov, test.mov" -e -r 3 -c 0,0,50
 
-Another Example:
+another Example:
 
 	$ acidcam -i videofile.mov -o videooutput.mov -P /usr/local -n 0 -f plugin
 
