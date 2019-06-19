@@ -194,7 +194,7 @@ void listFilters(bool sorted = false) {
     
     if(sorted == true) sort(filter_names.begin(), filter_names.end());
     
-    for(int i = 0; i < filter_names.size(); ++i) {
+    for(unsigned i = 0; i < filter_names.size(); ++i) {
         int index = ac::filter_map[filter_names[i]];
         std::cout << std::setw(6) << std::left << index << std::setw(50) << std::left << filter_names[i] << "\n";
     }
@@ -580,7 +580,7 @@ int main(int argc, char **argv) {
 #if METACALL_ENABLED == 1
                     std::vector<std::string> v;
                     listPlugins(".", v);
-                    int plug = atoi(optarg);
+                    unsigned int plug = atoi(optarg);
                     if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
                         if(program.loadPlugin(v[plug])) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
