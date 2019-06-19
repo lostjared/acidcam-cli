@@ -35,7 +35,7 @@ ${CMAKE_SOURCE_DIR}/acidcam/acidcam-cli.hpp
 find_package(OpenCV REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(Threads REQUIRED)
-find_package(acidcam REQUIRED)
+#find_library(acidcam REQUIRED)
 find_library(dl
 if(${OpenCV_VERSION} LESS 3.0)
 	message(FATAL_ERROR "Requires OpenCV 3 or greater")
