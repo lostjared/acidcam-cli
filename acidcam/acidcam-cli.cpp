@@ -400,7 +400,7 @@ namespace cmd {
                 if(video_files.size()>0)
                     fade_amount = 1.0/1+video_files.size();
                 
-                for(int q = 0; q < video_files.size(); ++q) {
+                for(unsigned int q = 0; q < video_files.size(); ++q) {
                     if(video_files[q]->capture.isOpened() && video_files[q]->capture.read(frame2) == true) {
                         for(int z = 0; z < frame.rows; ++z) {
                             for(int i = 0; i < frame.cols; ++i) {

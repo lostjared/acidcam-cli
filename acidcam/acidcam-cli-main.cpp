@@ -598,7 +598,7 @@ int main(int argc, char **argv) {
                 case 'n': {
                     std::vector<std::string> v;
                     listPlugins(".", v);
-                    int plug = atoi(optarg);
+                    unsigned int plug = atoi(optarg);
                     if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
                         if(program.loadPlugin(v[plug])) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
