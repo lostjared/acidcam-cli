@@ -237,7 +237,7 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
                     std::string two2 = number.substr(number.find(":")+1, number.length());
                     value = atoi(one1.c_str());
                     subfilter_value = atoi(two2.c_str());
-                    if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+                    if(static_cast<int>(value) < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
                         if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
                             std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
                             exit(EXIT_FAILURE);
@@ -272,7 +272,7 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
             std::string two2 = number.substr(number.find(":")+1, number.length());
             value = atoi(one1.c_str());
             subfilter_value = atoi(two2.c_str());
-            if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+            if(static_cast<int>(value) < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
                 if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
                     std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
                     exit(EXIT_FAILURE);
@@ -475,7 +475,7 @@ int main(int argc, char **argv) {
                             value = ac::filter_map["Plugin"];
                         else if(number.find(":") == std::string::npos) {
                             value = atoi(number.c_str());
-                            if(value < ac::draw_max-4) {
+                            if(static_cast<int>(value) < ac::draw_max-4) {
                                 if(ac::draw_strings[value].find("SubFilter") != std::string::npos) {
                                     std::cout << "acidcam: Filter " << ac::draw_strings[value] << " requires SubFilter use Filter:SubFilter format\n";
                                     exit(EXIT_FAILURE);
@@ -487,7 +487,7 @@ int main(int argc, char **argv) {
                             std::string two2 = number.substr(number.find(":")+1, number.length());
                             value = atoi(one1.c_str());
                             subfilter_value = atoi(two2.c_str());
-                            if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+                            if(static_cast<int>(value) < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
                                 if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
                                     std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
                                     exit(EXIT_FAILURE);
@@ -501,7 +501,7 @@ int main(int argc, char **argv) {
                                 exit(EXIT_SUCCESS);
                             }
                         }
-                        if(value < ac::draw_max-4) {
+                        if(static_cast<int>(value) < ac::draw_max-4) {
                             filter_list.push_back(std::make_pair(value, subfilter_value));
                         } else {
                             std::cerr << "acidcam: Error filter out of bounds..\n";
@@ -513,7 +513,7 @@ int main(int argc, char **argv) {
                     } else {
                         // list of filters
                         getList(args, filter_list, [](unsigned int value) {
-                            if(value < ac::draw_max-4)
+                            if(static_cast<int>(value) < ac::draw_max-4)
                             	return true;
                             std::cerr << "acidcam: Error value must be one of the listed integer filter indexes.\n";
                             exit(EXIT_FAILURE);
@@ -530,7 +530,7 @@ int main(int argc, char **argv) {
                         exit(EXIT_FAILURE);
                     }
                     getList(colors, col, [](unsigned int value) {
-                        if(value <= 255)
+                        if(static_cast<int>(value) <= 255)
                             return true;
                         std::cerr << "acidcam: Error color value: " << value << " should be between 0-255\n";
                         exit(EXIT_FAILURE);
