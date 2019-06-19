@@ -36,7 +36,7 @@ find_package(OpenCV REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(Threads REQUIRED)
 #find_library(acidcam REQUIRED)
-find_library(dl
+find_library(dl REQUIRED)
 if(${OpenCV_VERSION} LESS 3.0)
 	message(FATAL_ERROR "Requires OpenCV 3 or greater")
 endif()
