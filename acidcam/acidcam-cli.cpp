@@ -403,7 +403,7 @@ namespace cmd {
                 for(unsigned int q = 0; q < video_files.size(); ++q) {
                     if(video_files[q]->capture.isOpened() && video_files[q]->capture.read(frame2) == true) {
                         for(unsigned int z = 0; z < frame.rows; ++z) {
-                            for(unsigned int i = 0; i < frame.cols; ++i) {
+                            for(int i = 0; i < frame.cols; ++i) {
                                 cv::Vec3b &pixel = frame.at<cv::Vec3b>(z, i);
                                 int cX = AC_GetFX(frame2.cols, i, frame.cols);
                                 int cY = AC_GetFZ(frame2.rows, z, frame.rows);
