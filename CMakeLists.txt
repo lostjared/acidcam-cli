@@ -36,13 +36,13 @@ find_package(OpenCV REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(Threads REQUIRED)
 find_package(acidcam REQUIRED)
-
+find_library(dl
 if(${OpenCV_VERSION} LESS 3.0)
 	message(FATAL_ERROR "Requires OpenCV 3 or greater")
 endif()
 
 include_directories(${CMAKE_INSTALL_PREFIX}/include/acidcam ${OpenCV_INCLUDE_DIRS})
 add_executable(acidcam-cli ${source_files})
-target_link_options(acidcam-cli PUBLIC -L${CMAKE_INSTALL_PREFIX}/lib/acidcam -lacidcam)
-target_link_libraries(acidcam-cli Threads::Threads ${OpenCV_LIBS})
+#target_link_options(acidcam-cli PUBLIC -L${CMAKE_INSTALL_PREFIX}/lib/acidcam -lacidcam)
+target_link_libraries(acidcam-cli dl Threads::Threads ${OpenCV_LIBS} acidcam)
 target_compile_options(acidcam-cli PRIVATE ${COMPILER_FLAGS})
