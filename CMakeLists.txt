@@ -22,7 +22,7 @@ endif()
 
 if(ENABLE_METACALL)
 message(STATUS "Metacall Enabled...")
-list(APPEND COMPILER_FLAGS "-DMETACALL_ENABLED")
+list(APPEND COMPILER_FLAGS "-DMETACALL_ENABLED=1")
 endif()
 
 list(APPEND source_files 
