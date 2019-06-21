@@ -135,7 +135,7 @@ void *matrix_GetPixelInteger(void *args[]) {
     cv::Mat *type = (cv::Mat*)metacall_value_to_ptr(args[0]);
     int x = metacall_value_to_int(args[1]);
     int y = metacall_value_to_int(args[2]);
-    int col = metacall_value_to_int(args[3]);
+    /*int col =  metacall_value_to_int(args[3]);*/
     unsigned int value = 0;
     unsigned char *buf = (unsigned char *)&value;
     cv::Vec3b val(buf[0], buf[1], buf[2]);
@@ -189,17 +189,17 @@ bool parseRes(const std::string &text, int &fw, int &fh);
 void listFilters(bool sorted = false) {
     std::cout << "List of Filters by Index\n";
     std::vector<std::string> filter_names;
-    for(unsigned int i = 0; i < ac::draw_max-4; ++i)
+    for(int i = 0; i < ac::draw_max-4; ++i)
         filter_names.push_back(ac::draw_strings[i]);
     
     if(sorted == true) sort(filter_names.begin(), filter_names.end());
     
-    for(unsigned int i = 0; i < filter_names.size(); ++i) {
+    for(unsigned i = 0; i < filter_names.size(); ++i) {
         int index = ac::filter_map[filter_names[i]];
         std::cout << std::setw(6) << std::left << index << std::setw(50) << std::left << filter_names[i] << "\n";
     }
     std::cout << "\nList of Color Maps\n";
-    for(unsigned int i = 1; i <= 12; ++i) {
+    for(int i = 1; i <= 12; ++i) {
         std::cout << std::setw(6) << std::left << i << std::setw(50) << std::left << cmd::colorMaps[i-1] << "\n";
     }
 }
@@ -237,7 +237,7 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
                     std::string two2 = number.substr(number.find(":")+1, number.length());
                     value = atoi(one1.c_str());
                     subfilter_value = atoi(two2.c_str());
-                    if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+                    if(static_cast<int>(value) < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
                         if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
                             std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
                             exit(EXIT_FAILURE);
@@ -272,7 +272,7 @@ void getList(std::string args, std::vector<std::pair<int,int>> &v, F func) {
             std::string two2 = number.substr(number.find(":")+1, number.length());
             value = atoi(one1.c_str());
             subfilter_value = atoi(two2.c_str());
-            if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+            if(static_cast<int>(value) < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
                 if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
                     std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
                     exit(EXIT_FAILURE);
@@ -475,7 +475,7 @@ int main(int argc, char **argv) {
                             value = ac::filter_map["Plugin"];
                         else if(number.find(":") == std::string::npos) {
                             value = atoi(number.c_str());
-                            if(value < ac::draw_max-4) {
+                            if(static_cast<int>(value) < ac::draw_max-4) {
                                 if(ac::draw_strings[value].find("SubFilter") != std::string::npos) {
                                     std::cout << "acidcam: Filter " << ac::draw_strings[value] << " requires SubFilter use Filter:SubFilter format\n";
                                     exit(EXIT_FAILURE);
@@ -487,7 +487,7 @@ int main(int argc, char **argv) {
                             std::string two2 = number.substr(number.find(":")+1, number.length());
                             value = atoi(one1.c_str());
                             subfilter_value = atoi(two2.c_str());
-                            if(value < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
+                            if(static_cast<int>(value) < ac::draw_max-4 && subfilter_value < ac::draw_max-4) {
                                 if(ac::draw_strings[value].find("SubFilter") == std::string::npos) {
                                     std::cerr << "acidcam: " << ac::draw_strings[value] << " does not take a SubFilter...\n";
                                     exit(EXIT_FAILURE);
@@ -501,7 +501,7 @@ int main(int argc, char **argv) {
                                 exit(EXIT_SUCCESS);
                             }
                         }
-                        if(value < ac::draw_max-4) {
+                        if(static_cast<int>(value) < ac::draw_max-4) {
                             filter_list.push_back(std::make_pair(value, subfilter_value));
                         } else {
                             std::cerr << "acidcam: Error filter out of bounds..\n";
@@ -513,7 +513,7 @@ int main(int argc, char **argv) {
                     } else {
                         // list of filters
                         getList(args, filter_list, [](unsigned int value) {
-                            if(value < ac::draw_max-4)
+                            if(static_cast<int>(value) < ac::draw_max-4)
                             	return true;
                             std::cerr << "acidcam: Error value must be one of the listed integer filter indexes.\n";
                             exit(EXIT_FAILURE);
@@ -530,7 +530,7 @@ int main(int argc, char **argv) {
                         exit(EXIT_FAILURE);
                     }
                     getList(colors, col, [](unsigned int value) {
-                        if(value <= 255)
+                        if(static_cast<int>(value) <= 255)
                             return true;
                         std::cerr << "acidcam: Error color value: " << value << " should be between 0-255\n";
                         exit(EXIT_FAILURE);
@@ -580,7 +580,7 @@ int main(int argc, char **argv) {
 #if METACALL_ENABLED == 1
                     std::vector<std::string> v;
                     listPlugins(".", v);
-                    int plug = atoi(optarg);
+                    unsigned int plug = atoi(optarg);
                     if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
                         if(program.loadPlugin(v[plug])) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
@@ -598,7 +598,7 @@ int main(int argc, char **argv) {
                 case 'n': {
                     std::vector<std::string> v;
                     listPlugins(".", v);
-                    int plug = atoi(optarg);
+                    unsigned int plug = atoi(optarg);
                     if(v.size() > 0 && (plug >= 0 && plug < v.size())) {
                         if(program.loadPlugin(v[plug])) {
                             std::cout << "acidcam: Loaded plugin: " << v[plug] << "\n";
