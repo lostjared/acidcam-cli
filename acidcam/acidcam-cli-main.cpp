@@ -135,7 +135,7 @@ void *matrix_GetPixelInteger(void *args[]) {
     cv::Mat *type = (cv::Mat*)metacall_value_to_ptr(args[0]);
     int x = metacall_value_to_int(args[1]);
     int y = metacall_value_to_int(args[2]);
-    int col = metacall_value_to_int(args[3]);
+    /*int col =  metacall_value_to_int(args[3]);*/
     unsigned int value = 0;
     unsigned char *buf = (unsigned char *)&value;
     cv::Vec3b val(buf[0], buf[1], buf[2]);
