@@ -1,6 +1,4 @@
-#/bin/bash
-
-sudo apt-get install -y libopencv-dev cmake git pkg-config libavcodec-dev libavformat-dev libswscale-dev python3-dev python-numpy libjpeg-dev libpng-dev libtiff-dev autoconf automake libtool wget nano
+#/usr/bin/env bash
 
 mkdir -p build
 cd build
@@ -12,4 +10,5 @@ cmake ..
 make -j4
 sudo make install
 cd ..
-
+cd ..
+cd ..
