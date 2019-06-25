@@ -41,7 +41,8 @@ If you wish to use Python scripts for filters:
 First download and install Metacall http://github.com/metacall install
 then configure and compile. You will also need to install the Metacall python module with pip3
 
-	$ ./autogen.sh && ./configure --enable-metacall && make && sudo make install
+    $ cmake .. -D ENABLE_METACALL=ON
+    $ make -j4 && sudo make install
 
 If are going to use acidcam with Metacall you need to set the shell envoriment variable LOADER_SCRIPT_PATH to the path with the python code you want to use an example:
 
@@ -53,8 +54,7 @@ Also set the library path for the metacall shared object files (.so)
 
 After you do that if everything goes according to plan you can test it with:
 
-	$ acidcam -l
-
+	$ acidcam-cli -l
 
 NOTE: Some of the filters that contain either a 720 or 1080 at the end require a lot of ram if you do not have enough the program will exit.
 
@@ -125,7 +125,7 @@ List of the Different Color maps you can apply with -r:
 	11 Pink
 	12 Hot
 
-	$ acidcam -i test.mov -o output.mov -f 1,2 -k /path/to/colorkey.png
+	$ acidcam-cli -i test.mov -o output.mov -f 1,2 -k /path/to/colorkey.png
 
 You can also apply a color key image 
 all the pixels in the image that have the color value 255,0,255 will contain the filtered data rest of the pixels will be the same
@@ -134,62 +134,62 @@ Once you have it installed you can use either .mov (quicktime) or .avi (xvid) fo
 
 Example:
 
-	$ acidcam -i input.mov -o output.mov -f 1,2,3
+	$ acidcam-cli -i input.mov -o output.mov -f 1,2,3
 
 or resize video
 
-	$ acidcam -i input.mov -o output.mov -f 1,2,3 -u 1920x1080
+	$ acidcam-cli -i input.mov -o output.mov -f 1,2,3 -u 1920x1080
 
 use a subfiler give the index number followed by a colon and the subfilter it will use like this:
 	
-	$ acidcam -i input.mov -o output.mov -f 962:3
+	$ acidcam-cli -i input.mov -o output.mov -f 962:3
 
 to use a subfilter and other files use:
 
-	$ acidcam -i input.mov -o output.mov -f 962:0,10,5
+	$ acidcam-cli -i input.mov -o output.mov -f 962:0,10,5
 
 or to view progress:
 
-	$ acidcam -i input.mov -o output.mov -f 0 -v
+	$ acidcam-cli -i input.mov -o output.mov -f 0 -v
 
 to list filters:
 
-	$ acidcam -l
+	$ acidcam-cli -l
 
 to list plugins:
 
-	$ acidcam -x
+	$ acidcam-cli -x
 
 to use plugin:
 
-	$ acidcam -i input.mov -o output.mov -p path/to/shared.acf -f plugin
+	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f plugin
 
 or use:
 
-	$ acidcam -x
+	$ acidcam-cli -x
 
 lists the plugins found then use -n index
 
-	$ acidcam -i input.mov -o output.mov -n 0 -f plugin
+	$ acidcam-cli -i input.mov -o output.mov -n 0 -f plugin
 
 or add other filters:
 
-	$ acidcam -i input.mov -o output.mov -p path/to/shared.acf -f 0,plugin,1
+	$ acidcam-cli -i input.mov -o output.mov -p path/to/shared.acf -f 0,plugin,1
 
 or apply a color map:
 
-	$ acidcam -i input.mov -o output.mov -f 28,1 -r 3
+	$ acidcam-cli -i input.mov -o output.mov -f 28,1 -r 3
 	
 or apply brightness/gamma/saturation
 
-	$ acidcam -i input.mov -o output.mov -b 100 -m 2 -s 25 -f 0,1
+	$ acidcam-cli -i input.mov -o output.mov -b 100 -m 2 -s 25 -f 0,1
 
 
 a example of using acidcam:
 
-	$ acidcam -i jaredoffice.mov -o blend.mov -g pencil.nin.png -f 31,168 -a "peace.1080p.mov, test.mov" -e -r 3 -c 0,0,50
+	$ acidcam-cli -i jaredoffice.mov -o blend.mov -g pencil.nin.png -f 31,168 -a "peace.1080p.mov, test.mov" -e -r 3 -c 0,0,50
 
 another Example:
 
-	$ acidcam -i videofile.mov -o videooutput.mov -P /usr/local -n 0 -f plugin
+	$ acidcam-cli -i videofile.mov -o videooutput.mov -P /usr/local -n 0 -f plugin
 
