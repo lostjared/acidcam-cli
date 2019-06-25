@@ -38,4 +38,4 @@ RUN cd \
 
 RUN cd && apt-get autoremove -y && apt-get clean
 
-CMD ['acidcam']
+CMD ['acidcam-cli']
