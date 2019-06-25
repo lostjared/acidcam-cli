@@ -36,6 +36,6 @@ RUN cd \
     && cd acidcam-cli && mkdir -p build && cd build && cmake .. && make -j8 && make install \
     && cd .. && cd .. &&  rm -rf acidcam-cli && ldconfig
 
-RUN cd && apt-get autoremove && apt-get clean
+RUN cd && apt-get autoremove -y && apt-get clean
 
 CMD ['acidcam']
