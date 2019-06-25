@@ -25,7 +25,8 @@ Download libacidcam from: https://github.com/lostjared/libacidcam
 
 Compile and install the library
 
-	$ ./autogen.sh && ./configure && make && sudo make install
+    $ mkdir -p build && cd build
+    $ cmake .. && make -j4 && sudo make install
 
 If you are running on Linux you should use this command so it can find the library:
 
@@ -33,7 +34,8 @@ If you are running on Linux you should use this command so it can find the libra
 
 Then download this archive and enter the directory you extracted to in the terminal then:
 
-	$ ./autogen.sh && ./configure && make && sudo make install
+    $ mkdir -p build && cd build
+    $ cmake .. && make -j4 && sudo make install
 
 ** PYTHON SUPPORT STILL IN DEVELOPMENT **
 
