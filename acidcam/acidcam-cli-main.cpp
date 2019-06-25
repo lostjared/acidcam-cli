@@ -58,6 +58,7 @@
  -S subfilter
  -v image visible
  -c r,g,b set colors
+ -d color order index
  -p plugin
  -g image file for blend with image filters
  -b brightness
@@ -391,7 +392,7 @@ int main(int argc, char **argv) {
 #endif
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:")) != -1) {
             switch(opt) {
                 case 'h':
                     output_software_info(argv[0]);
@@ -559,6 +560,18 @@ int main(int argc, char **argv) {
 
                 }
                     break;
+                    
+                case 'd': {
+                    int color_value = atoi(optarg);
+                    if(color_value >= 0 && color_value < 6) {
+                        ac::color_order = color_value;
+                    } else {
+                        std::cerr << "acidcam: Invalid color order value\n";
+                        exit(EXIT_FAILURE);
+                    }
+                }
+                    break;
+                    
                 case 'x': {
 #if METACALL_ENABLED == 1
                     std::vector<std::string> v;
