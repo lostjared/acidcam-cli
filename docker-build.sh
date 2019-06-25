@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo docker build --no-cache .
+sudo docker build -t acidcam --no-cache .
