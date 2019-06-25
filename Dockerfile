@@ -29,13 +29,13 @@ RUN cd \
 
 RUN cd \
     && git clone https://github.com/lostjared/libacidcam.git \
-    && cd libacidcam && ./autogen.sh && ./configure && make -j8 && make install \
-    && cd .. && rm -rf libacidcam
+    && cd libacidcam && mkdir -p build && cd build && cmake .. && make -j8 && make install \
+    && cd .. && cd .. && rm -rf libacidcam
 RUN cd \
     && git clone https://github.com/lostjared/acidcam-cli.git \
-    && cd acidcam-cli && ./autogen.sh && ./configure && make -j8 && make install \
-    && cd .. && rm -rf acidcam-cli && ldconfig
+    && cd acidcam-cli && mkdir -p build && cd build && cmake .. && make -j8 && make install \
+    && cd .. && cd .. &&  rm -rf acidcam-cli && ldconfig
 
-RUN cd && apt-get clean
+RUN cd && apt-get autoremove && apt-get clean
 
 CMD ['acidcam']
