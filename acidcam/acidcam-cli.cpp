@@ -490,7 +490,7 @@ namespace cmd {
                             sec_fps = frame_index/fps_force;
                             seconds_ = static_cast<unsigned int>(sec_fps);
                         }
-                        std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1024)/1024) << " MB - " << seconds_ << " Seconds\n";
+                        std::cout << "acidcam: Working frame: [" << frame_index << "/" << frame_count_len << "] - " << percent_trunc << "% Size: " << ((buf.st_size/1000)/1000) << " MB - " << seconds_ << " Seconds\n";
                     }
                 }
                 if(is_visible) {
@@ -505,7 +505,7 @@ namespace cmd {
         }
         if(percent_now == 99) percent_now = 100;
         setCursorPos(7+video_files.size()+2+filters.size(), 0);
-        std::cout << "acidcam: Done wrote to file [" << output_file << "] format[" << file_type << "] Size: " << ((buf.st_size/1024)/1024) << " MB\n";
+        std::cout << "acidcam: Done wrote to file [" << output_file << "] format[" << file_type << "] Size: " << ((buf.st_size/1000)/1000) << " MB\n";
     }
     
     void AC_Program::setResolutionResize(int rw, int rh) {
