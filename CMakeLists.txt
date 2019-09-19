@@ -30,6 +30,7 @@ ${CMAKE_SOURCE_DIR}/acidcam/acidcam-cli-main.cpp
 ${CMAKE_SOURCE_DIR}/acidcam/acidcam-cli.cpp
 ${CMAKE_SOURCE_DIR}/acidcam/acidcam-cli.hpp
 )
+
 find_package(OpenCV REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(Threads REQUIRED)
@@ -61,3 +62,4 @@ add_executable(acidcam-cli ${source_files})
 target_link_libraries(acidcam-cli dl Threads::Threads ${OpenCV_LIBS} ${AC_Linker} ${Metacall_link})
 target_compile_options(acidcam-cli PRIVATE ${COMPILER_FLAGS})
 install(TARGETS acidcam-cli DESTINATION bin)
+install(DIRECTORY scripts/  DESTINATION bin PATTERN "scripts/*" PERMISSIONS OWNER_EXECUTE OWNER_WRITE OWNER_READ GROUP_EXECUTE GROUP_READ)
