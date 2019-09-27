@@ -3,7 +3,7 @@
 if [ $# -ne 3 ]
 then
 echo "Requires three  arguments:"
-echo "file-output.mov file-source.mov file-new-output.mov"
+echo "filtered-file.mov file-audio-source.mov file-new-output.mov"
 exit -1
 fi
 
