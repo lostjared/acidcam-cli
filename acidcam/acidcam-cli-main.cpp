@@ -450,11 +450,12 @@ int main(int argc, char **argv) {
                     std::string output_l = optarg;
                     output = optarg;
                     toLower(output_l);
-                    auto pos = output_l.find(".mov");
-                    if(pos == std::string::npos) {
+                    auto pos = output_l.find(".mp4");
+                    auto pos_m = output_l.find(".mov");
+                    if(pos == std::string::npos && pos_m == std::string::npos) {
                         auto pos2 = output_l.find(".avi");
                         if(pos2 == std::string::npos) {
-                        	output += ".mov";
+                        	output += ".mp4";
                         	std::cerr << "acidcam: File type not specified using default: " << output << "\n";
                         } else {
                             ftype = cmd::File_Type::AVI;
