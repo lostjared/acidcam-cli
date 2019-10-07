@@ -51,6 +51,7 @@ extern void control_Handler(int sig);
 namespace cmd {
     
     using namespace cv;
+    int cur_codec = 0;
     
     //  Function below from Stack Overflow
     // https://stackoverflow.com/questions/28562401/resize-an-image-to-a-square-but-keep-aspect-ratio-c-opencv
@@ -94,8 +95,19 @@ namespace cmd {
     }
     
     std::ostream &operator<<(std::ostream &out, const File_Type &type) {
-        if(type == File_Type::MOV)
-            out << "MPEG-4 (Quicktime)";
+        if(type == File_Type::MOV) {
+            out << "MPEG-4 ";
+            switch(cur_codec) {
+                case 0:
+                    break;
+                case 1:
+                    out << "AVC";
+                    break;
+                case 2:
+                    out << "HEVC";
+                    break;
+            }
+        }
         else
             out << "XviD";
         return out;
@@ -133,6 +145,7 @@ namespace cmd {
         skip_frames = 0;
         skip_index = 0;
         is_stretch = false;
+        cur_codec = 0;
     }
     
     AC_Program::~AC_Program() {
@@ -235,14 +248,28 @@ namespace cmd {
         if(fps_force != 0)
             fps = fps_force;
         
-        if(file_type == File_Type::MOV)
-            writer.open(output_file, VideoWriter::fourcc('m', 'p', '4', 'v'), fps, cv::Size(aw, ah), true);
+        if(file_type == File_Type::MOV) {
+            int codec;
+            switch(cur_codec) {
+                case 0:
+                    codec = VideoWriter::fourcc('m', 'p', '4', 'v');
+                    break;
+                case 1:
+                    codec = VideoWriter::fourcc('a', 'v', 'c', '1');
+                    break;
+                case 2:
+                    codec = VideoWriter::fourcc('h', 'e', 'v', '1');
+                    break;
+            }
+            writer.open(output_file, codec, fps, cv::Size(aw, ah), true);
+        }
         else
             writer.open(output_file, VideoWriter::fourcc('X', 'V', 'I', 'D'), fps, cv::Size(aw, ah), true);
         if(!writer.isOpened()) {
             std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
             return false;
         }
+        std::system("clear");
         unsigned int num_frames = capture.get(cv::CAP_PROP_FRAME_COUNT);
         
         std::string img_str;
@@ -319,7 +346,7 @@ namespace cmd {
         active = false;
         setCursorPos(filters.size()+2+video_files.size()+4, 0);
     }
-    
+
     bool AC_Program::setVideo(std::vector<std::string> &v) {
         for(unsigned int i = 0; i < v.size(); ++i) {
             AC_VideoCapture *cap = new AC_VideoCapture();
@@ -521,6 +548,10 @@ namespace cmd {
     void AC_Program::skipFrames(unsigned int number) {
         skip_frames = number;
         skip_index = 0;
+    }
+    
+    void AC_Program::setCodecMode(int c) {
+        cur_codec = c;
     }
 }
 

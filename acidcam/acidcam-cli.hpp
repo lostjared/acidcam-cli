@@ -102,6 +102,7 @@ namespace cmd {
         void setGamma(int g);
         void setSaturation(int s);
         void setColorMap(int m);
+        void setCodecMode(int c);
         void addType(AddType at_type);
         bool loadPlugin(const std::string &s);
         void callPlugin(cv::Mat &frame);
@@ -132,7 +133,10 @@ namespace cmd {
         AddType add_type;
         double fps_force;
         unsigned int skip_frames, skip_index;
+        int cur_codec;
     };
+    
+    extern int cur_codec;
 }
 
 #endif

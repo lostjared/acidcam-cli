@@ -392,8 +392,17 @@ int main(int argc, char **argv) {
 #endif
     if(argc > 1) {
         int opt = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:")) != -1) {
+        cmd::cur_codec = 0;
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HA")) != -1) {
             switch(opt) {
+                case 'H':
+                    cmd::cur_codec = 2;
+                    program.setCodecMode(2);
+                    break;
+                case 'V':
+                    cmd::cur_codec = 2;
+                    program.setCodecMode(1);
+                    break;
                 case 'h':
                     output_software_info(argv[0]);
                     exit(EXIT_SUCCESS);
