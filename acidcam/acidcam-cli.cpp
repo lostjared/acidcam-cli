@@ -52,7 +52,7 @@ namespace cmd {
     
     using namespace cv;
     int cur_codec = 0;
-    
+    int  four_cc = 0;
     //  Function below from Stack Overflow
     // https://stackoverflow.com/questions/28562401/resize-an-image-to-a-square-but-keep-aspect-ratio-c-opencv
     cv::Mat resizeKeepAspectRatio(const cv::Mat &input, const cv::Size &dstSize, const cv::Scalar &bgcolor) {
@@ -259,6 +259,9 @@ namespace cmd {
                     break;
                 case 2:
                     codec = VideoWriter::fourcc('h', 'e', 'v', '1');
+                    break;
+                case 3:
+                    codec = four_cc;
                     break;
             }
             writer.open(output_file, codec, fps, cv::Size(aw, ah), true);

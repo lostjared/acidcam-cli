@@ -393,7 +393,7 @@ int main(int argc, char **argv) {
     if(argc > 1) {
         int opt = 0;
         cmd::cur_codec = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HA")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HAJ")) != -1) {
             switch(opt) {
                 case 'H':
                     cmd::cur_codec = 2;
@@ -402,6 +402,16 @@ int main(int argc, char **argv) {
                 case 'V':
                     cmd::cur_codec = 2;
                     program.setCodecMode(1);
+                    break;
+                case 'J': {
+                    std::string value = optarg;
+                    if(value.length() != 4) {
+                        std::cout << argv[0] << ": invalid fourcc...\n";
+                        exit(EXIT_FAILURE);
+                    }
+                    cmd::cur_codec = 3;
+                    cmd::four_cc = cv::VideoWriter::fourcc(value[0], value[1], value[2], value[3]);
+                }
                     break;
                 case 'h':
                     output_software_info(argv[0]);
@@ -461,7 +471,9 @@ int main(int argc, char **argv) {
                     toLower(output_l);
                     auto pos = output_l.find(".mp4");
                     auto pos_m = output_l.find(".mov");
-                    if(pos == std::string::npos && pos_m == std::string::npos) {
+                    auto pos_k = output_l.find(".mkv");
+                    auto pos_w = output_l.find(".webp");
+                    if(pos == std::string::npos && pos_m == std::string::npos && pos_k == std::string::npos && pos_w == std::string::npos) {
                         auto pos2 = output_l.find(".avi");
                         if(pos2 == std::string::npos) {
                         	output += ".mp4";

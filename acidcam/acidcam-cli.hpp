@@ -135,8 +135,8 @@ namespace cmd {
         unsigned int skip_frames, skip_index;
         int cur_codec;
     };
-    
     extern int cur_codec;
+    extern int four_cc;
 }
 
 #endif
