@@ -393,7 +393,7 @@ int main(int argc, char **argv) {
     if(argc > 1) {
         int opt = 0;
         cmd::cur_codec = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HAJ")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HAJ:")) != -1) {
             switch(opt) {
                 case 'H':
                     cmd::cur_codec = 2;
