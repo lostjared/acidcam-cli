@@ -461,7 +461,7 @@ namespace cmd {
                         }
                     }
                 }
-                if(copy_orig == true) ac::orig_frame = frame.clone();
+                ac::orig_frame = frame.clone();
                 frame_index ++;
                 if(frame_index >= frame_count_len) {
                     break;
