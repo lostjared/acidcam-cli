@@ -396,8 +396,17 @@ int main(int argc, char **argv) {
     if(argc > 1) {
         int opt = 0;
         cmd::cur_codec = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HAJ:")) != -1) {
+        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HAJ:j:")) != -1) {
             switch(opt) {
+                case 'j': {
+                    std::string fname = optarg;
+                    ac::v_cap.open(fname);
+                    if(!ac::v_cap.isOpened()) {
+                        std::cerr << "Error could not open video file: " << fname << "\n";
+                        exit(EXIT_FAILURE);
+                    }
+                }
+                    break;
                 case 'H':
                     cmd::cur_codec = 2;
                     program.setCodecMode(2);

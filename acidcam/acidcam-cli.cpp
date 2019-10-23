@@ -299,6 +299,11 @@ namespace cmd {
             frame_length = (num_frames/fps_force);
         frame_length = floorf(frame_length * 100) / 100;
         std::cout << "acidcam: input[" << input_file  << ((flip == true) ? " [flipped]" : "") << "] output[" << output_file << "] width[" << aw << "] height[" << ah << "] " << force_ << " fps[" << fps << "] length[" << frame_length << " seconds] " << skip_stream.str() << substream.str() << "format[" << file_type << "] " << img_str << "\n";
+        if(ac::v_cap.isOpened())
+            std::cout << "input2[enabled]\n";
+        else
+            std::cout << "input2[disabled]\n";
+        
         
         if(video_files.size() > 0) {
             std::string add_type_str = "ADD";
