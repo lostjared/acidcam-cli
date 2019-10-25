@@ -96,7 +96,7 @@ namespace cmd {
     
     std::ostream &operator<<(std::ostream &out, const File_Type &type) {
         if(type == File_Type::MOV) {
-            out << "MPEG-4 ";
+            out << "MPEG-4";
             switch(cur_codec) {
                 case 0:
                     break;
