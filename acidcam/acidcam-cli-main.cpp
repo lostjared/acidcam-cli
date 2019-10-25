@@ -402,7 +402,7 @@ int main(int argc, char **argv) {
                     std::string fname = optarg;
                     ac::v_cap.open(fname);
                     if(!ac::v_cap.isOpened()) {
-                        std::cerr << "Error could not open video file: " << fname << "\n";
+                        std::cerr << "acidcam: Error could not open video file: " << fname << "\n";
                         exit(EXIT_FAILURE);
                     }
                 }
