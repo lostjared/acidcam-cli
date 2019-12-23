@@ -60,7 +60,7 @@ After you do that if everything goes according to plan you can test it with:
 
 NOTE: Some of the filters that contain either a 720 or 1080 at the end require a lot of ram if you do not have enough the program will exit.
 
-If you are using a high resolution the program outputs very high quality video. To be able to play it back you can load it into Final Cut and export as H.264, use Handbrake to lower the bitrate, or use ffmpeg. The command I use to compress 4K Acid Cam videos is:
+If you are using a high resolution the program outputs very high bitrate video for MPEG-4. To be able to play it back you can load it into Final Cut and export as H.264, use Handbrake to lower the bitrate, or use ffmpeg. The command I use to compress 4K Acid Cam videos is:
 
     $ ffmpeg -i "input.file.mp4" -c:v libx265 -tag:v hvc1 -crf 18 output.file.mp4
 
