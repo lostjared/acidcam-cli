@@ -390,13 +390,10 @@ namespace cmd {
         struct stat buf;
         unsigned long frame_count_len = 0, frame_index = 0;
         unsigned int percent_now = 0;
-        bool copy_orig = false;
-        try {
+         try {
             if(std::find(filters.begin(), filters.end(), std::make_pair(ac::filter_map["Blend with Source"], -1)) != filters.end()) {
-                copy_orig = true;
             }
             if(colorkey_set == true && !color_image.empty()) {
-                copy_orig = true;
             }
             frame_count_len = capture.get(cv::CAP_PROP_FRAME_COUNT);
             struct sigaction sa;
