@@ -263,6 +263,9 @@ namespace cmd {
                 case 3:
                     codec = four_cc;
                     break;
+                default:
+                    codec = VideoWriter::fourcc('m', 'p', '4', 'v');
+                    break;
             }
             writer.open(output_file, codec, fps, cv::Size(aw, ah), true);
         }
@@ -272,7 +275,10 @@ namespace cmd {
             std::cerr << "acidcam: Error could not open file for writing: " << output_file << "\n";
             return false;
         }
-        std::system("clear");
+        int rt_val = std::system("clear");
+        if(rt_val != 0) {
+            std::cerr << "Error: could not clear screen...\n";
+        }
         unsigned int num_frames = capture.get(cv::CAP_PROP_FRAME_COUNT);
         
         std::string img_str;
@@ -384,8 +390,8 @@ namespace cmd {
         struct stat buf;
         unsigned long frame_count_len = 0, frame_index = 0;
         unsigned int percent_now = 0;
+        bool copy_orig = false;
         try {
-            bool copy_orig = false;
             if(std::find(filters.begin(), filters.end(), std::make_pair(ac::filter_map["Blend with Source"], -1)) != filters.end()) {
                 copy_orig = true;
             }
