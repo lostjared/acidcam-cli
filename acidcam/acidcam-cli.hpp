@@ -59,7 +59,7 @@
 
 
 namespace cmd {
-    
+    extern std::string four_cc_str;
     cv::Mat resizeKeepAspectRatio(const cv::Mat &input, const cv::Size &dstSize, const cv::Scalar &bgcolor);
     
     enum class File_Type { MOV, AVI };

@@ -53,6 +53,7 @@ namespace cmd {
     using namespace cv;
     int cur_codec = 0;
     int  four_cc = 0;
+    std::string four_cc_str = "avc1";
     //  Function below from Stack Overflow
     // https://stackoverflow.com/questions/28562401/resize-an-image-to-a-square-but-keep-aspect-ratio-c-opencv
     cv::Mat resizeKeepAspectRatio(const cv::Mat &input, const cv::Size &dstSize, const cv::Scalar &bgcolor) {
@@ -96,7 +97,6 @@ namespace cmd {
     
     std::ostream &operator<<(std::ostream &out, const File_Type &type) {
         if(type == File_Type::MOV) {
-            out << "MPEG-4";
             switch(cur_codec) {
                 case 0:
                     break;
@@ -105,6 +105,9 @@ namespace cmd {
                     break;
                 case 2:
                     out << "HEVC";
+                    break;
+                case 3:
+                    out << four_cc_str;
                     break;
             }
         }

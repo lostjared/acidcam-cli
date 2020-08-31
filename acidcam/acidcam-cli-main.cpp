@@ -421,8 +421,10 @@ int main(int argc, char **argv) {
                         std::cout << argv[0] << ": invalid fourcc...\n";
                         exit(EXIT_FAILURE);
                     }
+                    cmd::four_cc_str = value;
                     cmd::cur_codec = 3;
                     cmd::four_cc = cv::VideoWriter::fourcc(value[0], value[1], value[2], value[3]);
+                    program.setCodecMode(3);
                 }
                     break;
                 case 'h':
