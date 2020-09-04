@@ -56,12 +56,14 @@
 #if METACALL_ENABLED == 1
 #include<metacall/metacall.h>
 #endif
+#include"ffmpeg_write.h"
 
 
 namespace cmd {
     extern std::string four_cc_str;
+    extern std::string crf;
     cv::Mat resizeKeepAspectRatio(const cv::Mat &input, const cv::Size &dstSize, const cv::Scalar &bgcolor);
-    
+    extern int codec_type;
     enum class File_Type { MOV, AVI };
     std::ostream &operator<<(std::ostream &out, const File_Type &type);
     void setCursorPos(int y, int x);
@@ -116,6 +118,7 @@ namespace cmd {
         std::string input_file, output_file, image_file_blend;
         cv::VideoCapture capture;
         cv::VideoWriter writer;
+        FILE *file_writer;
         std::vector<std::pair<int, int>> filters;
         bool is_visible;
         bool is_stretch;

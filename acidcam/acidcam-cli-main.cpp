@@ -78,6 +78,9 @@
  -H use HEVC x265 (if your system has it)
  -V use AVC x264
  -j second layer video file input
+ -4 use ffmpeg x264
+ -5 use ffmpeg x265
+ -1 crf
  */
 cmd::AC_Program program;
 std::string secondVideoFile;
@@ -344,6 +347,7 @@ void listPlugins(std::string path, std::vector<std::string> &files) {
         }
     }
     closedir(dir);
+    
 }
 
 void control_Handler(int sig) {
@@ -393,11 +397,17 @@ int main(int argc, char **argv) {
     metacall_initialize();
     init_metacall();
 #endif
+    
+    cmd::codec_type = 1;
+    
     if(argc > 1) {
         int opt = 0;
         cmd::cur_codec = 0;
-        while((opt = getopt(argc, argv, "Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HAJ:j:")) != -1) {
+        while((opt = getopt(argc, argv, "Q:Lli:o:f:vc:p:xn:hg:b:m:s:r:k:a:eS:u:CXANOF:I:RP:E:T:d:HAJ:j:")) != -1) {
             switch(opt) {
+                case 'Q':
+                    cmd::crf = optarg;
+                    break;
                 case 'j': {
                     std::string fname = optarg;
                     ac::v_cap.open(fname);
@@ -421,10 +431,28 @@ int main(int argc, char **argv) {
                         std::cout << argv[0] << ": invalid fourcc...\n";
                         exit(EXIT_FAILURE);
                     }
-                    cmd::four_cc_str = value;
-                    cmd::cur_codec = 3;
-                    cmd::four_cc = cv::VideoWriter::fourcc(value[0], value[1], value[2], value[3]);
-                    program.setCodecMode(3);
+                    
+                    cmd::codec_type = -1;
+                    
+                    if(value == "x264") {
+                        cmd::codec_type = -1;
+                        cmd::cur_codec = -1;
+                        program.setCodecMode(5);
+                        cmd::four_cc_str = "x264";
+                    }
+                    else if(value == "x265") {
+                        cmd::cur_codec = -2;
+                        cmd::codec_type = -2;
+                        program.setCodecMode(5);
+                        cmd::four_cc_str = "x265";
+                    }
+                    else {
+                        cmd::four_cc_str = value;
+                        cmd::cur_codec = 3;
+                        cmd::four_cc = cv::VideoWriter::fourcc(value[0], value[1], value[2], value[3]);
+                        program.setCodecMode(3);
+                    }
+                    
                 }
                     break;
                 case 'h':
