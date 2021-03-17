@@ -124,6 +124,10 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-Q crf 
 
+	-j second layer video input
+
+
+
 List of the Different Color maps you can apply with -r:
 
 	1 Autum

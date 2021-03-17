@@ -77,10 +77,10 @@
  -J set fourcc manually
  -H use HEVC x265 (if your system has it)
  -V use AVC x264
- -j second layer video file input
- -4 use ffmpeg x264
- -5 use ffmpeg x265
- -1 crf
+ -j second layer video file inpu
+ -J x264 for x264 FFmpeg pipe
+ -J x264 for x265 FFmpeg pipe
+ -Q crf
  */
 cmd::AC_Program program;
 std::string secondVideoFile;
