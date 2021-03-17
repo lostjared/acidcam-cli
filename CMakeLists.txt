@@ -29,13 +29,14 @@ list(APPEND source_files
 ${CMAKE_SOURCE_DIR}/acidcam/acidcam-cli-main.cpp
 ${CMAKE_SOURCE_DIR}/acidcam/acidcam-cli.cpp
 ${CMAKE_SOURCE_DIR}/acidcam/acidcam-cli.hpp
+${CMAKE_SOURCE_DIR}/acidcam/ffmpeg_write.cpp
 )
 
 find_package(OpenCV REQUIRED)
 find_package(PkgConfig REQUIRED)
 find_package(Threads REQUIRED)
 find_library(AC_Linker acidcam REQUIRED)
-find_library(dl REQUIRED)
+#find_library(dl REQUIRED)
 find_path(AC_HEADERS acidcam/ac.h REQUIRED)
 if(ENABLE_METACALL)
 find_path(META_HEADERS metacall/metacall.h REQUIRED)
