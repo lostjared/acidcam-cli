@@ -118,11 +118,11 @@ Remember to put quotes around arguments that use spaces for like file names etc.
 
 	-T thread count for Multithreaded filters (default is 4)
 
-	-4 output as x264 (pipe to FFmpeg)
+	-J x264 to  output as x264 (pipe to FFmpeg)
 
-	-5 output as x265 (pipe to FFmpeg)
+	-J x265 to  output as x265 (pipe to FFmpeg)
 
-	-1 crf 
+	-Q crf 
 
 List of the Different Color maps you can apply with -r:
 
