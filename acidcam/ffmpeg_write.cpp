@@ -6,9 +6,8 @@
 #include<unistd.h>
 #endif
 // ffmpeg -y -s 640x480  -pixel_format bgr24 -f rawvideo -r 30 -i pipe: -vcodec libx265 -pix_fmt yuv420p -crf 24 test.mp4
-#ifdef __APPLE__
+
 std::string ffmpeg_path = "ffmpeg";
-#endif
 extern void sendString(const std::string &s);
 
 char buffer[1024*1024];
