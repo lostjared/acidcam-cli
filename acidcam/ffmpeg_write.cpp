@@ -27,7 +27,7 @@ FILE *open_ffmpeg(const char *output, const char *codecx, const char *res, const
 #ifndef _WIN32
     FILE *fptr = popen(stream.str().c_str(), "w");
 #else
-    FILE *fptr = _popen(stream.str().c_str(), "w");
+    FILE *fptr = _popen(stream.str().c_str(), "wb");
 #endif
     
     if(!fptr) {
