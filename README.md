@@ -1,21 +1,21 @@
 # acidcam-cli
 
-To be able to use all the filters in this program  your system should have at lest 8 GB of ram.
+Acidcam-CLI transforms videos into works of art, leveraging a vast array of filters to create unique visuals known as Acid Glitches. This tool can be utilized either as a standalone application or in conjunction with other software to foster the creation of artistic images and videos. Designed for enthusiasts and Glitch artists alike, Acidcam-CLI serves as a creative catalyst.
 
-Acid Cam distorts video to create art. It is designed to bo used with other software or on its own. There is multiple versions of the program for macOS, Linux, and Windows as well as a command line version of the program.
+System Requirements
+For optimal performance and access to the full suite of filters, ensure your system has at least 8 GB of RAM.
 
-This project was created in hopes of providing some entertainment, or for the Glitch artist to give you a starting image/video to use with other tools.
+Availability
+Acidcam-CLI is available across multiple platforms including macOS, Linux, and Windows, catering to a wide audience of artists and developers.
 
-I call the art that I create with Acid Cam an Acid Glitch, but you can call it whatever you want. It is just meant to be a tool to use with other programs to help aid in the creation of artistic images/videos.
+Project Goals
+This project aims to entertain and inspire, providing a foundation for Glitch artists and creative individuals to explore and expand their artistic expressions.
 
-Acid Cam's effects are created by using Acid Cam 'filters', or pieces of code that distort an image and can be combined to produce some interesting results. The project currently has over 1,000 filters to mix and match.
+Filters
+With over 1,000 filters to explore, Acidcam-CLI offers endless possibilities for artistic experimentation. These filters, or code snippets, manipulate images in various ways, allowing users to achieve distinctive and captivating results.
 
-Command Line Version of Acid Cam for Linux/Unix with OpenCV:
-
-Use Ctrl+C to break processing and still be able to use what has already been filtered.
-
-You can watch a tutorial here on how to compile for Linux:
-https://youtu.be/Gxuudn2zXtM
+Installation and Use
+For Linux/Unix with OpenCV:
 
 To compile, first Install OpenCV if you are using debian you can do this with:
 
