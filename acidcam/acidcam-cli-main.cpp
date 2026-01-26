@@ -5,9 +5,7 @@
  
  Website: http://lostsidedead.com
  YouTube: http://youtube.com/LostSideDead
- Instagram: http://instagram.com/lostsidedead
- Twitter: http://twitter.com/jaredbruni
- Facebook: http://facebook.com/LostSideDead0x
+
  
  You can use this program free of charge and redistrubute it online as long
  as you do not charge anything for this program. This program is meant to be

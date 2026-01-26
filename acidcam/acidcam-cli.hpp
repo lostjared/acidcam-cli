@@ -5,9 +5,6 @@
  
  Website: http://lostsidedead.com
  YouTube: http://youtube.com/LostSideDead
- Instagram: http://instagram.com/lostsidedead
- Twitter: http://twitter.com/jaredbruni
- Facebook: http://facebook.com/LostSideDead0x
  
  You can use this program free of charge and redistrubute it online as long
  as you do not charge anything for this program. This program is meant to be
@@ -49,7 +46,7 @@
 #include<algorithm>
 #include<unistd.h>
 #include<dlfcn.h>
-#define APP_VERSION "v1.15.0"
+#define APP_VERSION "v2.0.0"
 #if defined(HAVE_CONFIG_H)
 #include<config.h>
 #endif
